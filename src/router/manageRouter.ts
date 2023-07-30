@@ -1,29 +1,31 @@
-import AppLayout from '@/views/AppLayout.vue'
+import AppManageLayout from '@/layout/AppManageLayout.vue'
 import { RouterView } from 'vue-router'
 
 const manageRouter = {
-    path: '/',
-    component: AppLayout,
+    path: '/manage',
+    name: '后台管理',
+    redirect: '/manage/home',
+    component: AppManageLayout,
     children: [
         {
-            path: '/manage',
+            path: 'home',
             name: 'Home',
-            component: RouterView,
+            component: () =>import('@/views/manage/home/index.vue'),
             meta: {
                 title: '首页',
                 icon: 'HomeFilled'
             },
         },
         {
-            path: '/manage/paper',
+            path: 'paper',
             name: '文章管理',
-            component: RouterView,
+            component: () => import('@/views/manage/PaperManage/index.vue'),
             meta: {
                 icon: 'EditPen'
             }
         },
         {
-            path: '/manage/user',
+            path: 'user',
             name: '用户管理',
             component: RouterView,
             meta: {
@@ -42,15 +44,15 @@ const manageRouter = {
             ]
        },
        {
-            path: '/manage/game',
+            path: 'game',
             name: '程序管理',
-            component: RouterView,
+            component: () => import('@/views/manage/GameManage/index.vue'),
             meta: {
                 icon: 'Folder'
             }
        },
        {
-            path: '/manage/dashboard',
+            path: 'dashboard',
             name: '数据看板',
             component: RouterView,
             meta: {
@@ -68,9 +70,9 @@ const manageRouter = {
             ]
        },
        {
-            path: '/manage/setting',
+            path: 'setting',
             name: '全局设置',
-            component: RouterView,
+            component: () => import('@/views/manage/Setting/index.vue'),
             meta: {
                 icon: 'Setting'
             }
