@@ -53,7 +53,9 @@ import { ref } from 'vue'
 import Logo from './Logo.vue'
 import SideBarItem from './SideBarItem.vue'
   
-const props = defineProps(['isCollapse'])
+const props = defineProps<{
+  isCollapse: boolean
+}>()
 const base = '/manage/'
 const selectKey = ref('')
 const handleSelect = (key: string) => {

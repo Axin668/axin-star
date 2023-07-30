@@ -18,7 +18,10 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-const props = defineProps(['item', 'base_path'])
+const props = defineProps<{
+    item: any
+    base_path: string
+}>()
 const cur_path = ref(props.base_path + props.item.path)
 </script>
 

@@ -12,6 +12,9 @@
                 <el-icon :size="25"><fold/></el-icon>
               </el-button>
             </el-col>
+            <el-col :span="12">
+              <Breadcrumb />
+            </el-col>
           </el-row>
         </el-header>
         <el-main class="main"><router-view/></el-main>
@@ -23,6 +26,7 @@
 
 <script lang="ts" setup>
 import SideBar from '@/components/SideBar/index.vue';
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import { ref } from 'vue'
 import { Fold } from '@element-plus/icons-vue'
 
@@ -46,7 +50,6 @@ const toggle = ():void => {
       100px 100px 80px rgba(0, 0, 0, 0.07)
     }
     .header {
-        background: #797979;
         height: 80px;
         width: 100vw;
         box-shadow:
