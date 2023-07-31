@@ -66,11 +66,11 @@ const handleSelect = (key: string) => {
   
 <style>
   .logo{
-    height:80px;
+    height:60px;
     background: #e1eaf4;
   }
   .menu{
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 60px);
    
   }
   .menu .el-menu-item:hover {

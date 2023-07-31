@@ -8,9 +8,7 @@
         <el-header class="header">
           <el-row>
             <el-col :span="1">
-              <el-button type="text" @click="toggle">
-                <el-icon :size="25"><fold/></el-icon>
-              </el-button>
+              <Humburger :isCollapse="isCollapse" ref="humburger" @changeIsCollapse="changeIsCollapse"/>
             </el-col>
             <el-col :span="12">
               <Breadcrumb />
@@ -27,11 +25,12 @@
 <script lang="ts" setup>
 import SideBar from '@/components/SideBar/index.vue';
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Humburger from '@/components/Hamburger/index.vue'
 import { ref } from 'vue'
-import { Fold } from '@element-plus/icons-vue'
 
 let isCollapse = ref(false)
-const toggle = ():void => {
+const humburger: any = ref(null)
+const changeIsCollapse = () => {
   isCollapse.value = !isCollapse.value
 }
 </script>
@@ -50,7 +49,7 @@ const toggle = ():void => {
       100px 100px 80px rgba(0, 0, 0, 0.07)
     }
     .header {
-        height: 80px;
+        height: 60px;
         width: 100vw;
         box-shadow:
         8.7px 9.2px 2.6px rgba(0, 0, 0, 0.023),
