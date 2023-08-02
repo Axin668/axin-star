@@ -6,6 +6,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElIcons from '@element-plus/icons-vue'
 import Store, {key} from './store'
+import 'virtual:svg-icons-register'
+import 'uno.css'
 
 const app = createApp(App)
 for(const name in ElIcons) {

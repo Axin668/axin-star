@@ -61,7 +61,7 @@ const changeIsCollapse = () => {
     }
 
     .main {
-      background: #135623;
+      background-color: $bg-color;
     }
 
     .footer {
