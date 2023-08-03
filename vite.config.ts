@@ -1,13 +1,18 @@
 import { UserConfig, ConfigEnv, loadEnv, defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'path'
+
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
+import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
+
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
+
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import UnoCSS from 'unocss/vite'
+import path from 'path'
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -15,6 +20,11 @@ const pathSrc = path.resolve(__dirname, 'src')
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd())
   return {
+    resolve: {
+      alias: {
+          "@": pathSrc,
+      }
+    },
     css: {
       preprocessorOptions: {
         scss: {
@@ -64,6 +74,18 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         symbolId: 'icon-[dir]-[name]'
       }),
       UnoCSS({ /* options */ }),
+      createStyleImportPlugin({
+        resolves: [ElementPlusResolve()],
+        libs: [
+          {
+            libraryName: 'element-plus',
+            esModule: true,
+            resolveStyle: (name: string) => {
+              return `element-plus/theme-chalk/${name}.css`
+            } 
+          }
+        ]
+      })
     ],
     server: {
       host: '0.0.0.0',
@@ -77,14 +99,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
             path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
         }
       }
-    },
-    resolve: {
-      alias: [
-        {
-          find: '@',
-          replacement: pathSrc
-        }
-      ]
     }
   }
 })

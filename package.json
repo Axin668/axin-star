@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
     "axios": "^1.4.0",
     "element-plus": "^2.3.8",
     "path-to-regexp": "^6.2.1",
@@ -20,17 +22,19 @@
     "@iconify-json/ep": "^1.1.10",
     "@types/node": "^20.4.5",
     "@vitejs/plugin-vue": "^4.2.3",
+    "consola": "^3.2.3",
     "eslint": "^8.46.0",
     "eslint-plugin-vue": "^9.16.0",
     "fast-glob": "^3.2.11",
     "sass": "^1.64.1",
     "sass-loader": "^13.3.2",
-    "typescript": "^5.0.2",
+    "typescript": "^5.1.6",
     "unocss": "^0.54.1",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-icons": "^0.16.5",
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.4.5",
+    "vite-plugin-style-import": "^2.0.0",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue-tsc": "^1.8.5"
   }
