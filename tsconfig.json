@@ -9,6 +9,7 @@
     /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true /* 允许默认导入 */,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -28,6 +29,7 @@
       ]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/types/vuex.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/types/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "**/*.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

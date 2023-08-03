@@ -26,10 +26,11 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     plugins: [
       vue(),
       AutoImport({
-        imports: ['vue'],
+        imports: ['vue', "@vueuse/core"],
         eslintrc: {
-          enabled: true,
-          filepath: './.eslintrc-auto-import.json'
+          enabled: false,
+          filepath: './.eslintrc-auto-import.json',
+          globalsPropValue: true
         },
         resolvers: [
           // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
@@ -38,6 +39,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           IconsResolver({})
         ],
         vueTemplate: true, // 是否在 vue 模板中自动导入
+        // dts: false,
         dts: path.resolve(pathSrc, "types", "auto-imports.d.ts") // 自动导入组件类型声明文件位置，默认根目录
       }),
       Components({
@@ -47,6 +49,8 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
             enabledCollections: ["ep"]
           })
         ],
+        dirs: ["src/**/components"],
+        // dts: false,
         dts: path.resolve(pathSrc, "types", "components.d.ts") // 自动导入组件类型声明文件位置，默认根目录
       }),
       Icons({
