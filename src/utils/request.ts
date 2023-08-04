@@ -1,6 +1,6 @@
 //  src/utils/request.ts
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from "axios";
-import { useUserStoreHook } from "@/store/modules/user";
+import { useStore } from "@/store";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 // 创建 axios 实例
@@ -13,9 +13,9 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const userStore = useUserStoreHook();
-    if (userStore.token) {
-      config.headers.Authorization = userStore.token;
+    const store = useStore();
+    if (store.getters["user/isLogin"]) {
+      config.headers.Authorization = store.state.user.token;
     }
     return config;
   },

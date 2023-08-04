@@ -16,3 +16,13 @@ export function loginApi(data: LoginData): AxiosPromise<LoginResult> {
     params: data,
   });
 }
+
+/**
+ * 注销API
+ */
+export function logoutApi() {
+  return request({
+    url: "/api/v1/auth/logout",
+    method: "delete",
+  });
+}
