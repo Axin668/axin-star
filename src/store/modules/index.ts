@@ -1,5 +1,8 @@
-import user from './user'
+import userState from './user'
+import permissionState from './permission'
 
 export default {
-  user,
+  userState,
+  permissionState
 }
+
