@@ -5,11 +5,11 @@ export interface LoginData {
   /**
    * 用户名
    */
-  username: string;
+  username: string
   /**
    * 密码
    */
-  password: string;
+  password: string
 }
 
 /**
@@ -19,17 +19,17 @@ export interface LoginResult {
   /**
    * 访问token
    */
-  accessToken?: string;
+  accessToken?: string
   /**
    * 过期时间(单位：毫秒)
    */
-  expires?: number;
+  expires?: number
   /**
    * 刷新token
    */
-  refreshToken?: string;
+  refreshToken?: string
   /**
    * token 类型
    */
-  tokenType?: string;
+  tokenType?: string
 }

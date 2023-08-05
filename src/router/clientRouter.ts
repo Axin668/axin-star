@@ -1,5 +1,3 @@
-const clientRouter = {
-
-}
+const clientRouter = {}
 
 export default clientRouter

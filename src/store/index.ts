@@ -1,18 +1,15 @@
-import { createStore, useStore as baseUseStore, Store } from "vuex";
-import { InjectionKey } from "vue";
-import modules from "./modules";
+import { createStore, useStore as baseUseStore, Store } from 'vuex'
+import { InjectionKey } from 'vue'
+import RootStateTypes, { AllStateTypes } from './interface'
+import modules from './modules'
 
-export const key: InjectionKey<Store<state>> = Symbol("key");
+export const key: InjectionKey<Store<RootStateTypes>> = Symbol('vue-store')
 
-export type state = {
-  count: number;
-};
-
-export default createStore({
+export default createStore<RootStateTypes>({
   modules: modules,
-});
+})
 
 // 简化useStore(key)
-export function useStore() {
-  return baseUseStore(key);
+export function useStore<T = AllStateTypes>() {
+  return baseUseStore<T>(key)
 }

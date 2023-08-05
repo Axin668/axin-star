@@ -10,12 +10,13 @@ module.exports = {
     "plugin:vue/vue3-recommended",
     "./.eslintrc-auto-import.json",
     "prettier",
+    "plugin:prettier/recommended"
   ],
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
     parser: "@typescript-eslint/parser",
-    project: "./tsconfig.json", // 此处应为你的 tsconfig.json 的路径
+    project: "./tsconfig.json" // 此处应为你的 tsconfig.json 的路径
   },
   plugins: ["vue", "@typescript-eslint"],
   rules: {
