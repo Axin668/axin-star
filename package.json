@@ -13,6 +13,7 @@
     "@typescript-eslint/parser": "^6.2.1",
     "axios": "^1.4.0",
     "element-plus": "^2.3.8",
+    "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^5.0.0",
     "path-to-regexp": "^6.2.1",
     "vue": "^3.3.4",

@@ -20,7 +20,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/login',
-    component: () => import('@/views/login/index.vue'),
+    component: () => import('@/views/manage/login/index.vue'),
     meta: {
       hidden: true,
     },
@@ -32,6 +32,13 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/client/dashboard/index.vue'),
+        meta: {
+          title: 'dashboard',
+          icon: 'homepage',
+          affix: true,
+        },
       },
     ],
   },
