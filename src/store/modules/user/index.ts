@@ -16,7 +16,7 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
     nickname: '',
     avatar: '',
     roles: [],
-    perms: [],
+    perms: []
   },
   mutations: {
     setUser(state, user: UserInfo) {
@@ -28,7 +28,7 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
       state.avatar = ''
       state.roles = []
       state.perms = []
-    },
+    }
   },
   actions: {
     login({ commit }, loginData: LoginData) {
@@ -61,7 +61,7 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
               nickname: data.nickname,
               avatar: data.avatar,
               roles: data.roles,
-              perms: data.perms,
+              perms: data.perms
             })
             resolve(data)
           })
@@ -83,7 +83,7 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
             reject(error)
           })
       })
-    },
+    }
   },
   getters: {
     isLogin(state) {
@@ -94,8 +94,9 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
         return state.roles.includes(role)
       }
     },
-    hasPermission: (state) => (perm: string) => state.perms.includes(perm),
-  },
+    hasPermission: (state) => (perm: string) => state.perms.includes(perm)
+  }
 }
 
 export default userModule
+
