@@ -1,4 +1,4 @@
-import router from './router'
+import router from '@/router'
 import { useStore } from '@/store'
 
 import NProgress from 'nprogress'
@@ -59,3 +59,4 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach(() => {
   NProgress.done()
 })
+

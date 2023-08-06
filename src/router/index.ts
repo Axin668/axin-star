@@ -9,21 +9,21 @@ export const constantRoutes: RouteRecordRaw[] = [
     path: '/redirect',
     component: Layout,
     meta: {
-      hidden: true,
+      hidden: true
     },
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index.vue'),
-      },
-    ],
+        component: () => import('@/views/redirect/index.vue')
+      }
+    ]
   },
   {
     path: '/login',
-    component: () => import('@/views/manage/login/index.vue'),
+    component: () => import('@/views/manage/Login/index.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: false
+    }
   },
   {
     path: '/',
@@ -33,27 +33,26 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/client/dashboard/index.vue'),
+        component: () => import('@/views/manage/dashboard/index.vue'),
         meta: {
           title: 'dashboard',
           icon: 'homepage',
-          affix: true,
-        },
-      },
-    ],
-  },
+          affix: true
+        }
+      }
+    ]
+  }
 ]
 
-const routes: Array<RouteRecordRaw> = [
-  //管理端
-  manageRouter,
-  //客户端
-  clientRouter,
-]
+// const routes: Array<RouteRecordRaw> = [
+//   //管理端
+//   manageRouter
+// ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: constantRoutes as Array<RouteRecordRaw>,
+  scrollBehavior: () => ({ left: 0, top: 0 })
 })
 
 export default router
@@ -65,3 +64,4 @@ export function resetRouter() {
   router.replace({ path: '/login' })
   location.reload()
 }
+
