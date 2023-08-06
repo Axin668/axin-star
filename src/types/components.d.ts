@@ -28,6 +28,7 @@ declare module 'vue' {
     IEpSuccessFilled: typeof import('~icons/ep/success-filled')['default']
     IEpWarningFilled: typeof import('~icons/ep/warning-filled')['default']
     IEpWarnTriangleFilled: typeof import('~icons/ep/warn-triangle-filled')['default']
+    Link: typeof import('./../components/SideBar/Link.vue')['default']
     Logo: typeof import('./../components/SideBar/Logo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

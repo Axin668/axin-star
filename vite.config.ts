@@ -5,7 +5,10 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
+import {
+  createStyleImportPlugin,
+  ElementPlusResolve
+} from 'vite-plugin-style-import'
 
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -22,7 +25,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   return {
     resolve: {
       alias: {
-          "@": pathSrc,
+        '@': pathSrc
       }
     },
     css: {
@@ -36,7 +39,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     plugins: [
       vue(),
       AutoImport({
-        imports: ['vue', "@vueuse/core"],
+        imports: ['vue', '@vueuse/core'],
         eslintrc: {
           enabled: false,
           filepath: './.eslintrc-auto-import.json',
@@ -49,19 +52,19 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           IconsResolver({})
         ],
         vueTemplate: true, // 是否在 vue 模板中自动导入
-        // dts: false,
-        dts: path.resolve(pathSrc, "types", "auto-imports.d.ts") // 自动导入组件类型声明文件位置，默认根目录
+        // dts: false
+        dts: path.resolve(pathSrc, 'types', 'auto-imports.d.ts') // 自动导入组件类型声明文件位置，默认根目录
       }),
       Components({
         resolvers: [
           ElementPlusResolver(),
           IconsResolver({
-            enabledCollections: ["ep"]
+            enabledCollections: ['ep']
           })
         ],
-        dirs: ["src/**/components"],
-        // dts: false,
-        dts: path.resolve(pathSrc, "types", "components.d.ts") // 自动导入组件类型声明文件位置，默认根目录
+        dirs: ['src/**/components'],
+        // dts: false
+        dts: path.resolve(pathSrc, 'types', 'components.d.ts') // 自动导入组件类型声明文件位置，默认根目录
       }),
       Icons({
         // 自动安装图标库
@@ -73,7 +76,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         //指定SymbolId的格式
         symbolId: 'icon-[dir]-[name]'
       }),
-      UnoCSS({ /* options */ }),
+      UnoCSS({
+        /* options */
+      }),
       createStyleImportPlugin({
         resolves: [ElementPlusResolve()],
         libs: [
@@ -82,7 +87,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
             esModule: true,
             resolveStyle: (name: string) => {
               return `element-plus/theme-chalk/${name}.css`
-            } 
+            }
           }
         ]
       })
@@ -95,10 +100,11 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         [env.VITE_APP_BASE_API]: {
           target: 'http://vapi.youlai.tech',
           changeOrigin: true,
-          rewrite: path => 
+          rewrite: (path) =>
             path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
         }
       }
     }
   }
 })
+
