@@ -32,14 +32,17 @@ router.beforeEach(async (to, from, next) => {
         }
       } else {
         try {
-          const { roles } = await store.dispatch('getInfo')
-          const accessRoutes = await store.dispatch('generateRoutes', roles)
+          const { roles } = await store.dispatch('user/getInfo')
+          const accessRoutes = await store.dispatch(
+            'permission/generateRoutes',
+            roles
+          )
           accessRoutes.forEach((route: RouteRecordRaw) => {
             router.addRoute(route)
           })
           next({ ...to, replace: true })
         } catch (error) {
-          await store.commit('resetUser')
+          await store.commit('user/resetUser')
           //redirect回传, 用户登陆之后去往最初要访问的页面, 而非系统默认
           next(`/login?redirect=${to.path}`)
           NProgress.done()

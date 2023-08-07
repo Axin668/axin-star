@@ -89,6 +89,9 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
     isLogin(state) {
       return !!state.token
     },
+    token(state) {
+      return state.token
+    },
     hasRole(state) {
       return (role: string) => {
         return state.roles.includes(role)

@@ -100,6 +100,7 @@ import { useStore } from '@/store'
 import { LocationQuery, LocationQueryValue, useRoute } from 'vue-router'
 import { getCaptchaApi } from '@/api/auth'
 import { LoginData } from '@/api/auth/types'
+import { ElForm } from 'element-plus'
 
 const store = useStore()
 const route = useRoute()
@@ -179,7 +180,7 @@ function handleLogin() {
     if (valid) {
       loading.value = true
       store
-        .dispatch('login', loginData.value)
+        .dispatch('user/login', loginData.value)
         .then(() => {
           const query: LocationQuery = route.query
 

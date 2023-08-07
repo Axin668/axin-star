@@ -2,12 +2,12 @@
   <div :class="{ 'has-logo': sidebarLogo }">
     <logo
       v-if="sidebarLogo"
-      :collapse="!store.getters.sidebar.opened"
+      :collapse="!store.getters['app/sidebar'].opened"
     />
     <el-scrollbar>
       <el-menu
         :default-active="currentRoute.path"
-        :collapse="!store.getters.sidebar.opened"
+        :collapse="!store.getters['app/sidebar'].opened"
         :background-color="variables.menuBg"
         :text-color="variables.menuText"
         :active-text-color="variables.menuActiveText"
@@ -20,7 +20,7 @@
           :key="route.path"
           :item="route"
           :base-path="route.path"
-          :is-collapse="!store.getters.sidebar.opened"
+          :is-collapse="!store.getters['app/sidebar'].opened"
         />
       </el-menu>
     </el-scrollbar>
@@ -39,5 +39,6 @@ import variables from '@/styles/variables.module.scss'
 const store = useStore()
 const currentRoute = useRoute()
 const { sidebarLogo } = toRefs(store.state.settings)
+console.log(store.getters['user/isLogin'])
 </script>
 

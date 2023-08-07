@@ -1,12 +1,12 @@
-import userState from './user'
-import permissionState from './permission'
-import settingsState from './settings'
-import appState from './app'
+import userModule from './user'
+import permissionModule from './permission'
+import settingsModule from './settings'
+import appModule from './app'
 
 export default {
-  userState,
-  permissionState,
-  settingsState,
-  appState
+  user: userModule,
+  permission: permissionModule,
+  settings: settingsModule,
+  app: appModule
 }
 
