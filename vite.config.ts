@@ -49,7 +49,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
           ElementPlusResolver(),
           // 自动导入图标组件
-          IconsResolver({})
+          IconsResolver({ prefix: 'i' })
         ],
         vueTemplate: true, // 是否在 vue 模板中自动导入
         // dts: false

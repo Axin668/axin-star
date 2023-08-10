@@ -14,7 +14,8 @@ const appModule: Module<AppStateTypes, RootStateTypes> = {
   state: {
     device: useStorage<string>('device', 'desktop'),
     size: useStorage<string>('size', defaultSettings.size),
-    sidebarStatus: useStorage<string>('sidebarStatus', 'closed')
+    sidebarStatus: useStorage<string>('sidebarStatus', 'closed'),
+    language: useStorage<string>('language', 'zh-cn')
   },
   getters: {
     sidebar(state): sidebarTypes {

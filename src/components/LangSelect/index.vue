@@ -1,0 +1,43 @@
+<template>
+  <el-dropdown
+    trigger="click"
+    @command="handleLanguageChange"
+  >
+    <div>
+      <svg-icon icon-class="language" />
+    </div>
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item
+          :disabled="store.state.app.language.value === 'zh-cn'"
+          command="zh-cn"
+        >
+          中文
+        </el-dropdown-item>
+        <el-dropdown-item
+          :disabled="store.state.app.language.value === 'en'"
+          command="en"
+        >
+          English
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
+</template>
+
+<script lang="ts" setup>
+import SvgIcon from '@/components/SvgIcon/index.vue'
+import { useStore } from '@/store'
+import { ElMessage } from 'element-plus'
+
+const store = useStore()
+
+function handleLanguageChange(lang: string) {
+  store.commit('app/changeLanguage', lang)
+  if (lang == 'en') {
+    ElMessage.success('Switch Language Successful!')
+  } else {
+    ElMessage.success('切换语言成功！')
+  }
+}
+</script>

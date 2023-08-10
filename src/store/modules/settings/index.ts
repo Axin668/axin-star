@@ -2,19 +2,19 @@ import { Module } from 'vuex'
 import RootStateTypes from '@/store/interface'
 import SettingsStateTypes from './interface'
 import { useStorage } from '@vueuse/core'
-import defauleSettings from '@/settings'
+import defaultSettings from '@/settings'
 
 //不支持动态绑定RemovableRef<boolean> -> boolean, 所以先取出来再.value赋值
-const tagView = useStorage<boolean>('tagView', defauleSettings.tagsView)
-const layout = useStorage<string>('layout', defauleSettings.layout)
+const tagView = useStorage<boolean>('tagView', defaultSettings.tagsView)
+const layout = useStorage<string>('layout', defaultSettings.layout)
 
 const SettingsModule: Module<SettingsStateTypes, RootStateTypes> = {
   namespaced: process.env.NODE_ENV !== 'production',
   state: {
     tagView: tagView.value,
-    showSettings: defauleSettings.showSettings,
-    fixedHeader: defauleSettings.fixedHeader,
-    sidebarLogo: defauleSettings.sidebarLogo,
+    showSettings: defaultSettings.showSettings,
+    fixedHeader: defaultSettings.fixedHeader,
+    sidebarLogo: defaultSettings.sidebarLogo,
     layout: layout.value
   },
   actions: {
