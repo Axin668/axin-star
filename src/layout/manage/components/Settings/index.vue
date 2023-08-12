@@ -101,7 +101,8 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 
-import IconEp
+import IconEpMoon from '~icons/ep/moon'
+import IconEpSunny from '~icons/ep/sunny'
 
 const store = useStore()
 /**

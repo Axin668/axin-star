@@ -22,8 +22,8 @@ import { useStore } from '@/store'
 
 const store = useStore()
 
-const sidebar = store.getters['app/sidebar'].opened
-const device = store.state.app.device
+const sidebar = computed(() => store.getters['app/sidebar'].opened)
+const device = computed(() => store.state.app.device)
 
 const props = defineProps({
   to: {
@@ -35,7 +35,7 @@ const props = defineProps({
 const router = useRouter()
 
 function push() {
-  if (device.value === 'mobile' && sidebar.opened == true) {
+  if (device.value === 'mobile' && sidebar.value.opened == true) {
     store.dispatch('app/closeSidebar', false)
   }
   router.push(props.to).catch((err) => {

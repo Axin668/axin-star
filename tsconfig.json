@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
 
     /* Bundler mode */
     "moduleResolution": "node",
@@ -25,9 +25,11 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["vite/client", "unplugin-icons/types/vue"]
   },
   "include": ["**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/types/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
+

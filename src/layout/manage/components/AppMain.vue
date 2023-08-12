@@ -5,7 +5,7 @@
         name="router-fade"
         mode="out-in"
       >
-        <keep-alive :include="store.state.tags_view.cachedViews.value">
+        <keep-alive :include="store.state.tags_view.cachedViews">
           <component
             :is="Component"
             :key="route.fullPath"
@@ -49,3 +49,4 @@ const store = useStore()
   }
 }
 </style>
+

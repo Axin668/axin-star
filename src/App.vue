@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { ElConfigProvider } from 'element-plus'
+import { useStore } from '@/store'
+
+const store = useStore()
 </script>
 
 <template>
-    <router-view></router-view>
+  <el-config-provider :size="store.state.app.size.value">
+    <router-view />
+  </el-config-provider>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
+

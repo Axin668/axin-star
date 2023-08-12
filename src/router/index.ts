@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import clientRouter from './clientRouter'
-import manageRouter from './manageRouter'
 
-const Layout = () => import('@/layout/AppManageLayout.vue')
+const Layout = () => import('@/layout/manage/Layout.vue')
 
 export const constantRoutes: RouteRecordRaw[] = [
   {
@@ -37,8 +35,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: 'dashboard',
           icon: 'homepage',
-          affix: true
+          affix: true,
+          keepAlive: true
         }
+      },
+      {
+        path: '404',
+        component: () => import('@/views/error-page/404.vue'),
+        meta: { hidden: true }
       }
     ]
   }
@@ -52,6 +56,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes: constantRoutes as Array<RouteRecordRaw>,
+  //与TagsView一致
   scrollBehavior: () => ({ left: 0, top: 0 })
 })
 

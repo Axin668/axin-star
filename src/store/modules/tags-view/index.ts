@@ -5,19 +5,19 @@ import TagsViewStateTypes, { TagView } from './interface'
 const tagsViewModule: Module<TagsViewStateTypes, RootStateTypes> = {
   namespaced: process.env.NODE_ENV !== 'production',
   state: {
-    visitedViews: ref([]),
-    cachedViews: ref([])
+    visitedViews: [],
+    cachedViews: []
   },
   mutations: {
     addVisitedView(state, { view, type }) {
       if (type === 'unshift') {
-        state.visitedViews.value.unshift(
+        state.visitedViews.unshift(
           Object.assign({}, view, {
             title: view.meta?.title || 'no-name'
           })
         )
       } else if (type === 'push') {
-        state.visitedViews.value.push(
+        state.visitedViews.push(
           Object.assign({}, view, {
             title: view.meta?.title || 'no-name'
           })
@@ -25,70 +25,59 @@ const tagsViewModule: Module<TagsViewStateTypes, RootStateTypes> = {
       }
     },
     addCachedView(state, viewname: string) {
-      state.cachedViews.value.push(viewname)
+      state.cachedViews.push(viewname)
     },
     delVisitedView(state, index: number) {
-      state.visitedViews.value.splice(index, 1)
+      state.visitedViews.splice(index, 1)
     },
     delCachedView(state, index: number) {
-      state.cachedViews.value.splice(index, 1)
+      state.cachedViews.splice(index, 1)
     },
     //是否引用赋值???
     delOtherVisitedViews(state, view: TagView) {
-      let cur = state.visitedViews.value
+      let cur = state.visitedViews
       cur = cur.filter((v) => {
         return v.meta?.affix || v.path === view.path
       })
     },
     delOtherCachedViews(state, index: number) {
       if (index > -1) {
-        state.cachedViews.value = state.cachedViews.value.slice(
-          index,
-          index + 1
-        )
+        state.cachedViews = state.cachedViews.slice(index, index + 1)
       } else {
-        state.cachedViews.value = []
+        state.cachedViews = []
       }
     },
     delLeftViews(state, curindex: number) {
-      state.visitedViews.value = state.visitedViews.value.filter(
-        (item, index) => {
-          //affix:true 固定tag, 例如'首页'
-          if (index >= curindex || (item.meta && item.meta.affix)) {
-            return true
-          }
-          //删除对应的cachedView
-          const cacheIndex = state.cachedViews.value.indexOf(
-            item.name as string
-          )
-          if (cacheIndex > -1) {
-            state.cachedViews.value.splice(cacheIndex, 1)
-          }
-          return false
+      state.visitedViews = state.visitedViews.filter((item, index) => {
+        //affix:true 固定tag, 例如'首页'
+        if (index >= curindex || (item.meta && item.meta.affix)) {
+          return true
         }
-      )
+        //删除对应的cachedView
+        const cacheIndex = state.cachedViews.indexOf(item.name as string)
+        if (cacheIndex > -1) {
+          state.cachedViews.splice(cacheIndex, 1)
+        }
+        return false
+      })
     },
     delRightViews(state, curIndex: number) {
-      state.visitedViews.value = state.visitedViews.value.filter(
-        (item, index) => {
-          //affix:true 固定tag, 例如'首页'
-          if (index <= curIndex || (item.meta && item.meta.affix)) {
-            return true
-          }
-          const cacheIndex = state.cachedViews.value.indexOf(
-            item.name as string
-          )
-          if (cacheIndex > -1) {
-            state.cachedViews.value.splice(cacheIndex, 1)
-          }
-          return false
+      state.visitedViews = state.visitedViews.filter((item, index) => {
+        //affix:true 固定tag, 例如'首页'
+        if (index <= curIndex || (item.meta && item.meta.affix)) {
+          return true
         }
-      )
+        const cacheIndex = state.cachedViews.indexOf(item.name as string)
+        if (cacheIndex > -1) {
+          state.cachedViews.splice(cacheIndex, 1)
+        }
+        return false
+      })
     }
   },
   actions: {
     addVisitedView({ state, commit }, view: TagView) {
-      if (state.visitedViews.value.some((v) => v.path === view.path)) return
+      if (state.visitedViews.some((v) => v.path === view.path)) return
       if (view.meta && view.meta.affix) {
         commit('addVisitedView', { view: view, type: 'unshift' })
       } else {
@@ -97,46 +86,46 @@ const tagsViewModule: Module<TagsViewStateTypes, RootStateTypes> = {
     },
     addCachedView({ state, commit }, view: TagView) {
       const viewname = view.name as string
-      if (state.cachedViews.value.includes(viewname)) return
+      if (state.cachedViews.includes(viewname)) return
       if (view.meta?.keepAlive) {
-        commit('addCacheView', viewname)
+        commit('addCachedView', viewname)
       }
     },
     delVisitedView({ state, commit }, view: TagView) {
       return new Promise((resolve) => {
-        for (const [i, v] of state.visitedViews.value.entries()) {
+        for (const [i, v] of state.visitedViews.entries()) {
           if (v.path === view.path) {
             commit('delVisitedView', i)
             break
           }
         }
-        resolve([...state.visitedViews.value])
+        resolve([...state.visitedViews])
       })
     },
     delCachedView({ state, commit }, view: TagView) {
       const viewname = view.name as string
       return new Promise((resolve) => {
-        const index = state.cachedViews.value.indexOf(viewname)
+        const index = state.cachedViews.indexOf(viewname)
         index > -1 && commit('delCachedView', index)
-        resolve([...state.cachedViews.value])
+        resolve([...state.cachedViews])
       })
     },
     delOtherVisitedViews({ state, commit }, view: TagView) {
       return new Promise((resolve) => {
         commit('delOtherVisitedViews', view)
-        resolve([...state.visitedViews.value])
+        resolve([...state.visitedViews])
       })
     },
     delOtherCachedViews({ state, commit }, view: TagView) {
       const viewname = view.name as string
       return new Promise((resolve) => {
-        const index = state.cachedViews.value.indexOf(viewname)
+        const index = state.cachedViews.indexOf(viewname)
         commit('delOtherCachedViews', index)
-        resolve([...state.cachedViews.value])
+        resolve([...state.cachedViews])
       })
     },
     updateVisitedView({ state }, view: TagView) {
-      for (let v of state.visitedViews.value) {
+      for (let v of state.visitedViews) {
         if (v.path === view.path) {
           v = Object.assign(v, view)
           break
@@ -152,8 +141,8 @@ const tagsViewModule: Module<TagsViewStateTypes, RootStateTypes> = {
         dispatch('delVisitedView', view)
         dispatch('delCachedView', view)
         resolve({
-          visitedViews: [...state.visitedViews.value],
-          cachedViews: [...state.cachedViews.value]
+          visitedViews: [...state.visitedViews],
+          cachedViews: [...state.cachedViews]
         })
       })
     },
@@ -162,14 +151,14 @@ const tagsViewModule: Module<TagsViewStateTypes, RootStateTypes> = {
         dispatch('delOtherVisitedViews', view)
         dispatch('delOtherCachedViews', view)
         resolve({
-          visitedViews: [...state.visitedViews.value],
-          cachedViews: [...state.cachedViews.value]
+          visitedViews: [...state.visitedViews],
+          cachedViews: [...state.cachedViews]
         })
       })
     },
     delLeftViews({ state, commit }, view: TagView) {
       return new Promise((resolve) => {
-        const curIndex = state.visitedViews.value.findIndex(
+        const curIndex = state.visitedViews.findIndex(
           (v) => v.path === view.path
         )
         if (curIndex === -1) {
@@ -177,13 +166,13 @@ const tagsViewModule: Module<TagsViewStateTypes, RootStateTypes> = {
         }
         commit('delLeftViews', curIndex)
         resolve({
-          visitedViews: [...state.visitedViews.value]
+          visitedViews: [...state.visitedViews]
         })
       })
     },
     delRightViews({ state, commit }, view: TagView) {
       return new Promise((resolve) => {
-        const curIndex = state.visitedViews.value.findIndex(
+        const curIndex = state.visitedViews.findIndex(
           (v) => v.path === view.path
         )
         if (curIndex === -1) {
@@ -191,36 +180,32 @@ const tagsViewModule: Module<TagsViewStateTypes, RootStateTypes> = {
         }
         commit('delRightViews', curIndex)
         resolve({
-          visitedViews: [...state.visitedViews.value]
+          visitedViews: [...state.visitedViews]
         })
       })
     },
     delAllViews({ state }) {
       return new Promise((resolve) => {
-        const affixTags = state.visitedViews.value.filter(
-          (tag) => tag.meta?.affix
-        )
-        state.visitedViews.value = affixTags
-        state.cachedViews.value = []
+        const affixTags = state.visitedViews.filter((tag) => tag.meta?.affix)
+        state.visitedViews = affixTags
+        state.cachedViews = []
         resolve({
-          visitedViews: [...state.visitedViews.value],
-          cachedViews: [...state.cachedViews.value]
+          visitedViews: [...state.visitedViews],
+          cachedViews: [...state.cachedViews]
         })
       })
     },
     delAllVisitedViews({ state }) {
       return new Promise((resolve) => {
-        const affixTags = state.visitedViews.value.filter(
-          (tag) => tag.meta?.affix
-        )
-        state.visitedViews.value = affixTags
-        resolve([...state.visitedViews.value])
+        const affixTags = state.visitedViews.filter((tag) => tag.meta?.affix)
+        state.visitedViews = affixTags
+        resolve([...state.visitedViews])
       })
     },
     delAllCachedViews({ state }) {
       return new Promise((resolve) => {
-        state.cachedViews.value = []
-        resolve([...state.cachedViews.value])
+        state.cachedViews = []
+        resolve([...state.cachedViews])
       })
     }
   }
