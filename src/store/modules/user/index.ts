@@ -8,11 +8,12 @@ import { resetRouter } from '@/router'
 import { LoginData } from '@/api/auth/types'
 import { UserInfo } from '@/api/user/types'
 
+const token = useStorage('accessToken', '')
 const userModule: Module<UserStateTypes, RootStateTypes> = {
   namespaced: process.env.NODE_ENV !== 'production',
   state: {
     userId: -1,
-    token: '',
+    token: token.value,
     nickname: '',
     avatar: '',
     roles: [],
@@ -31,13 +32,13 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
     }
   },
   actions: {
-    login({ commit }, loginData: LoginData) {
+    login({ state }, loginData: LoginData) {
       return new Promise<void>((resolve, reject) => {
         loginApi(loginData)
           .then((response) => {
             const { tokenType, accessToken } = response.data
-            const token = tokenType + ' ' + accessToken
-            commit('setUser', { token })
+            state.token = tokenType + ' ' + accessToken
+            localStorage.setItem('accessToken', state.token)
             resolve()
           })
           .catch((error) => {
@@ -92,6 +93,9 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
     token(state) {
       return state.token
     },
+    roles(state) {
+      return state.roles
+    },
     hasRole(state) {
       return (role: string) => {
         return state.roles.includes(role)
@@ -102,4 +106,9 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
 }
 
 export default userModule
+
+// 非setup
+export function useUserStoreHook() {
+  return userModule
+}
 

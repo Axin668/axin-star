@@ -137,7 +137,7 @@ function initTags() {
   for (const tag of tags) {
     //tag必须有名字
     if (tag.name) {
-      store.dispatch('tags_view/addVistedView', tag)
+      store.dispatch('tags_view/addVisitedView', tag)
     }
   }
 }

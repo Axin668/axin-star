@@ -43,7 +43,6 @@ const store = useStore()
 const currentRoute = useRoute()
 const { sidebarLogo } = toRefs(store.state.settings)
 const layout = computed(() => store.state.settings.layout)
-console.log(store.getters['user/isLogin'])
 const showContent = ref(true)
 watch(
   () => layout.value,

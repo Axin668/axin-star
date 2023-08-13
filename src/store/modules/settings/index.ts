@@ -32,9 +32,12 @@ const SettingsModule: Module<SettingsStateTypes, RootStateTypes> = {
           break
         case 'tagView':
           state.tagView = val
+          console.log(val)
+          localStorage.setItem('tagView', val) //bug
           break
         case 'layout':
           state.layout = val
+          localStorage.setItem('layout', val)
           break
         default:
           break

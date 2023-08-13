@@ -24,7 +24,6 @@ const appModule: Module<AppStateTypes, RootStateTypes> = {
   },
   getters: {
     sidebar(state): sidebarTypes {
-      console.log(666)
       return reactive({
         opened: state.sidebarStatus !== 'closed',
         withoutAnimation: false
@@ -33,34 +32,36 @@ const appModule: Module<AppStateTypes, RootStateTypes> = {
   },
   mutations: {
     toggleDevice(state, val: string) {
-      console.log(val)
+      localStorage.setItem('device', val)
       state.device = val
     },
     changeSize(state, val: string) {
+      localStorage.setItem('size', val)
       state.size.value = val
     }
   },
   actions: {
     closeSidebar({ state, getters }, withoutAnimation: boolean) {
-      console.log(999)
       state.sidebarStatus = 'closed'
+      localStorage.setItem('sidebarStatus', 'closed')
       getters.sidebar.opened = false
       getters.sidebar.withoutAnimation = withoutAnimation
     },
     openSidebar({ state, getters }, withoutAnimation: boolean) {
-      console.log(888)
       state.sidebarStatus = 'opened'
+      localStorage.setItem('sidebarStatus', 'opened')
       getters.sidebar.opened = true
       getters.sidebar.withoutAnimation = withoutAnimation
     },
     toggleSidebar({ state, getters }, withoutAnimation: boolean) {
-      console.log(777)
       getters.sidebar.opened = !getters.sidebar.opened
       getters.sidebar.withoutAnimation = withoutAnimation
       if (getters.sidebar.opened) {
         state.sidebarStatus = 'opened'
+        localStorage.setItem('sidebarStatus', 'opened')
       } else {
         state.sidebarStatus = 'closed'
+        localStorage.setItem('sidebarStatus', 'closed')
       }
     }
   }

@@ -11,6 +11,8 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/styles/index.scss'
 import 'uno.css'
 
+import '@/permission'
+
 const app = createApp(App)
 
 app.use(router).use(ElementPlus)

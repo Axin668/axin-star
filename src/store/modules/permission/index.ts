@@ -45,7 +45,6 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
     if (hasPermission(roles, tmpRoute)) {
       if (tmpRoute.component?.toString() === 'Layout') {
         tmpRoute.component = Layout
-        console.log('基本页面')
       } else {
         const component = modules[`../../../views/**/${tmpRoute.component}.vue`]
         if (component) {
@@ -83,7 +82,8 @@ const permissionModule: Module<PermissionStateTypes, RootStateTypes> = {
           .then((resp: any) => {
             const { data: asyncRoutes } = resp
             const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-            commit('setRoute', accessedRoutes)
+            console.log(accessedRoutes)
+            commit('setRoutes', accessedRoutes)
             resolve(accessedRoutes)
           })
           .catch((error) => {
@@ -96,3 +96,6 @@ const permissionModule: Module<PermissionStateTypes, RootStateTypes> = {
 
 export default permissionModule
 
+export function usePermissionStoreHook() {
+  return permissionModule
+}

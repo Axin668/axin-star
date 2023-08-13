@@ -51,7 +51,6 @@ function addEventClick() {
 }
 
 function closeSidebar(event: any) {
-  console.log(999988888)
   //主题选择不关闭
   let parent = event.target.closet('.right-panel-container')
   if (!parent) {

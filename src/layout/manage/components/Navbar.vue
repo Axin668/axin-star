@@ -92,7 +92,6 @@ const device = store.state.app.device
  * 左侧菜单栏显示/隐藏
  */
 function toggleSideBar() {
-  console.log(22222222)
   store.dispatch('app/toggleSidebar', true)
 }
 

@@ -70,7 +70,6 @@ const classObj = computed(() => ({
 watchEffect(() => {
   if (width.value < WIDTH) {
     store.commit('app/toggleDevice', 'mobile')
-    console.log(222)
     // store.dispatch('app/closeSidebar', true)
   } else {
     store.commit('app/toggleDevice', 'desktop')
@@ -79,14 +78,12 @@ watchEffect(() => {
       // 大屏
       // store.dispatch('app/openSidebar', true)
     } else {
-      console.log(333)
       // store.dispatch('app/closeSidebar', true)
     }
   }
 })
 
 function handleOutsideClick() {
-  console.log(111)
   store.dispatch('app/closeSidebar', false)
 }
 </script>

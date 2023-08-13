@@ -1,19 +1,17 @@
 import router from '@/router'
-import { useStore } from '@/store'
+import store from './store'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { RouteRecordRaw } from 'vue-router'
 NProgress.configure({ showSpinner: false })
 
-const store = useStore()
-
 //白名单路由
 const whiteList = ['/login']
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
-  const hasToken = localStorage.getItem('accesToken')
+  const hasToken = localStorage.getItem('accessToken')
   if (hasToken) {
     if (to.path === '/login') {
       //如果已登陆, 则跳转首页
@@ -22,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
       //去别的地方看是否有权限
       const hasRoles =
-        store.state.user.roles && store.state.user.roles.length > 0
+        store.getters['user/roles'] && store.getters['user/roles'].length > 0
       if (hasRoles) {
         //未匹配任何路由, 跳转404
         if (to.matched.length === 0) {
