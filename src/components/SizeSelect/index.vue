@@ -11,7 +11,7 @@
         <el-dropdown-item
           v-for="item of sizeOptions"
           :key="item.value"
-          :disabled="store.state.app.size.value == item.value"
+          :disabled="store.state.app.size === item.value"
           :command="item.value"
         >
           {{ item.label }}

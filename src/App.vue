@@ -6,7 +6,7 @@ const store = useStore()
 </script>
 
 <template>
-  <el-config-provider :size="store.state.app.size.value">
+  <el-config-provider :size="store.state.app.size">
     <router-view />
   </el-config-provider>
 </template>

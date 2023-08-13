@@ -9,6 +9,7 @@ declare module 'vue-router' {
     breadcrumb?: boolean
     affix?: boolean
     keepAlive?: boolean
+    roles?: string[]
   }
 }
 

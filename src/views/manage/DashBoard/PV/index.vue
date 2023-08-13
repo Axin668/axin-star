@@ -1,13 +1,11 @@
 <template>
-    DashBoard-用户浏览
+  <div>DashBoard-用户浏览</div>
 </template>
 
 <script lang="ts">
 export default {
-    name: 'PV'
+  name: 'PV'
 }
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

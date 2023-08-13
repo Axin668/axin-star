@@ -24,6 +24,7 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
       Object.assign(state, user)
     },
     resetUser(state) {
+      localStorage.setItem('accessToken', '')
       state.token = ''
       state.nickname = ''
       state.avatar = ''

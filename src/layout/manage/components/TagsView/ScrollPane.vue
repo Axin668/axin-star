@@ -3,7 +3,7 @@
     ref="scrollContainer"
     class="scroll-container"
     :vertical="false"
-    @wheel.prevent="handleScroll"
+    @wheel.prevent.passive="handleScroll"
   >
     <slot></slot>
   </el-scrollbar>
