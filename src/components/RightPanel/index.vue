@@ -13,7 +13,7 @@
         @click="show = !show"
       >
         <i-ep-close v-show="show" />
-        <i-ep-setting v-show="show" />
+        <i-ep-setting v-show="!show" />
       </div>
       <div>
         <slot></slot>
@@ -52,7 +52,7 @@ function addEventClick() {
 
 function closeSidebar(event: any) {
   //主题选择不关闭
-  let parent = event.target.closet('.right-panel-container')
+  let parent = event.target.closest('.right-panel-container')
   if (!parent) {
     show.value = false
     window.removeEventListener('click', closeSidebar)

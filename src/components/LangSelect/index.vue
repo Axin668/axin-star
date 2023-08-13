@@ -9,13 +9,13 @@
     <template #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item
-          :disabled="store.state.app.language.value === 'zh-cn'"
+          :disabled="store.state.app.language === 'zh-cn'"
           command="zh-cn"
         >
           中文
         </el-dropdown-item>
         <el-dropdown-item
-          :disabled="store.state.app.language.value === 'en'"
+          :disabled="store.state.app.language === 'en'"
           command="en"
         >
           English
@@ -41,3 +41,4 @@ function handleLanguageChange(lang: string) {
   }
 }
 </script>
+

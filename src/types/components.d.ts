@@ -43,7 +43,7 @@ declare module 'vue' {
     LangSelect: typeof import('./../components/LangSelect/index.vue')['default']
     Link: typeof import('./../components/SideBar/Link.vue')['default']
     Logo: typeof import('./../components/SideBar/Logo.vue')['default']
-    Navbar: typeof import('./../layout/manage/components/Navbar.vue')['default']
+    Navbar: typeof import('./../layout/manage/components/Navbar/index.vue')['default']
     NavRight: typeof import('./../layout/manage/components/Navbar/NavRight.vue')['default']
     RightPanel: typeof import('./../components/RightPanel/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
