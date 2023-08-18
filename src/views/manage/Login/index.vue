@@ -36,18 +36,18 @@
             v-model="loginData.password"
             class="flex-1"
             placeholder="密码"
-            :types="passwordVisible === false ? 'password' : 'input'"
+            :type="passwordVisible === false ? 'password' : 'input'"
             size="large"
             name="password"
             @keyup="checkCapslock"
             @keyup.enter="handleLogin"
           />
           <span
-            class="mr-2"
+            class="p-2"
             @click="passwordVisible = !passwordVisible"
           >
             <svg-icon
-              :icon-class="passwordVisible === false ? 'eye' : 'eyeopen'"
+              :icon-class="passwordVisible === false ? 'eye-close' : 'eye-open'"
               class="text-white cursor-pointer"
             />
           </span>
@@ -224,28 +224,28 @@ onMounted(() => {
 
   .title-wrap {
     filter: contrast(30);
-  }
 
-  .title {
-    letter-spacing: 4px;
-    animation: showup 3s forwards;
-  }
-
-  @keyframes showup {
-    0% {
-      letter-spacing: -20px;
+    .title {
+      letter-spacing: 4px;
+      animation: showup 3s forwards;
     }
 
-    100% {
-      letter-spacing: 4px;
+    @keyframes showup {
+      0% {
+        letter-spacing: -20px;
+      }
+
+      100% {
+        letter-spacing: 4px;
+      }
     }
   }
 
   .login-form {
     width: 520px;
     max-width: 100%;
-    padding: 160px, 35px, 0;
-    margin: 0, auto;
+    padding: 160px 35px 0;
+    margin: 0 auto;
     overflow: hidden;
 
     .captcha {
@@ -272,12 +272,13 @@ onMounted(() => {
   background: transparent;
 
   //子组件scoped无效, 使用 :deep
-  :deep(.el-input_wrapper) {
+  //注意是两个下划线
+  :deep(.el-input__wrapper) {
     padding: 0;
     background: transparent;
     box-shadow: none;
 
-    .el-input_inner {
+    .el-input__inner {
       color: #fff;
       background: transparent;
       border: 0;
