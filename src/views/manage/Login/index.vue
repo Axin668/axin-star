@@ -59,13 +59,15 @@
         <span class="p-2 text-white">
           <svg-icon icon-class="verify_code" />
         </span>
-        <el-input
-          v-model="loginData.verifyCode"
-          auto-complete="off"
-          placeholder="验证码"
-          class="w-[60%]"
-          @keyup.enter="handleLogin"
-        />
+        <el-col :span="16">
+          <el-input
+            v-model="loginData.verifyCode"
+            auto-complete="off"
+            placeholder="验证码"
+            class="w-[60%]"
+            @keyup.enter="handleLogin"
+          />
+        </el-col>
         <div class="captcha">
           <img
             :src="captchaBase64"
