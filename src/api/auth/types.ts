@@ -3,9 +3,9 @@
  */
 export interface LoginData {
   /**
-   * 用户名
+   * 管理员名称
    */
-  username: string
+  manager_name: string
   /**
    * 密码
    */

@@ -15,8 +15,8 @@
           <svg-icon icon-class="user" />
         </div>
         <el-input
-          ref="username"
-          v-model="loginData.username"
+          ref="manager_name"
+          v-model="loginData.manager_name"
           class="flex-1"
           size="large"
           placeholder="用户名"
@@ -133,12 +133,12 @@ const captchaBase64 = ref()
 const loginFormRef = ref(ElForm)
 
 const loginData = ref<LoginData>({
-  username: 'admin',
+  manager_name: 'admin',
   password: '123456'
 })
 
 const loginRules = {
-  username: [{ required: true, trigger: 'blur' }],
+  manager_name: [{ required: true, trigger: 'blur' }],
   password: [{ required: true, trigger: 'blur', validator: passwordValidator }],
   verifyCode: [{ required: true, trigger: 'blur' }]
 }
@@ -168,6 +168,7 @@ function checkCapslock(e: any) {
 function getCaptcha() {
   getCaptchaApi().then((resp) => {
     const { data } = resp
+    console.log(resp)
     const { verifyCodeBase64, verifyCodeKey } = data
     loginData.value.verifyCodeKey = verifyCodeKey
     captchaBase64.value = verifyCodeBase64

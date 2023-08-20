@@ -98,7 +98,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       open: true,
       proxy: {
         [env.VITE_APP_BASE_API]: {
-          target: 'http://localhost',
+          target: 'http://localhost:8989',
           changeOrigin: true,
           rewrite: (path) =>
             path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
