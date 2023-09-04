@@ -1,4 +1,4 @@
-import UserStateTypes from './modules/user/interface'
+import ManagerStateTypes from './modules/manager/interface'
 import PermissionStateTypes from './modules/permission/interface'
 import AppStateTypes from './modules/app/interface'
 import SettingsStateTypes from './modules/settings/interface'
@@ -10,7 +10,7 @@ export default interface RootStateTypes {
 }
 
 export interface AllStateTypes extends RootStateTypes {
-  user: UserStateTypes
+  manager: ManagerStateTypes
   permission: PermissionStateTypes
   settings: SettingsStateTypes
   app: AppStateTypes

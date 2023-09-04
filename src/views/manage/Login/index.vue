@@ -10,7 +10,7 @@
         <span class="text-2x1 flex-1 text-center title">Axin-Star管理系统</span>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="managerName">
         <div class="p-2 text-white">
           <svg-icon icon-class="user" />
         </div>
@@ -19,7 +19,7 @@
           v-model="loginData.manager_name"
           class="flex-1"
           size="large"
-          placeholder="用户名"
+          placeholder="管理员名称"
         />
       </el-form-item>
 
@@ -183,7 +183,7 @@ function handleLogin() {
     if (valid) {
       loading.value = true
       store
-        .dispatch('user/login', loginData.value)
+        .dispatch('manager/login', loginData.value)
         .then(() => {
           const query: LocationQuery = route.query
 

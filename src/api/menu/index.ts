@@ -5,7 +5,7 @@ import request from '@/utils/request'
  */
 export function listRoutes() {
   return request({
-    url: '/api/v1/menus/routes',
+    url: '/api/menus/routes',
     method: 'get'
   })
 }

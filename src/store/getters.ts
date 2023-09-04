@@ -1,8 +1,8 @@
-import userModule from './modules/user'
+import managerModule from './modules/manager'
 import appModule from './modules/app'
 
 const getters = {
-  ...userModule.getters,
+  ...managerModule.getters,
   ...appModule.getters
 }
 

@@ -20,7 +20,8 @@ router.beforeEach(async (to, from, next) => {
     } else {
       //去别的地方看是否有权限
       const hasRoles =
-        store.getters['user/roles'] && store.getters['user/roles'].length > 0
+        store.getters['manager/roles'] &&
+        store.getters['manager/roles'].length > 0
       if (hasRoles) {
         //未匹配任何路由, 跳转404
         if (to.matched.length === 0) {
@@ -30,7 +31,7 @@ router.beforeEach(async (to, from, next) => {
         }
       } else {
         try {
-          const { roles } = await store.dispatch('user/getInfo')
+          const { roles } = await store.dispatch('manager/getInfo')
           const accessRoutes = await store.dispatch(
             'permission/generateRoutes',
             roles
@@ -40,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
           })
           next({ ...to, replace: true })
         } catch (error) {
-          await store.commit('user/resetUser')
+          await store.commit('manager/resetManager')
           //redirect回传, 用户登陆之后去往最初要访问的页面, 而非系统默认
           next(`/login?redirect=${to.path}`)
           NProgress.done()

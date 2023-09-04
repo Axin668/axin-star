@@ -26,7 +26,7 @@
   <!-- 用户头像 -->
   <el-dropdown trigger="click">
     <div class="avatar-container">
-      <img :src="store.state.user.avatar + '?imageView2/1/w/80/h/80'" />
+      <img :src="store.state.manager.avatar + '?imageView2/1/w/80/h/80'" />
       <i-ep-caret-bottom class="w-3 h-3" />
     </div>
     <template #dropdown>
@@ -89,7 +89,7 @@ function logout() {
     type: 'warning'
   }).then(() => {
     store
-      .dispatch('user/logout')
+      .dispatch('manager/logout')
       .then(() => {
         store.dispatch('tags_view/delAllViews')
       })

@@ -13,8 +13,8 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    if (store.getters['user/isLogin']) {
-      config.headers.Authorization = store.getters['user/token']
+    if (store.getters['manager/isLogin']) {
+      config.headers.Authorization = store.getters['manager/token']
     }
     return config
   },

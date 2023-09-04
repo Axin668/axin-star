@@ -1,32 +1,32 @@
 import { Module } from 'vuex'
 import RootStateTypes from '@/store/interface'
-import UserStateTypes from './interface'
+import ManagerStateTypes from './interface'
 import { loginApi, logoutApi } from '@/api/auth'
-import { getUserInfo } from '@/api/user'
+import { getManagerInfo } from '@/api/manager'
 import { resetRouter } from '@/router'
 
 import { LoginData } from '@/api/auth/types'
-import { UserInfo } from '@/api/user/types'
+import { ManagerInfo } from '@/api/manager/types'
 
 const token = useStorage('accessToken', '')
-const userModule: Module<UserStateTypes, RootStateTypes> = {
+const managerModule: Module<ManagerStateTypes, RootStateTypes> = {
   namespaced: process.env.NODE_ENV !== 'production',
   state: {
-    userId: -1,
+    managerId: -1,
     token: token.value,
-    nickname: '',
+    managerName: '',
     avatar: '',
     roles: [],
     perms: []
   },
   mutations: {
-    setUser(state, user: UserInfo) {
-      Object.assign(state, user)
+    setManager(state, manager: ManagerInfo) {
+      Object.assign(state, manager)
     },
-    resetUser(state) {
+    resetManager(state) {
       localStorage.setItem('accessToken', '')
       state.token = ''
-      state.nickname = ''
+      state.managerName = ''
       state.avatar = ''
       state.roles = []
       state.perms = []
@@ -48,19 +48,20 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
       })
     },
     getInfo({ commit }) {
-      return new Promise<UserInfo>((resolve, reject) => {
-        getUserInfo()
+      return new Promise<ManagerInfo>((resolve, reject) => {
+        getManagerInfo()
           .then((resp) => {
+            console.log(resp)
             const { data } = resp
             if (!data) {
               return reject('Verification failed, please Login again.')
             }
             if (!data.roles || data.roles.length <= 0) {
-              reject('getUserInfo: roles must be a non-null array!')
+              reject('getManagerInfo: roles must be a non-null array!')
             }
-            commit('setUser', {
-              userId: data.userId,
-              nickname: data.nickname,
+            commit('setManager', {
+              managerId: data.managerId,
+              managerName: data.managerName,
               avatar: data.avatar,
               roles: data.roles,
               perms: data.perms
@@ -77,7 +78,7 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
         logoutApi()
           .then(() => {
             resetRouter()
-            commit('resetUser')
+            commit('resetManager')
             location.reload()
             resolve()
           })
@@ -106,10 +107,10 @@ const userModule: Module<UserStateTypes, RootStateTypes> = {
   }
 }
 
-export default userModule
+export default managerModule
 
 // 非setup
-export function useUserStoreHook() {
-  return userModule
+export function useManagerStoreHook() {
+  return managerModule
 }
 
