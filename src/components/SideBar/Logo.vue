@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full h-[50px] bg-gray-800 dark:bg-[var(--el-bg-color-overlay)]">
+  <div
+    class="w-full h-[50px] bg-gray-800 dark:bg-[var(--el-bg-color-overlay)] logo-wrap"
+  >
     <transition name="sidebarLogoFade">
       <router-link
         v-if="collapse"
@@ -13,12 +15,6 @@
           alt="axin-star"
           class="w-5 h-5"
         />
-        <span
-          v-else
-          class="ml-3 text-white text-sm font-bold"
-        >
-          Axin Star
-        </span>
       </router-link>
       <router-link
         v-else
@@ -38,7 +34,7 @@
   </div>
 </template>
 
-<script lang="ts" setup name="Logo">
+<script lang="ts" setup>
 import { useStore } from '@/store'
 
 const store = useStore()

@@ -49,7 +49,7 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
     }
 
     .sub-el-icon {
@@ -86,11 +86,22 @@
   }
 
   .hideSidebar {
+    .left-wrap {
+      width: 54px;
+    }
+
     .sidebar-container {
       width: 54px !important;
 
       .svg-icon {
         margin-right: 0;
+      }
+
+      .header {
+        .logo-wrap {
+          width: 54px !important;
+          transition: transform 0.28s;
+        }
       }
     }
 
@@ -148,7 +159,7 @@
       transition: transform 0.28s;
     }
 
-    &.hideSidebar {
+    &.hideSidebar:not(.isMix, .isTop) {
       .sidebar-container {
         pointer-events: none;
         transition-duration: 0.3s;
@@ -169,7 +180,7 @@
 .el-menu--vertical {
   & > .el-menu {
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
     }
 
     .sub-el-icon {
@@ -205,3 +216,4 @@
     }
   }
 }
+

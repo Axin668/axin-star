@@ -13,6 +13,7 @@ const device = useStorage<string>('device', 'desktop')
 const size = useStorage<string>('size', defaultSettings.size)
 const sidebarStatus = useStorage<string>('sidebarStatus', 'closed')
 const language = useStorage<string>('language', 'zh-cn')
+const activeTopMenu = useStorage<string>('activeTopMenu', '')
 
 const appModule: Module<AppStateTypes, RootStateTypes> = {
   namespaced: process.env.NODE_ENV !== 'production',
@@ -20,7 +21,8 @@ const appModule: Module<AppStateTypes, RootStateTypes> = {
     device: device.value,
     size: size.value,
     sidebarStatus: sidebarStatus.value,
-    language: language.value
+    language: language.value,
+    activeTopMenu: activeTopMenu.value
   },
   getters: {
     sidebar(state): sidebarTypes {
@@ -37,7 +39,11 @@ const appModule: Module<AppStateTypes, RootStateTypes> = {
     },
     changeSize(state, val: string) {
       localStorage.setItem('size', val)
-      state.size.value = val
+      state.size = val
+    },
+    changeTopActive(state, val: string) {
+      localStorage.setItem('activeTopMenu', val)
+      state.activeTopMenu = val
     }
   },
   actions: {
@@ -57,9 +63,11 @@ const appModule: Module<AppStateTypes, RootStateTypes> = {
       getters.sidebar.opened = !getters.sidebar.opened
       getters.sidebar.withoutAnimation = withoutAnimation
       if (getters.sidebar.opened) {
+        console.log(111)
         state.sidebarStatus = 'opened'
         localStorage.setItem('sidebarStatus', 'opened')
       } else {
+        console.log(222)
         state.sidebarStatus = 'closed'
         localStorage.setItem('sidebarStatus', 'closed')
       }

@@ -82,6 +82,8 @@ const route = useRoute()
 const store = useStore()
 
 const visitedViews = toRefs(store.state.tags_view.visitedViews)
+const layout = computed(() => store.state.settings.layout)
+
 const selectedTag = ref({})
 const scrollPaneRef = ref()
 const left = ref(0)
@@ -292,6 +294,54 @@ function closeTagMenu() {
 function handleScroll() {
   closeTagMenu()
 }
+
+function findOutermostParent(tree: any[], findName: string) {
+  let parentMap: any = {}
+
+  function buildParentMap(node: any, parent: any) {
+    parentMap[node.name] = parent
+
+    if (node.children) {
+      for (let i = 0; i < node.children.length; i++) {
+        buildParentMap(node.children[i], node)
+      }
+    }
+  }
+
+  for (let i = 0; i < tree.length; i++) {
+    buildParentMap(tree[i], null)
+  }
+
+  let currentNode = parentMap[findName]
+  while (currentNode) {
+    if (!parentMap[currentNode.name]) {
+      return currentNode
+    }
+    currentNode = parentMap[currentNode.name]
+  }
+
+  return null
+}
+
+const againActiveTop = (newVal: string) => {
+  if (layout.value !== 'mix') return
+  const parent = findOutermostParent(store.state.permission.routes, newVal)
+  if (store.state.app.activeTopMenu !== parent.path) {
+    store.commit('app/changeTopActive', parent.path)
+  }
+}
+// 如果是混合模式，更改selectedTag，需要对应高亮的activeTop
+watch(
+  () => route.name,
+  (newVal) => {
+    if (newVal) {
+      againActiveTop(newVal as string)
+    }
+  },
+  {
+    deep: true
+  }
+)
 
 onMounted(() => {
   initTags()

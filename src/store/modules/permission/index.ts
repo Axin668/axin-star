@@ -40,6 +40,10 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
 
   routes.forEach((route) => {
     const tmpRoute = { ...route }
+    if (!route.name) {
+      tmpRoute.name = route.path
+    }
+    console.log(tmpRoute)
 
     //判断用户(角色)是否拥有该路由的访问权限
     if (hasPermission(roles, tmpRoute)) {
@@ -68,11 +72,19 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
 const permissionModule: Module<PermissionStateTypes, RootStateTypes> = {
   namespaced: process.env.NODE_ENV !== 'production',
   state: {
-    routes: []
+    routes: [],
+    mixLeftMenu: []
   },
   mutations: {
     setRoutes(state, newRoutes: RouteRecordRaw[]) {
       state.routes = constantRoutes.concat(newRoutes)
+    },
+    getMixLeftMenu(state, activeTop: string) {
+      state.routes.forEach((item) => {
+        if (item.path === activeTop) {
+          state.mixLeftMenu = item.children || []
+        }
+      })
     }
   },
   actions: {
@@ -82,6 +94,7 @@ const permissionModule: Module<PermissionStateTypes, RootStateTypes> = {
           .then((resp: any) => {
             const { data: asyncRoutes } = resp
             const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+            console.log(resp)
             console.log(accessedRoutes)
             commit('setRoutes', accessedRoutes)
             resolve(accessedRoutes)
@@ -99,3 +112,4 @@ export default permissionModule
 export function usePermissionStoreHook() {
   return permissionModule
 }
+

@@ -103,6 +103,10 @@ import { useStore } from '@/store'
 
 import IconEpMoon from '~icons/ep/moon'
 import IconEpSunny from '~icons/ep/sunny'
+import { useRoute } from 'vue-router'
+import defaultSettings from '@/settings'
+
+const route = useRoute()
 
 const store = useStore()
 /**
@@ -110,6 +114,40 @@ const store = useStore()
  */
 const isDark = useDark()
 const toggleDark = () => useToggle(isDark)
+
+function findOutermostParent(tree: any[], findName: string) {
+  let parentMap: any = {}
+
+  function buildParentMap(node: any, parent: any) {
+    parentMap[node.name] = parent
+
+    if (node.children) {
+      for (let i = 0; i < node.children.length; i++) {
+        buildParentMap(node.children[i], node)
+      }
+    }
+  }
+
+  for (let i = 0; i < tree.length; i++) {
+    buildParentMap(tree[i], null)
+  }
+
+  let currentNode = parentMap[findName]
+  while (currentNode) {
+    if (!parentMap[currentNode.name]) {
+      return currentNode
+    }
+    currentNode = parentMap[currentNode.name]
+  }
+
+  return null
+}
+const againActiveTop = (newVal: string) => {
+  const parent = findOutermostParent(store.state.permission.routes, newVal)
+  if (store.state.app.activeTopMenu !== parent.path) {
+    store.commit('app/changeTopActive', parent.path)
+  }
+}
 
 /**
  * 切换布局
@@ -139,6 +177,9 @@ function changeThemeColor(color: string) {
 
 onMounted(() => {
   window.document.body.setAttribute('layout', store.state.settings.layout)
+  const theme =
+    localStorage.getItem('vueuse-color-scheme') || defaultSettings.theme
+  localStorage.setItem('vueuse-color-scheme', theme)
 })
 </script>
 

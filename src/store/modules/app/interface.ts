@@ -3,5 +3,6 @@ export default interface AppStateTypes {
   size: any
   sidebarStatus: string
   language: string
+  activeTopMenu: string
 }
 
