@@ -12,7 +12,7 @@ $bg-color: #242424;
 
   // wang-editor textarea
   --w-e-textarea-slight-border-color: var(--el-color-primary);
-  --w-e-textarea-slight-bg-color: rgba(var(--el-color-primary-rgb), 0.1);
+  --w-e-textarea-slight-bg-color: rgb(var(--el-color-primary-rgb), 0.1);
   --w-e-textarea-selected-border-color: var(--el-color-primary);
 }
 
@@ -26,3 +26,4 @@ $subMenuActiveText: var(--subMenuActiveText);
 $subMenuHover: var(--subMenuHover);
 
 $sideBarWidth: 210px;
+

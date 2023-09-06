@@ -7,7 +7,7 @@ import Store, { key } from './store'
 //svg图标注册脚本
 import 'virtual:svg-icons-register'
 // 样式
-import 'element-plus/dist/index.css'
+// import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/styles/index.scss'
 import 'uno.css'

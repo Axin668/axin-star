@@ -1,6 +1,7 @@
 <template>
   <div v-if="!item.meta || !item.meta.hidden">
     <!-- 只包含一个子路由节点的路由, 显示其[唯一子路由] -->
+    <!-- 这里相当于递归终点(没有孩子就直接渲染) -->
     <template
       v-if="
         hasOneShowingChild(item.children, item) &&
@@ -29,6 +30,7 @@
       :index="resolvePath(item.path)"
       teleported
     >
+      <!-- 先把自己(目录)渲染了 -->
       <template #title>
         <svg-icon
           v-if="item.meta && item.meta.icon"
@@ -38,6 +40,7 @@
           {{ item.meta.title }}
         </span>
       </template>
+      <!-- 逐一对子路由递归 -->
       <sidebar-item
         v-for="child in item.children"
         :key="child.path"
@@ -131,3 +134,4 @@ function resolvePath(routePath: string) {
   width: auto !important;
 }
 </style>
+

@@ -6,7 +6,6 @@ import { useStore } from '@/store'
 
 const store = useStore()
 const { sidebarLogo } = toRefs(store.state.settings)
-console.log(sidebarLogo.value)
 const layout = computed(() => store.state.settings.layout)
 const showContent = ref(true)
 watch(

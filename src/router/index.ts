@@ -20,7 +20,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     path: '/login',
     component: () => import('@/views/manage/Login/index.vue'),
     meta: {
-      hidden: false
+      hidden: true
     }
   },
   {
@@ -33,7 +33,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: 'Dashboard',
         component: () => import('@/views/manage/DashBoard/PV/index.vue'),
         meta: {
-          title: 'dashboard',
+          title: '首页',
           icon: 'homepage',
           affix: true,
           keepAlive: true

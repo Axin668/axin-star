@@ -3,22 +3,24 @@
 const props = defineProps({
   prefix: {
     type: String,
-    default: "icon",
+    default: 'icon'
   },
   iconClass: {
     type: String,
     required: false,
+    default: ''
   },
   color: {
     type: String,
+    default: ''
   },
   size: {
     type: String,
-    default: "1em",
-  },
-});
+    default: '1em'
+  }
+})
 
-const symbolId = computed(() => `#${props.prefix}-${props.iconClass}`);
+const symbolId = computed(() => `#${props.prefix}-${props.iconClass}`)
 </script>
 
 <template>
@@ -27,7 +29,10 @@ const symbolId = computed(() => `#${props.prefix}-${props.iconClass}`);
     class="svg-icon"
     :style="'width:' + size + ';height:' + size"
   >
-    <use :xlink:href="symbolId" :fill="color" />
+    <use
+      :xlink:href="symbolId"
+      :fill="color"
+    />
   </svg>
 </template>
 

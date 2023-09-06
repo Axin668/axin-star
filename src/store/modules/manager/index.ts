@@ -51,7 +51,6 @@ const managerModule: Module<ManagerStateTypes, RootStateTypes> = {
       return new Promise<ManagerInfo>((resolve, reject) => {
         getManagerInfo()
           .then((resp) => {
-            console.log(resp)
             const { data } = resp
             if (!data) {
               return reject('Verification failed, please Login again.')

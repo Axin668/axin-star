@@ -168,7 +168,6 @@ function checkCapslock(e: any) {
 function getCaptcha() {
   getCaptchaApi().then((resp) => {
     const { data } = resp
-    console.log(resp)
     const { verifyCodeBase64, verifyCodeKey } = data
     loginData.value.verifyCodeKey = verifyCodeKey
     captchaBase64.value = verifyCodeBase64

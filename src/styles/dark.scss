@@ -39,14 +39,16 @@ html.dark {
     background-color: var(--el-color-primary-dark);
   }
 
-  .svg-icon,
-  svg {
-    fill: var(--el-text-color-regular);
-  }
+  // .svg-icon,
+  // svg {
+  //   fill: var(--el-text-color-regular);
+  // }
 
+  // svg-icon也增加is-active
   .sidebar-container {
     .el-menu-item.is-active .svg-icon {
       fill: var(--el-color-primary);
     }
   }
 }
+

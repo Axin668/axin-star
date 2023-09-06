@@ -26,6 +26,7 @@ const hasPermission = (roles: string[], route: RouteRecordRaw) => {
       }
     })
   }
+  return false
 }
 
 /**
@@ -43,7 +44,6 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
     if (!route.name) {
       tmpRoute.name = route.path
     }
-    console.log(tmpRoute)
 
     //判断用户(角色)是否拥有该路由的访问权限
     if (hasPermission(roles, tmpRoute)) {
@@ -94,8 +94,7 @@ const permissionModule: Module<PermissionStateTypes, RootStateTypes> = {
           .then((resp: any) => {
             const { data: asyncRoutes } = resp
             const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-            console.log(resp)
-            console.log(accessedRoutes)
+            console.log(asyncRoutes, roles)
             commit('setRoutes', accessedRoutes)
             resolve(accessedRoutes)
           })

@@ -63,11 +63,9 @@ const appModule: Module<AppStateTypes, RootStateTypes> = {
       getters.sidebar.opened = !getters.sidebar.opened
       getters.sidebar.withoutAnimation = withoutAnimation
       if (getters.sidebar.opened) {
-        console.log(111)
         state.sidebarStatus = 'opened'
         localStorage.setItem('sidebarStatus', 'opened')
       } else {
-        console.log(222)
         state.sidebarStatus = 'closed'
         localStorage.setItem('sidebarStatus', 'closed')
       }

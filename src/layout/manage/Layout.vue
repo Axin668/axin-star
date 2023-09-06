@@ -14,8 +14,6 @@
 
     <template v-if="layout === 'mix'">
       <div class="mix-wrap">
-        <!-- :menu-list="mixLeftMenu -->
-        <!-- :menu-list="permissionStore.routes -->
         <div class="left-wrap">
           <LeftMenu
             :menu-list="mixLeftMenu"
