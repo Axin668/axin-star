@@ -50,7 +50,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
       if (tmpRoute.component?.toString() === 'Layout') {
         tmpRoute.component = Layout
       } else {
-        const component = modules[`../../../views/**/${tmpRoute.component}.vue`]
+        const component = modules[`../../../views/${tmpRoute.component}.vue`]
         if (component) {
           tmpRoute.component = component
         } else {
@@ -76,9 +76,6 @@ const permissionModule: Module<PermissionStateTypes, RootStateTypes> = {
     mixLeftMenu: []
   },
   mutations: {
-    setRoutes(state, newRoutes: RouteRecordRaw[]) {
-      state.routes = constantRoutes.concat(newRoutes)
-    },
     getMixLeftMenu(state, activeTop: string) {
       state.routes.forEach((item) => {
         if (item.path === activeTop) {
@@ -88,14 +85,19 @@ const permissionModule: Module<PermissionStateTypes, RootStateTypes> = {
     }
   },
   actions: {
-    generateRoutes({ commit }, roles: string[]) {
+    setRoutes({ state }, newRoutes: RouteRecordRaw[]) {
+      console.log(1111, newRoutes)
+      state.routes = constantRoutes.concat(newRoutes)
+      console.log(state.routes)
+    },
+    generateRoutes({ dispatch }, roles: string[]) {
       return new Promise<RouteRecordRaw[]>((resolve, reject) => {
         listRoutes()
           .then((resp: any) => {
             const { data: asyncRoutes } = resp
             const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
             console.log(asyncRoutes, roles)
-            commit('setRoutes', accessedRoutes)
+            dispatch('setRoutes', accessedRoutes)
             resolve(accessedRoutes)
           })
           .catch((error) => {
