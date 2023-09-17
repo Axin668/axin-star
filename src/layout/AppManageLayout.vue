@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import SideBar from '@/components/SideBar/index.vue'
+import Sidebar from '@/components/Sidebar/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Humburger from '@/components/Hamburger/index.vue'
 import { ref } from 'vue'
