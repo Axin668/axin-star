@@ -87,3 +87,4 @@ watchEffect(() => {
 }
 </style>
 
+../components/index

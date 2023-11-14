@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-const Layout = () => import('@/layout/manage/Layout.vue')
+const Layout = () => import('@/layout/Layout.vue')
 
 export const constantRoutes: RouteRecordRaw[] = [
   {
@@ -18,7 +18,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/login',
-    component: () => import('@/views/manage/Login/index.vue'),
+    component: () => import('@/views/login/index.vue'),
     meta: {
       hidden: true
     }
@@ -31,7 +31,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/manage/DashBoard/PV/index.vue'),
+        component: () => import('@/views/DashBoard/PV/index.vue'),
         meta: {
           title: '首页',
           icon: 'homepage',

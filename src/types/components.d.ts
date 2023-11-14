@@ -7,7 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AppMain: typeof import('./../layout/manage/components/AppMain.vue')['default']
+    AppMain: typeof import('./../layout/components/AppMain.vue')['default']
     BarChart: (typeof import('./../views/views/dashboard/components/BarChart.vue'))['default']
     Breadcrumb: typeof import('./../components/Breadcrumb/index.vue')['default']
     ColSetting: typeof import('./../components/ProTable/components/ColSetting.vue')['default']
@@ -67,8 +67,8 @@ declare module 'vue' {
     LeftMenu: typeof import('./../components/Sidebar/LeftMenu.vue')['default']
     Link: typeof import('./../components/Sidebar/Link.vue')['default']
     Logo: typeof import('./../components/Sidebar/Logo.vue')['default']
-    Navbar: typeof import('./../layout/manage/components/Navbar/index.vue')['default']
-    NavRight: typeof import('./../layout/manage/components/Navbar/NavRight.vue')['default']
+    Navbar: typeof import('./../layout/components/Navbar/index.vue')['default']
+    NavRight: typeof import('./../layout/components/Navbar/NavRight.vue')['default']
     Pagination: typeof import('./../components/ProTable/components/Pagination.vue')['default']
     PieChart: (typeof import('./../views/views/dashboard/components/PieChart.vue'))['default']
     ProTable: typeof import('./../components/ProTable/index.vue')['default']
@@ -76,8 +76,8 @@ declare module 'vue' {
     RightPanel: typeof import('./../components/RightPanel/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    ScrollPane: typeof import('./../layout/manage/components/TagsView/ScrollPane.vue')['default']
-    Settings: typeof import('./../layout/manage/components/Settings/index.vue')['default']
+    ScrollPane: typeof import('./../layout/components/TagsView/ScrollPane.vue')['default']
+    Settings: typeof import('./../layout/components/Settings/index.vue')['default']
     Sidebar: typeof import('./../components/Sidebar/index.vue')['default']
     SidebarItem: typeof import('./../components/Sidebar/SidebarItem.vue')['default']
     SizeSelect: typeof import('./../components/SizeSelect/index.vue')['default']
@@ -85,7 +85,7 @@ declare module 'vue' {
     SwitchDark: typeof import('./../components/SwitchDark/index.vue')['default']
     SwitchRoles: (typeof import('./../views/views/demo/permission/components/SwitchRoles.vue'))['default']
     TableColumn: typeof import('./../components/ProTable/components/TableColumn.vue')['default']
-    TagsView: typeof import('./../layout/manage/components/TagsView/index.vue')['default']
+    TagsView: typeof import('./../layout/components/TagsView/index.vue')['default']
     TopMenu: typeof import('./../components/Sidebar/TopMenu.vue')['default']
     UnfixedThead: (typeof import('./../views/views/demo/table/dynamic-table/components/UnfixedThead.vue'))['default']
   }

@@ -37,7 +37,7 @@
           :icon-class="item.meta.icon"
         />
         <span v-if="item.meta && item.meta.title">
-          {{ translateRouteTitleI18n(onlyOneChild.meta.title) }}
+          {{ translateRouteTitleI18n(item.meta.title) }}
         </span>
       </template>
       <!-- 逐一对子路由递归 -->
