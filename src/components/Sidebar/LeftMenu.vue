@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import SidebarItem from './SidebarItem.vue'
-import { useStore } from '@/store'
+import { useSettingsStore } from '@/stores/modules/settings'
+import { useAppStore } from '@/stores/modules/app'
 import variables from '@/styles/variables.module.scss'
 
 import path from 'path-browserify'
 import { isExternal } from '@/utils/index'
 
-const store = useStore()
+const settingsStore = useSettingsStore();
+const appStore = useAppStore();
 const currRoute = useRoute()
-const layout = computed(() => store.state.settings.layout)
+const layout = computed(() => settingsStore.layout)
 const props = defineProps({
   menuList: {
     required: true,
@@ -45,7 +47,7 @@ function resolvePath(routePath: string) {
 <template>
   <el-menu
     :default-active="layout === 'top' ? '-' : currRoute.path"
-    :collapse="!store.getters['app/sidebar'].opened"
+    :collapse="!appStore.sidebar.opened"
     :background-color="variables.menuBg"
     :text-color="variables.menuText"
     :active-text-color="variables.menuActiveText"
@@ -58,7 +60,7 @@ function resolvePath(routePath: string) {
       :key="route.path"
       :item="route"
       :base-path="resolvePath(route.path)"
-      :is-collapse="!store.getters['app/sidebar'].opened"
+      :is-collapse="!appStore.sidebar.opened"
     />
   </el-menu>
 </template>

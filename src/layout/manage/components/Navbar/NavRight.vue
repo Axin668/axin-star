@@ -26,7 +26,7 @@
   <!-- 用户头像 -->
   <el-dropdown trigger="click">
     <div class="avatar-container">
-      <img :src="store.state.manager.avatar + '?imageView2/1/w/80/h/80'" />
+      <img :src="managerStore.manager.avatar + '?imageView2/1/w/80/h/80'" />
       <i-ep-caret-bottom class="w-3 h-3" />
     </div>
     <template #dropdown>
@@ -64,15 +64,20 @@
 </template>
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from '@/store'
+import { useAppStore } from "@/stores/modules/app"
+import { useTagsViewStore } from '@/stores/modules/tagsView';
+import { useManagerStore } from '@/stores/modules/manager';
+import { storeToRefs } from 'pinia';
 import { ElMessageBox } from 'element-plus'
 
-const store = useStore()
+const appStore = useAppStore();
+const tagsViewStore = useTagsViewStore();
+const managerStore = useManagerStore();
 
 const route = useRoute()
 const router = useRouter()
 
-const { device } = toRefs(store.state.app) // 设备类型：desktop-宽屏设备 || mobile-窄屏设备
+const { device } = storeToRefs(appStore) // 设备类型：desktop-宽屏设备 || mobile-窄屏设备
 
 /**
  * vueUse 全屏
@@ -88,13 +93,13 @@ function logout() {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    store
-      .dispatch('manager/logout')
+    managerStore
+      .logout()
       .then(() => {
-        store.dispatch('tags_view/delAllViews')
+        tagsViewStore.delAllViews();
       })
       .then(() => {
-        router.push(`/login?redirect=${route.fullPath}`)
+        router.push(`/login?redirect=${route.fullPath}`);
       })
   })
 }

@@ -10,7 +10,7 @@
         to="/"
       >
         <img
-          v-if="store.state.settings.sidebarLogo"
+          v-if="settingsStore.sidebarLogo"
           :src="logo"
           alt="axin-star"
           class="w-5 h-5"
@@ -23,7 +23,7 @@
         to="/"
       >
         <img
-          v-if="store.state.settings.sidebarLogo"
+          v-if="settingsStore.sidebarLogo"
           :src="logo"
           alt="axin-star"
           class="w-5 h-5"
@@ -35,9 +35,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { useSettingsStore } from '@/stores/modules/settings';
 
-const store = useStore()
+const settingsStore = useSettingsStore()
 
 defineProps({
   collapse: {

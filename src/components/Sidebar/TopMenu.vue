@@ -1,9 +1,13 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { usePermissionStore } from '@/stores/modules/permission';
+import { useAppStore } from '@/stores/modules/app';
 import variables from '@/styles/variables.module.scss'
 import { useRouter } from 'vue-router'
-const store = useStore()
-const activePath = computed(() => store.state.app.activeTopMenu)
+import { translateRouteTitleI18n } from '@/utils/i18n'
+
+const appStore = useAppStore();
+const permissionStore = usePermissionStore();
+const activePath = computed(() => appStore.activeTopMenu);
 const router = useRouter()
 // 递归跳转
 const goFirst = (menu: any[]) => {
@@ -18,15 +22,15 @@ const goFirst = (menu: any[]) => {
   }
 }
 const selectMenu = (index: string) => {
-  store.commit('app/changeTopActive', index)
-  store.commit('permission/getMixLeftMenu', index)
-  const { mixLeftMenu } = store.state.permission
+  appStore.changeTopActive(index);
+  permissionStore.getMixLeftMenu(index);
+  const { mixLeftMenu } = permissionStore;
   goFirst(mixLeftMenu)
 }
 
 const topMenu = ref<any[]>([])
 onMounted(() => {
-  topMenu.value = store.state.permission.routes.filter(
+  topMenu.value = permissionStore.routes.filter(
     (item) => !item.meta || !item.meta.hidden
   )
 })
@@ -54,7 +58,7 @@ onMounted(() => {
           <span v-if="route.path === '/'">首页</span>
           <template v-else>
             <span v-if="route.meta && route.meta.title">
-              {{ route.meta.title }}
+              {{ translateRouteTitleI18n(route.meta.title) }}
             </span>
           </template>
         </template>

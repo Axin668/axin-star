@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useStore } from '@/store'
-const store = useStore()
+import { useAppStore } from "@/stores/modules/app";
+
+const appStore = useAppStore();
 
 /**
  * 左侧菜单栏显示/隐藏
  */
 function toggleSideBar() {
-  store.dispatch('app/toggleSidebar', true)
+  appStore.toggleSidebar();
 }
 </script>
 
@@ -16,7 +17,7 @@ function toggleSideBar() {
     <!-- 左侧面包屑 -->
     <div class="flex">
       <hamburger
-        :is-active="store.getters['app/sidebar'].opened"
+        :is-active="appStore.sidebar.opened"
         @toggle-click="toggleSideBar"
       />
       <breadcrumb />

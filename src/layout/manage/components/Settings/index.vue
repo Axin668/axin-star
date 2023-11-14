@@ -21,17 +21,17 @@
     <el-divider>界面设置</el-divider>
     <div class="py-[8px] flex justify-between">
       <span class="text-xs">开启 Tags-View</span>
-      <el-switch v-model="store.state.settings.tagView" />
+      <el-switch v-model="settingsStore.tagsView" />
     </div>
 
     <div class="py-[8px] flex justify-between">
       <span class="text-xs">固定 Header</span>
-      <el-switch v-model="store.state.settings.fixedHeader" />
+      <el-switch v-model="settingsStore.fixedHeader" />
     </div>
 
     <div class="py-[8px] flex justify-between">
       <span class="text-xs">侧边栏 Logo</span>
-      <el-switch v-model="store.state.settings.sidebarLogo" />
+      <el-switch v-model="settingsStore.sidebarLogo" />
     </div>
 
     <el-divider>主题颜色</el-divider>
@@ -56,7 +56,7 @@
         <li
           :class="
             'layout-item layout-left ' +
-            (store.state.settings.layout == 'left' ? 'is-active' : '')
+            (settingsStore.layout === 'left' ? 'is-active' : '')
           "
           @click="changeLayout('left')"
         >
@@ -71,7 +71,7 @@
         <li
           :class="
             'layout-item layout-top ' +
-            (store.state.settings.layout == 'top' ? 'is-active' : '')
+            (settingsStore.layout === 'top' ? 'is-active' : '')
           "
           @click="changeLayout('top')"
         >
@@ -86,7 +86,7 @@
         <li
           :class="
             'layout-item layout-mix ' +
-            (store.state.settings.layout == 'mix' ? 'is-active' : '')
+            (settingsStore.layout == 'mix' ? 'is-active' : '')
           "
           @click="changeLayout('mix')"
         >
@@ -99,8 +99,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '@/store'
-
+import { useSettingsStore } from '@/stores/modules/settings'
+import { usePermissionStore } from '@/stores/modules/permission'
+import { useAppStore } from '@/stores/modules/app'
 import IconEpMoon from '~icons/ep/moon'
 import IconEpSunny from '~icons/ep/sunny'
 import { useRoute } from 'vue-router'
@@ -108,7 +109,10 @@ import defaultSettings from '@/settings'
 
 const route = useRoute()
 
-const store = useStore()
+const settingsStore = useSettingsStore();
+const permissionStore = usePermissionStore();
+const appStore = useAppStore();
+
 /**
  * 暗黑模式
  */
@@ -143,9 +147,9 @@ function findOutermostParent(tree: any[], findName: string) {
   return null
 }
 const againActiveTop = (newVal: string) => {
-  const parent = findOutermostParent(store.state.permission.routes, newVal)
-  if (store.state.app.activeTopMenu !== parent.path) {
-    store.commit('app/changeTopActive', parent.path)
+  const parent = findOutermostParent(permissionStore.routes, newVal)
+  if (appStore.activeTopMenu !== parent.path) {
+    appStore.changeTopActive(parent.path)
   }
 }
 
@@ -153,8 +157,11 @@ const againActiveTop = (newVal: string) => {
  * 切换布局
  */
 function changeLayout(layout: string) {
-  store.dispatch('settings/changeSetting', { key: 'layout', value: layout })
-  window.document.body.setAttribute('layout', store.state.settings.layout)
+  settingsStore.changeSetting({ key: "layout", value: layout });
+  window.document.body.setAttribute('layout', settingsStore.layout);
+  if (layout === "mix") {
+    route.name && againActiveTop(route.name as string);
+  }
 }
 
 // 主题颜色
@@ -172,11 +179,11 @@ const themeColors = ref<string[]>([
  */
 function changeThemeColor(color: string) {
   document.documentElement.style.setProperty('--el-color-primary', color)
-  store.dispatch('settings/changeSetting', { key: 'layout', value: color })
+  settingsStore.changeSetting({ key: "layout", value: color });
 }
 
 onMounted(() => {
-  window.document.body.setAttribute('layout', store.state.settings.layout)
+  window.document.body.setAttribute('layout', settingsStore.layout);
   const theme =
     localStorage.getItem('vueuse-color-scheme') || defaultSettings.theme
   localStorage.setItem('vueuse-color-scheme', theme)

@@ -4,7 +4,8 @@ import { useWindowSize } from '@vueuse/core'
 import { AppMain, Navbar, Settings, TagsView } from './components/index'
 import RightPanel from '@/components/RightPanel/index.vue'
 
-import { useStore } from '@/store'
+import { useAppStore } from '@/stores/modules/app'
+import { useSettingsStore } from '@/stores/modules/settings'
 const { width } = useWindowSize()
 
 /**
@@ -16,25 +17,28 @@ const { width } = useWindowSize()
  */
 const WIDTH = 992
 
-const store = useStore()
+const appStore = useAppStore();
+const settingsStore = useSettingsStore();
 
-const fixedHeader = computed(() => store.state.settings.fixedHeader)
-const showTagsView = computed(() => store.state.settings.tagView)
-const showSettings = computed(() => store.state.settings.showSettings)
-const layout = computed(() => store.state.settings.layout)
+const fixedHeader = computed(() => settingsStore.fixedHeader)
+const showTagsView = computed(() => settingsStore.tagsView)
+const showSettings = computed(() => settingsStore.showSettings)
+const layout = computed(() => settingsStore.layout)
 
 watchEffect(() => {
   if (width.value < WIDTH) {
-    store.commit('app/toggleDevice', 'mobile')
-    // store.dispatch('app/closeSidebar', true)
+    appStore.toggleDevice("mobile");
+    appStore.closeSideBar(true);
   } else {
-    store.commit('app/toggleDevice', 'desktop')
+    appStore.toggleDevice("desktop");
 
     if (width.value >= 1200) {
       //大屏
       // store.dispatch('app/openSidebar', true)
+      appStore.openSideBar(true);
     } else {
       // store.dispatch('app/closeSidebar', true)
+      appStore.closeSideBar(true);
     }
   }
 })

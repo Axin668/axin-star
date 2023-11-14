@@ -21,7 +21,7 @@
           />
           <div class="menu-action">
             <hamburger
-              :is-active="store.getters['app/sidebar'].opened"
+              :is-active="appStore.sidebar.opened"
               @toggle-click="toggleSideBar"
             />
           </div>
@@ -39,7 +39,12 @@ import { useWindowSize } from '@vueuse/core'
 import Main from './main.vue'
 import Sidebar from '@/components/Sidebar/index.vue'
 
-import { useStore } from '@/store'
+import { useAppStore } from "@/stores/modules/app"
+import { useSettingsStore } from '@/stores/modules/settings'
+import { usePermissionStore } from '@/stores/modules/permission'
+const permissionStore = usePermissionStore();
+const appStore = useAppStore();
+const settingsStore = useSettingsStore();
 
 const { width } = useWindowSize()
 
@@ -52,25 +57,23 @@ const { width } = useWindowSize()
  */
 const WIDTH = 992
 
-const store = useStore()
-
 // const fixedHeader = computed(() => store.state.settings.fixedHeader)
 // const showTagsView = computed(() => store.state.settings.tagView)
 // const showSettings = computed(() => store.state.settings.showSettings)
-const layout = computed(() => store.state.settings.layout)
+const layout = computed(() => settingsStore.layout)
 
 const activeTopMenu = computed(() => {
-  return store.state.app.activeTopMenu
+  return appStore.activeTopMenu;
 })
 // 混合模式左侧菜单
 const mixLeftMenu = computed(() => {
-  return store.state.permission.mixLeftMenu
+  return permissionStore.mixLeftMenu;
 })
 watch(
   () => activeTopMenu.value,
   (newVal) => {
     if (layout.value !== 'mix') return
-    store.commit('permission/getMixLeftMenu', newVal)
+    permissionStore.getMixLeftMenu(newVal)
   },
   {
     deep: true,
@@ -79,36 +82,38 @@ watch(
 )
 
 const classObj = computed(() => ({
-  hideSidebar: !store.getters['app/sidebar'].opened,
-  openSidebar: store.getters['app/sidebar'].opened,
-  withoutAnimation: store.getters['app/sidebar'].withoutAnimation,
-  mobile: store.state.app.device === 'mobile',
+  hideSidebar: !appStore.sidebar.opened,
+  openSidebar: appStore.sidebar.opened,
+  withoutAnimation: appStore.sidebar.withoutAnimation,
+  mobile: appStore.device === 'mobile',
   isTop: layout.value === 'top',
   isMix: layout.value === 'mix'
 }))
 
 watchEffect(() => {
   if (width.value < WIDTH) {
-    store.commit('app/toggleDevice', 'mobile')
-    // store.dispatch('app/closeSidebar', true)
+    appStore.toggleDevice("mobile");
+    appStore.closeSideBar(true);
   } else {
-    store.commit('app/toggleDevice', 'desktop')
+    appStore.toggleDevice("desktop");
 
     if (width.value >= 1200) {
       // 大屏
       // store.dispatch('app/openSidebar', true)
+      appStore.openSideBar(true);
     } else {
       // store.dispatch('app/closeSidebar', true)
+      appStore.closeSideBar(true);
     }
   }
 })
 
 function handleOutsideClick() {
-  store.dispatch('app/closeSidebar', false)
+  appStore.closeSideBar(false);
 }
 
 function toggleSideBar() {
-  store.dispatch('app/toggleSidebar', false)
+  appStore.toggleSidebar();
 }
 </script>
 

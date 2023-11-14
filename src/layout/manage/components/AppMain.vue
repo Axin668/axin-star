@@ -5,7 +5,7 @@
         name="router-fade"
         mode="out-in"
       >
-        <keep-alive :include="store.state.tags_view.cachedViews">
+        <keep-alive :include="tagsViewStore.cachedViews">
           <component
             :is="Component"
             :key="route.fullPath"
@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { useTagsViewStore } from "@/stores/modules/tagsView";
 
-const store = useStore()
+const tagsViewStore = useTagsViewStore()
 </script>
 
 <style lang="scss" scoped>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ElConfigProvider } from 'element-plus'
-import { useStore } from '@/store'
+import { useAppStore } from '@/stores/modules/app'
 
-const store = useStore()
+const appStore = useAppStore();
 </script>
 
 <template>
-  <el-config-provider :size="store.state.app.size">
+  <el-config-provider :locale="appStore.locale" :size="appStore.size">
     <router-view />
   </el-config-provider>
 </template>

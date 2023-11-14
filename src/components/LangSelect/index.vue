@@ -9,13 +9,13 @@
     <template #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item
-          :disabled="store.state.app.language === 'zh-cn'"
+          :disabled="appStore.language === 'zh-cn'"
           command="zh-cn"
         >
           中文
         </el-dropdown-item>
         <el-dropdown-item
-          :disabled="store.state.app.language === 'en'"
+          :disabled="appStore.language === 'en'"
           command="en"
         >
           English
@@ -27,13 +27,16 @@
 
 <script lang="ts" setup>
 import SvgIcon from '@/components/SvgIcon/index.vue'
-import { useStore } from '@/store'
+import { useI18n } from 'vue-i18n';
+import { useAppStore } from '@/stores/modules/app'
 import { ElMessage } from 'element-plus'
 
-const store = useStore()
+const appStore = useAppStore();
+const { locale } = useI18n();
 
 function handleLanguageChange(lang: string) {
-  store.commit('app/changeLanguage', lang)
+  locale.value = lang;
+  appStore.changeLanguage(lang);
   if (lang == 'en') {
     ElMessage.success('Switch Language Successful!')
   } else {

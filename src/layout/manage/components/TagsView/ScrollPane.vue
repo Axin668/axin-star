@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from '@/store'
-import { TagView } from '@/store/modules/tags-view/interface'
+import { useTagsViewStore, TagView } from "@/stores/modules/tagsView";
+
 const tagAndTagSpacing = ref(4)
 const { proxy } = getCurrentInstance() as any
 
@@ -20,7 +20,7 @@ const emitScroll = () => {
   emits('scroll')
 }
 
-const store = useStore()
+const tagsViewStore = useTagsViewStore();
 const scrollWrapper = computed(() => proxy?.$refs.scrollContainer.$refs.wrapRef)
 
 onMounted(() => {
@@ -45,10 +45,10 @@ function moveToTarget(currentTag: TagView) {
   let lastTag = null
 
   //find first tag and last tag
-  if (store.state.tags_view.visitedViews.length > 0) {
-    let length = store.state.tags_view.visitedViews.length
-    firstTag = store.state.tags_view.visitedViews.at(0)
-    lastTag = store.state.tags_view.visitedViews.at(length - 1)
+  if (tagsViewStore.visitedViews.length > 0) {
+    let length = tagsViewStore.visitedViews.length
+    firstTag = tagsViewStore.visitedViews[0]
+    lastTag = tagsViewStore.visitedViews[length - 1]
   }
 
   if (firstTag === currentTag) {
@@ -57,22 +57,22 @@ function moveToTarget(currentTag: TagView) {
     $scrollerWrapper.scrollLeft = $scrollerWrapper.scrollWidth - $containerWidth
   } else {
     const tagListDom = document.getElementsByClassName('tags-item')
-    const currentIndex = store.state.tags_view.visitedViews.findIndex(
+    const currentIndex = tagsViewStore.visitedViews.findIndex(
       (item) => item === currentTag
-    )
+    );
     let prevTag = null
     let nextTag = null
     for (const k in tagListDom) {
       if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {
         if (
           (tagListDom[k] as any).dataset.path ===
-          store.state.tags_view.visitedViews.at(currentIndex - 1)?.path
+          tagsViewStore.visitedViews[currentIndex - 1].path
         ) {
           prevTag = tagListDom[k]
         }
         if (
           (tagListDom[k] as any).dataset.path ===
-          store.state.tags_view.visitedViews.at(currentIndex + 1)?.path
+          tagsViewStore.visitedViews[currentIndex + 1].path
         ) {
           nextTag = tagListDom[k]
         }
@@ -90,10 +90,10 @@ function moveToTarget(currentTag: TagView) {
       (prevTag as any).offsetLeft - tagAndTagSpacing.value
     if (
       afterNextTagOffsetLeft >
-      $scrollerWrapper.scrollLeft + $container.scrollWidth
+      $scrollerWrapper.scrollLeft + $containerWidth
     ) {
       $scrollerWrapper.scrollLeft =
-        afterNextTagOffsetLeft - $container.scrollWidth
+        afterNextTagOffsetLeft - $containerWidth
     } else if (beforePrevTagOffsetLeft < $scrollerWrapper.scrollLeft) {
       $scrollerWrapper.scrollLeft = beforePrevTagOffsetLeft
     }

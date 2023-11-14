@@ -46,6 +46,8 @@ declare module 'vue' {
     ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
     FixedThead: (typeof import('./../views/views/demo/table/dynamic-table/components/FixedThead.vue'))['default']
     FunnelChart: (typeof import('./../views/views/dashboard/components/FunnelChart.vue'))['default']
+    Grid: typeof import('./../components/Grid/index.vue')['default']
+    GridItem: typeof import('./../components/Grid/components/GridItem.vue')['default']
     Hamburger: typeof import('./../components/Hamburger/index.vue')['default']
     IconSelect: typeof import('./../components/IconSelect/index.vue')['default']
     IEpCaretBottom: typeof import('~icons/ep/caret-bottom')['default']

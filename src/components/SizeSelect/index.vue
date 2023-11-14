@@ -11,7 +11,7 @@
         <el-dropdown-item
           v-for="item of sizeOptions"
           :key="item.value"
-          :disabled="store.state.app.size === item.value"
+          :disabled="appStore.size === item.value"
           :command="item.value"
         >
           {{ item.label }}
@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { useAppStore } from '@/stores/modules/app';
 import { ElMessage } from 'element-plus'
 
-const store = useStore()
+const appStore = useAppStore()
 
 const sizeOptions = ref([
   { label: '默认', value: 'default' },
@@ -34,7 +34,7 @@ const sizeOptions = ref([
 ])
 
 function handleSizeChange(size: string) {
-  store.commit('app/changeSize', size)
+  appStore.changeSize(size);
   ElMessage.success('切换布局大小成功')
 }
 </script>

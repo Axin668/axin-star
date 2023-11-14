@@ -2,11 +2,16 @@
 import TopMenu from './TopMenu.vue'
 import LeftMenu from './LeftMenu.vue'
 import Logo from './Logo.vue'
-import { useStore } from '@/store'
+import { useSettingsStore } from "@/stores/modules/settings"
+import { usePermissionStore } from "@/stores/modules/permission"
+import { useAppStore } from '@/stores/modules/app'
+import { storeToRefs } from 'pinia'
 
-const store = useStore()
-const { sidebarLogo } = toRefs(store.state.settings)
-const layout = computed(() => store.state.settings.layout)
+const settingsStore = useSettingsStore();
+const permissionStore = usePermissionStore();
+const appStore = useAppStore();
+const { sidebarLogo } = storeToRefs(settingsStore);
+const layout = computed(() => settingsStore.layout)
 const showContent = ref(true)
 watch(
   () => layout.value,
@@ -27,11 +32,11 @@ watch(
   >
     <logo
       v-if="sidebarLogo"
-      :collapse="!store.getters['app/sidebar'].opened"
+      :collapse="!appStore.sidebar.opened"
     />
     <el-scrollbar v-if="showContent">
       <LeftMenu
-        :menu-list="store.state.permission.routes"
+        :menu-list="permissionStore.routes"
         base-path=""
       />
     </el-scrollbar>
@@ -45,7 +50,7 @@ watch(
       <div class="header">
         <logo
           v-if="sidebarLogo"
-          :collapse="!store.getters['app/sidebar'].opened"
+          :collapse="!appStore.sidebar.opened"
         />
         <TopMenu />
         <NavRight />

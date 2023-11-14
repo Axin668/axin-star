@@ -7,7 +7,8 @@
       class="login-form"
     >
       <div class="flex text-white items-center py4 title-wrap">
-        <span class="text-2x1 flex-1 text-center title">Axin-Star管理系统</span>
+        <span class="text-2x1 flex-1 text-center title">{{ $t("login.title") }}</span>
+        <lang-select class="text-white! cursor-pointer" />
       </div>
 
       <el-form-item prop="managerName">
@@ -19,7 +20,7 @@
           v-model="loginData.manager_name"
           class="flex-1"
           size="large"
-          placeholder="管理员名称"
+          placeholder="$t('login.username')"
         />
       </el-form-item>
 
@@ -63,7 +64,7 @@
           <el-input
             v-model="loginData.verifyCode"
             auto-complete="off"
-            placeholder="验证码"
+            placeholder="$t('login.verifyCode')"
             class="w-[60%]"
             @keyup.enter="handleLogin"
           />
@@ -84,13 +85,13 @@
         class="w-full"
         @click.prevent="handleLogin"
       >
-        登录
+        {{ $t("login.login") }}
       </el-button>
 
       <!-- 账号密码提示 -->
       <div class="mt-4 text-red text-sm">
-        <span>用户名: admin</span>
-        <span class="ml-4">密码: 123456</span>
+        <span>{{ $t("login.username") }}: admin</span>
+        <span class="ml-4">{{ $t("login.password") }}: 123456</span>
       </div>
     </el-form>
   </div>
@@ -98,13 +99,17 @@
 
 <script lang="ts" setup>
 import router from '@/router'
-import { useStore } from '@/store'
+import LangSelect from "@/components/LangSelect/index.vue"
+import SvgIcon from "@/components/SvgIcon/index.vue";
+
+import { useManagerStore } from '@/stores/modules/manager'
+
 import { LocationQuery, LocationQueryValue, useRoute } from 'vue-router'
 import { getCaptchaApi } from '@/api/auth'
 import { LoginData } from '@/api/auth/types'
 import { ElForm } from 'element-plus'
 
-const store = useStore()
+const managerStore = useManagerStore();
 const route = useRoute()
 
 /**
@@ -181,8 +186,8 @@ function handleLogin() {
   loginFormRef.value.validate((valid: boolean) => {
     if (valid) {
       loading.value = true
-      store
-        .dispatch('manager/login', loginData.value)
+        managerStore
+        .login(loginData.value)
         .then(() => {
           const query: LocationQuery = route.query
 

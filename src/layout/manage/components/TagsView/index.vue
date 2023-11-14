@@ -6,18 +6,18 @@
     >
       <router-link
         v-for="tag in visitedViews"
-        :key="tag.value.fullPath"
-        :class="'tags-item' + (isActive(tag.value) ? 'active' : '')"
-        :data-path="tag.value.path"
-        :to="{ path: tag.value.path, query: tag.value.query }"
-        @click.middle="!isAffix(tag.value) ? closeSelectedTag(tag.value) : ''"
-        @contextmenu.prevent="openTagMenu(tag.value, $event)"
+        :key="tag.path"
+        :class="'tags-item' + (isActive(tag) ? 'active' : '')"
+        :data-path="tag.path"
+        :to="{ path: tag.path, query: tag.query }"
+        @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+        @contextmenu.prevent="openTagMenu(tag, $event)"
       >
-        {{ tag.value.meta?.title }}
+        {{ translateRouteTitleI18n(tag.meta?.title) }}
         <span
-          v-if="!isAffix(tag.value)"
+          v-if="!isAffix(tag)"
           class="tags-item-close"
-          @click.prevent.stop="closeSelectedTag(tag.value)"
+          @click.prevent.stop="closeSelectedTag(tag)"
         >
           <i-ep-close class="text-[10px]" />
         </span>
@@ -70,19 +70,28 @@
 <script lang="ts" setup>
 import { getCurrentInstance, ComponentInternalInstance } from 'vue'
 import path from 'path-browserify'
+import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from '@/store'
-import { TagView } from '@/store/modules/tags-view/interface'
+import { translateRouteTitleI18n } from '@/utils/i18n'
+
+import { usePermissionStore } from "@/stores/modules/permission";
+import { useTagsViewStore, TagView } from "@/stores/modules/tagsView";
+import { useSettingsStore } from "@/stores/modules/settings";
+import { useAppStore } from "@/stores/modules/app";
+
 import ScrollPane from './ScrollPane.vue'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const router = useRouter()
 const route = useRoute()
 
-const store = useStore()
+const permissionStore = usePermissionStore();
+const tagsViewStore = useTagsViewStore();
+const appStore = useAppStore();
+const settingsStore = useSettingsStore();
 
-const visitedViews = toRefs(store.state.tags_view.visitedViews)
-const layout = computed(() => store.state.settings.layout)
+const { visitedViews } = storeToRefs(tagsViewStore);
+const layout = computed(() => settingsStore.layout)
 
 const selectedTag = ref({})
 const scrollPaneRef = ref()
@@ -134,29 +143,29 @@ function filterAffixTags(routes: any[], basePath = '/') {
 }
 
 function initTags() {
-  const tags: TagView[] = filterAffixTags(store.state.permission.routes)
+  const tags: TagView[] = filterAffixTags(permissionStore.routes)
   affixTags.value = tags
   for (const tag of tags) {
     //tag必须有名字
     if (tag.name) {
-      store.dispatch('tags_view/addVisitedView', tag)
+      tagsViewStore.addVisitedView(tag);
     }
   }
 }
 
 function addTags() {
   if (route.name) {
-    store.dispatch('tags_view/addView', route)
+    tagsViewStore.addView(route);
   }
 }
 
 function moveToCurrentTag() {
   nextTick(() => {
-    for (const r of store.state.tags_view.visitedViews) {
+    for (const r of tagsViewStore.visitedViews) {
       if (r.path === route.path) {
         scrollPaneRef.value.moveToTarget(r)
         if (r.fullPath !== route.fullPath) {
-          store.dispatch('tags_view/updateVisitedView', route)
+          tagsViewStore.updateVisitedView(route);
         }
       }
     }
@@ -174,10 +183,9 @@ function isAffix(tag: TagView) {
 function isFirstView() {
   try {
     return (
-      (selectedTag.value as TagView).fullPath ===
-        store.state.tags_view.visitedViews.at(1)?.fullPath ||
-      (selectedTag.value as TagView).fullPath === '/index'
-    )
+      (selectedTag.value as TagView).fullPath === "/dashboard" ||
+      (selectedTag.value as TagView).fullPath === tagsViewStore.visitedViews[1].fullPath
+    );
   } catch (error) {
     return false
   }
@@ -185,11 +193,9 @@ function isFirstView() {
 
 function isLastView() {
   try {
-    const len = store.state.tags_view.visitedViews.length
+    const len = tagsViewStore.visitedViews.length
     return (
-      (selectedTag.value as TagView).fullPath ===
-        store.state.tags_view.visitedViews.at(len - 1)?.fullPath ||
-      (selectedTag.value as TagView).fullPath === '/index'
+      (selectedTag.value as TagView).fullPath === tagsViewStore.visitedViews[len - 1].fullPath
     )
   } catch (error) {
     return false
@@ -197,11 +203,11 @@ function isLastView() {
 }
 
 function refreshSelectedTag(view: TagView) {
-  store.dispatch('tags_view/delCachedView', view)
+  tagsViewStore.delCachedView(view);
   const { fullPath } = view
   nextTick(() => {
     router.replace({ path: '/redirect' + fullPath }).catch((err) => {
-      console.log(err)
+      console.warn(err)
     })
   })
 }
@@ -220,7 +226,7 @@ function toLastView(visitedViews: TagView[], view?: any) {
 }
 
 function closeSelectedTag(view: TagView) {
-  store.dispatch('tags_view/delView', view).then((res: any) => {
+  tagsViewStore.delView(view).then((res: any) => {
     if (isActive(view)) {
       toLastView(res.visitedViews, view)
     }
@@ -228,8 +234,7 @@ function closeSelectedTag(view: TagView) {
 }
 
 function closeLeftTags() {
-  store
-    .dispatch('tags_view/delLeftViews', selectedTag.value)
+    tagsViewStore.delLeftViews(selectedTag.value)
     .then((response: any) => {
       if (
         !response.visitedViews.find(
@@ -242,8 +247,7 @@ function closeLeftTags() {
 }
 
 function closeRightTags() {
-  store
-    .dispatch('tags_view/delRightViews', selectedTag.value)
+    tagsViewStore.delRightViews(selectedTag.value)
     .then((response: any) => {
       if (
         !response.visitedViews.find(
@@ -257,13 +261,13 @@ function closeRightTags() {
 
 function closeOtherTags() {
   router.push(selectedTag.value)
-  store.dispatch('tags_view/delOtherViews', selectedTag.value).then(() => {
+  tagsViewStore.delOtherViews(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
 }
 
 function closeAllTags(view: TagView) {
-  store.dispatch('tags_view/delAllViews').then((response: any) => {
+    tagsViewStore.delAllViews().then((response: any) => {
     toLastView(response.visitedViews, view)
   })
 }
@@ -325,9 +329,9 @@ function findOutermostParent(tree: any[], findName: string) {
 
 const againActiveTop = (newVal: string) => {
   if (layout.value !== 'mix') return
-  const parent = findOutermostParent(store.state.permission.routes, newVal)
-  if (store.state.app.activeTopMenu !== parent.path) {
-    store.commit('app/changeTopActive', parent.path)
+  const parent = findOutermostParent(permissionStore.routes, newVal)
+  if (appStore.activeTopMenu !== parent.path) {
+    appStore.changeTopActive(parent.path);
   }
 }
 // 如果是混合模式，更改selectedTag，需要对应高亮的activeTop
