@@ -21,6 +21,7 @@ const managerModule: Module<ManagerStateTypes, RootStateTypes> = {
   },
   mutations: {
     setManager(state, manager: ManagerInfo) {
+      console.log("hahaah", manager)
       Object.assign(state, manager)
     },
     resetManager(state) {
@@ -102,7 +103,10 @@ const managerModule: Module<ManagerStateTypes, RootStateTypes> = {
         return state.roles.includes(role)
       }
     },
-    hasPermission: (state) => (perm: string) => state.perms.includes(perm)
+    hasPermission: (state) => (perm: string) => state.perms.includes(perm),
+    perms(state) {
+      return state.perms
+    }
   }
 }
 

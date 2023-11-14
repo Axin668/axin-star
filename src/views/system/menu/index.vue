@@ -67,6 +67,7 @@ function handleQuery() {
   listMenus(queryParams)
     .then(({ data }) => {
       menuList.value = data
+      console.log(menuList.value, "aaaa")
     })
     .then(() => {
       loading.value = false
@@ -412,7 +413,7 @@ onMounted(() => {
       @close="closeDialog"
     >
       <el-form
-        ref="menuFromRef"
+        ref="menuFormRef"
         :model="formData"
         :rules="rules"
         label-width="100px"

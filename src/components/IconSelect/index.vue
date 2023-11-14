@@ -95,7 +95,7 @@ const iconSelectDialogRef = ref()
 function loadIcons() {
   const icons = import.meta.glob('../../assets/icons/*.svg')
   for (const icon in icons) {
-    const iconName = icon.split('asset/icons/')[1].split('.svg')[0]
+    const iconName = icon.split('assets/icons/')[1].split('.svg')[0]
     allIconNames.push(iconName)
   }
   filterIconNames.value = allIconNames

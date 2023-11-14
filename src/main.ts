@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import Store, { key } from './store'
+import { setupDirective } from "@/directive";
 
 //svg图标注册脚本
 import 'virtual:svg-icons-register'
@@ -17,6 +18,7 @@ import '@/permission'
 
 const app = createApp(App)
 
+setupDirective(app) //全局注册 自定义指令(directive)
 app.use(router).use(ElementPlus)
 app.use(Store, key)
 
