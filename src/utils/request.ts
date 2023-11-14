@@ -1,6 +1,6 @@
 //  src/utils/request.ts
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios'
-import store from '@/store'
+import { useManagerStoreHook } from '@/stores/modules/manager'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 创建 axios 实例
@@ -13,8 +13,9 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    if (store.getters['manager/isLogin']) {
-      config.headers.Authorization = store.getters['manager/token']
+    const managerStore = useManagerStoreHook();
+    if (managerStore.token) {
+      config.headers.Authorization = managerStore.token;
     }
     return config
   },

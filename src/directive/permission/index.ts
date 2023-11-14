@@ -1,4 +1,4 @@
-import store from '@/store'
+import { useManagerStoreHook } from "@/stores/modules/manager";
 import { Directive, DirectiveBinding } from "vue";
 
 /**
@@ -7,8 +7,7 @@ import { Directive, DirectiveBinding } from "vue";
 export const hasPerm: Directive = {
     mounted(el: HTMLElement, binding: DirectiveBinding) {
         // [超级管理员]拥有所有的权限
-        const roles = store.getters['manager/roles']
-        const perms = store.getters['manager/perms']
+        const { roles, perms } = useManagerStoreHook().manager;
         if (roles.includes("ROOT")) {
             return true;
         }
@@ -41,7 +40,7 @@ export const hasRole: Directive = {
 
         if (value) {
             const requiredRoles = value; // DOM 绑定需要的角色编码
-            const roles = store.getters['manager/roles']
+            const { roles } = useManagerStoreHook().manager;
             const hasRole = roles.some((perm: string) => {
                 return requiredRoles.includes(perm);
             })

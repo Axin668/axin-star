@@ -7,7 +7,9 @@
       class="login-form"
     >
       <div class="flex text-white items-center py4 title-wrap">
-        <span class="text-2x1 flex-1 text-center title">{{ $t("login.title") }}</span>
+        <span class="text-2x1 flex-1 text-center title">
+          {{ $t("login.title") }}
+        </span>
         <lang-select class="text-white! cursor-pointer" />
       </div>
 
@@ -20,7 +22,7 @@
           v-model="loginData.manager_name"
           class="flex-1"
           size="large"
-          placeholder="$t('login.username')"
+          :placeholder="$t('login.managerName')"
         />
       </el-form-item>
 
@@ -36,7 +38,7 @@
           <el-input
             v-model="loginData.password"
             class="flex-1"
-            placeholder="密码"
+            :placeholder="$t('login.password')"
             :type="passwordVisible === false ? 'password' : 'input'"
             size="large"
             name="password"
@@ -64,7 +66,7 @@
           <el-input
             v-model="loginData.verifyCode"
             auto-complete="off"
-            placeholder="$t('login.verifyCode')"
+            :placeholder="$t('login.verifyCode')"
             class="w-[60%]"
             @keyup.enter="handleLogin"
           />
@@ -72,7 +74,7 @@
         <div class="captcha">
           <img
             :src="captchaBase64"
-            alt="验证码"
+            :alt="$t('login.verifyCode')"
             @click="getCaptcha"
           />
         </div>
@@ -90,7 +92,7 @@
 
       <!-- 账号密码提示 -->
       <div class="mt-4 text-red text-sm">
-        <span>{{ $t("login.username") }}: admin</span>
+        <span>{{ $t("login.managerName") }}: admin</span>
         <span class="ml-4">{{ $t("login.password") }}: 123456</span>
       </div>
     </el-form>

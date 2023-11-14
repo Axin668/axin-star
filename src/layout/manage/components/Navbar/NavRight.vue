@@ -32,7 +32,7 @@
     <template #dropdown>
       <el-dropdown-menu>
         <router-link to="/">
-          <el-dropdown-item>dashboard</el-dropdown-item>
+          <el-dropdown-item>{{ $t("navbar.dashboard") }}</el-dropdown-item>
         </router-link>
         <a
           target="_blank"
@@ -44,19 +44,19 @@
           target="_blank"
           href="https://gitee.com/haoxr"
         >
-          <el-dropdown-item>gitee</el-dropdown-item>
+          <el-dropdown-item>{{ $t("navbar.gitee") }}</el-dropdown-item>
         </a>
         <a
           target="_blank"
           href="https://juejin.cn/post/7228990409909108793"
         >
-          <el-dropdown-item>document</el-dropdown-item>
+          <el-dropdown-item>{{ $t("navbar.document") }}</el-dropdown-item>
         </a>
         <el-dropdown-item
           divided
           @click="logout"
         >
-          退出
+          {{ $t("navbar.logout") }}
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>

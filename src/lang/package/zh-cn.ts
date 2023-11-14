@@ -15,7 +15,7 @@ export default {
     // 导航栏国际化
     navbar: {
         dashboard: "首页",
-        logout: "登出",
+        logout: "注销",
         document: "项目文档",
         gitee: "码云",
     },

@@ -11,13 +11,13 @@
           "
           class="text-[var(--el-disabled-text-color)]"
         >
-          {{ item.meta.title }}
+          {{ translateRouteTitleI18n(item.meta.title) }}
         </span>
         <a
           v-else
           @click.prevent="handleLink(item)"
         >
-          {{ item.meta.title }}
+          {{ translateRouteTitleI18n(item.meta.title) }}
         </a>
       </el-breadcrumb-item>
     </transition-group>
@@ -29,6 +29,7 @@ import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, RouteLocationMatched } from 'vue-router'
 import { compile } from 'path-to-regexp'
 import router from '@/router'
+import { translateRouteTitleI18n } from "@/utils/i18n";
 
 const currentRoute = useRoute()
 const pathCompile = (path: string) => {
@@ -55,7 +56,7 @@ function getBreadcrumb() {
     ].concat(matched)
   }
   breadcrumbs.value = matched.filter((item) => {
-    return item.meta && item.meta.title && item.meta.breadcrumb
+    return item.meta && item.meta.title && item.meta.breadcrumb !== false;
   })
 }
 
@@ -66,7 +67,7 @@ function isDashboard(route: RouteLocationMatched) {
   }
   return (
     name.toString().trim().toLocaleLowerCase() ===
-    'DashBoard'.toLocaleLowerCase()
+    'Dashboard'.toLocaleLowerCase()
   )
 }
 
@@ -98,5 +99,18 @@ onBeforeMount(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.app-breadcrumb.el-breadcrumb {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 14px;
+  line-height: 50px;
+}
+
+// 覆盖 element-plus 的样式
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+</style>
 

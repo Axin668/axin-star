@@ -18,7 +18,7 @@
             :icon-class="onlyOneChild.meta.icon"
           />
           <template #title>
-            {{ onlyOneChild.meta.title }}
+            {{ translateRouteTitleI18n(onlyOneChild.meta.title) }}
           </template>
         </el-menu-item>
       </app-link>
@@ -37,7 +37,7 @@
           :icon-class="item.meta.icon"
         />
         <span v-if="item.meta && item.meta.title">
-          {{ item.meta.title }}
+          {{ translateRouteTitleI18n(onlyOneChild.meta.title) }}
         </span>
       </template>
       <!-- 逐一对子路由递归 -->
@@ -56,6 +56,7 @@ import path from 'path-browserify'
 import { isExternal } from '@/utils'
 import AppLink from './Link.vue'
 
+import { translateRouteTitleI18n } from "@/utils/i18n";
 import SvgIcon from '@/components/SvgIcon/index.vue'
 
 const props = defineProps({
