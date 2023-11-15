@@ -22,7 +22,7 @@ export interface RolePageVO {
     /**
      * 角色名称
      */
-    name?: string;
+    roleName?: string;
 
     /** 
      * 排序
@@ -72,7 +72,7 @@ export interface RoleForm {
     /**
      * 角色名称
      */
-    name: string;
+    roleName: string;
 
     /**
      * 排序

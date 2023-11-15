@@ -40,7 +40,7 @@
               @selection-change="handleSelectionChange"
             >
               <el-table-column type="selection" width="55" align="center" />
-              <el-table-column label="角色名称" prop="name" min-width="100" />
+              <el-table-column label="角色名称" prop="roleName" min-width="100" />
               <el-table-column label="角色编码" prop="code" width="150" />
 
               <el-table-column label="状态" align="center" width="100">
@@ -104,8 +104,8 @@
             :rules="rules" 
             label-width="100px"
           >
-            <el-form-item label="角色名称" prop="name">
-                <el-input v-model="formData.name" placeholder="请输入角色名称" />
+            <el-form-item label="角色名称" prop="roleName">
+                <el-input v-model="formData.roleName" placeholder="请输入角色名称" />
             </el-form-item>
 
             <el-form-item label="角色编码" prop="code">
@@ -150,7 +150,7 @@
         <!-- 分配菜单弹窗 -->
         <el-dialog
           v-model="menuDialogVisible"
-          :title="'[' + checkedRole.name + '] 权限分配'"
+          :title="'[' + checkedRole.roleName + '] 权限分配'"
           width="800px"
         >
           <el-scrollbar v-loading="loading" max-height="600px">
@@ -224,11 +224,11 @@ const formData = reactive<RoleForm>({
     sort: 1,
     status: 1,
     code: "",
-    name: "",
+    roleName: "",
 });
 
 const rules = reactive({
-    name: [{ required: true, message: "请输入角色名称", trigger: "blur" }],
+    roleName: [{ required: true, message: "请输入角色名称", trigger: "blur" }],
     code: [{ required: true, message: "请输入角色编码", trigger: "blur"}],
     dataScope: [{ required: true, message: "请输入数据权限", trigger: "blur"}],
     status: [{ required: true, message: "请选择状态", trigger: "blur" }],
@@ -240,7 +240,7 @@ const menuList = ref<OptionType[]>([]);
 
 interface CheckedRole {
     id?: number,
-    name?: string,
+    roleName?: string,
 }
 let checkedRole: CheckedRole = reactive({});
 
@@ -357,7 +357,7 @@ function openMenuDialog(row: RolePageVO) {
     if (roleId) {
         checkedRole = {
             id: roleId,
-            name: row.name,
+            roleName: row.roleName,
         };
         menuDialogVisible.value = true;
         loading.value = true;

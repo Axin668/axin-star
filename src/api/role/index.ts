@@ -104,7 +104,7 @@ export function updateRole(id: number, data: RoleForm) {
  */
 export function deleteRoles(ids: string) {
     return request({
-        url: "/api/roles" + ids,
+        url: "/api/roles/" + ids,
         method: "delete",
     });
 }
