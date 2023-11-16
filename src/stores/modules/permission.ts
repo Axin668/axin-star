@@ -7,7 +7,7 @@ import { MenuVO } from "@/api/menu/types";
 import { getAllBreadcrumbList, getFlatMenuList, getShowMenuList } from "@/utils";
 
 const modules = import.meta.glob("../../views/**/**.vue");
-const Layout = () => import("@/layout/Layout.vue");
+const Layout = () => import("@/layouts/index.vue");
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -113,6 +113,7 @@ export const usePermissionStore = defineStore("permission", () => {
         .then(({ data: asyncRoutes }) => {
           // 根据角色获取有访问权限的路由
           const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
+          console.log(accessedRoutes)
           setRoutes(accessedRoutes);
           resolve(accessedRoutes);
         })
