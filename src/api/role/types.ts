@@ -1,7 +1,7 @@
 /**
  * 角色查询参数
  */
-export interface RoleQuery extends PageQuery {
+export interface RoleQuery extends global.PageQuery {
     keywords?: string;
 }
 
@@ -48,7 +48,7 @@ export interface RolePageVO {
 /**
  * 角色分页结果
  */
-export type RolePageResult = PageResult<RolePageVO[]>;
+export type RolePageResult = global.PageResult<RolePageVO[]>;
 
 /**
  * 角色表单对象

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Breadcrumb from "@/layouts/components/Header/components/Breadcrumb.vue";
 import { useAppStore } from "@/stores/modules/app";
 
 const appStore = useAppStore();
@@ -20,7 +21,7 @@ function toggleSideBar() {
         :is-active="appStore.sidebar.opened"
         @toggle-click="toggleSideBar"
       />
-      <breadcrumb />
+      <Breadcrumb />
     </div>
 
     <!-- 右侧导航设置 -->

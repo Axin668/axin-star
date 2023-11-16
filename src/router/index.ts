@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-const Layout = () => import('@/layout/Layout.vue')
+const Layout = () => import('@/layouts/index.vue')
 
 export const constantRoutes: RouteRecordRaw[] = [
   {
@@ -26,17 +26,17 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/home',
     children: [
       {
-        path: 'dashboard',
-        name: 'Dashboard',
+        path: 'home',
+        name: 'Home',
         component: () => import('@/views/DashBoard/PV/index.vue'),
         meta: {
           title: '首页',
           icon: 'homepage',
-          affix: true,
-          keepAlive: true
+          isAffix: true,
+          isKeepAlive: false
         }
       },
       {

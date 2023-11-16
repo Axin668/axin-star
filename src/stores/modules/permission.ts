@@ -2,7 +2,9 @@ import { RouteRecordRaw } from "vue-router";
 import { defineStore } from "pinia";
 import { constantRoutes } from "@/router";
 import { store } from "@/stores";
-import { listRoutes } from "@/api/menu";
+import { listRoutes, listMenus } from "@/api/menu";
+import { MenuVO } from "@/api/menu/types";
+import { getAllBreadcrumbList, getFlatMenuList, getShowMenuList } from "@/utils";
 
 const modules = import.meta.glob("../../views/**/**.vue");
 const Layout = () => import("@/layout/Layout.vue");
@@ -44,7 +46,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
     if (!route.name) {
       tmpRoute.name = route.path;
     }
-    // 判断用户(角色)是否有该路由的访问权限
+    // 判断管理员(角色)是否有该路由的访问权限
     if (hasPermission(roles, tmpRoute)) {
       if (tmpRoute.component?.toString() == "Layout") {
         tmpRoute.component = Layout;
@@ -72,11 +74,32 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
 export const usePermissionStore = defineStore("permission", () => {
   // state
   const routes = ref<RouteRecordRaw[]>([]);
+  // 菜单权限列表
+  const authMenuList = ref<MenuVO[]>([]);
+  // 按钮权限列表
+  const authButtonList = ref<{
+    [key: string]: string[];
+  }>({})
+  // 当前页面的 router name, 用来做按钮权限筛选
+  const routeName = ref<string>("");
+
+  const authButtonListGet = () => authButtonList.value;
+  const authMenuListGet = () => authMenuList.value;
+  const showMenuListGet = () => getShowMenuList(authMenuList.value)
+  const flatMenuListGet = () => getFlatMenuList(authMenuList.value);
+  const breadcrumbListGet = () => getAllBreadcrumbList(authMenuList.value)
 
   // actions
   function setRoutes(newRoutes: RouteRecordRaw[]) {
     routes.value = constantRoutes.concat(newRoutes);
   }
+  function setMenus(newMenus: MenuVO[]) {
+    authMenuList.value = newMenus;
+  }
+  function setRouteName(name: string) {
+    routeName.value = name;
+  }
+
   /**
    * 生成动态路由
    *
@@ -100,6 +123,26 @@ export const usePermissionStore = defineStore("permission", () => {
   }
 
   /**
+   * 生成动态菜单
+   * 
+   * @param menus 用户菜单集合
+   * @returns
+   */
+  function generateAuthMenus() {
+    return new Promise<MenuVO[]>((resolve, reject) => {
+      // 接口获取权限菜单
+      listMenus({})
+        .then(({ data: newAuthMenuList }) => {
+          setMenus(newAuthMenuList);
+          resolve(newAuthMenuList)
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  }
+
+  /**
    * 混合模式左侧菜单
    */
   const mixLeftMenu = ref<RouteRecordRaw[]>([]);
@@ -110,7 +153,10 @@ export const usePermissionStore = defineStore("permission", () => {
       }
     });
   }
-  return { routes, setRoutes, generateRoutes, getMixLeftMenu, mixLeftMenu };
+  return { routes, authMenuList, routeName, mixLeftMenu, // state
+            authButtonListGet, authMenuListGet, showMenuListGet, flatMenuListGet, breadcrumbListGet, // getters
+            setRoutes, generateRoutes, setMenus, generateAuthMenus, setRouteName, getMixLeftMenu // actions
+          };
 });
 
 // 非setup

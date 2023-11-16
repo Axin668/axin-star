@@ -30,7 +30,11 @@ export const useTabsStore = defineStore({
           if (item.path !== tabPath) return;
           const nextTab = this.tabsMenuList[index + 1] || this.tabsMenuList[index - 1];
           if (!nextTab) return;
-          router.push(nextTab.path);
+          
+          let fullPath = nextTab.path;
+          fullPath = fullPath.charAt(0).toUpperCase() + fullPath.slice(1);
+          // 注意这里的 fullpath 是 name, 所以我们要将首字母大写之后用 name 跳转
+          router.push({name: fullPath});
         });
       }
       // remove keepalive

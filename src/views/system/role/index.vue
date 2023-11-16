@@ -216,7 +216,7 @@ const queryParams = reactive<RoleQuery>({
 
 const roleList = ref<RolePageVO[]>();
 
-const dialog = reactive<DialogOption>({
+const dialog = reactive<global.DialogOption>({
     visible: false,
 });
 
@@ -236,7 +236,7 @@ const rules = reactive({
 
 const menuDialogVisible = ref(false);
 
-const menuList = ref<OptionType[]>([]);
+const menuList = ref<global.OptionType[]>([]);
 
 interface CheckedRole {
     id?: number,

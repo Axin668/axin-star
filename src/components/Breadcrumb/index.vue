@@ -41,10 +41,12 @@ const pathCompile = (path: string) => {
 const breadcrumbs = ref([] as Array<RouteLocationMatched>)
 
 function getBreadcrumb() {
-  let matched = currentRoute.matched.filter((item) => {
+  console.log(currentRoute)
+  let matched = currentRoute.matched.filter((item) => 
     item.meta && item.meta.title
-  })
+  )
   const first = matched[0]
+  // 这里做一个首页固定
   if (!isDashboard(first)) {
     matched = [
       {

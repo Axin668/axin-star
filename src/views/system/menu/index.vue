@@ -24,14 +24,14 @@ const queryFormRef = ref(ElForm)
 const menuFormRef = ref(ElForm)
 
 const loading = ref(false)
-const dialog = reactive<DialogOption>({
+const dialog = reactive<global.DialogOption>({
   visible: false
 })
 
 const queryParams = reactive<MenuQuery>({})
 const menuList = ref<MenuVO[]>([])
 
-const menuOptions = ref<OptionType[]>([])
+const menuOptions = ref<global.OptionType[]>([])
 
 const formData = reactive<MenuForm>({
   parentId: 0,
@@ -67,7 +67,7 @@ function handleQuery() {
   listMenus(queryParams)
     .then(({ data }) => {
       menuList.value = data
-      console.log(menuList.value, "aaaa")
+      console.log(menuList, "aaaa")
     })
     .then(() => {
       loading.value = false

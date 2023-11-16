@@ -1,10 +1,11 @@
 import router from '@/router'
 import { useManagerStoreHook } from "@/stores/modules/manager";
 import { usePermissionStoreHook } from "@/stores/modules/permission";
+import { ElNotification } from 'element-plus';
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { RouteRecordRaw } from 'vue-router'
+import { LOGIN_URL } from './config';
 
 NProgress.configure({ showSpinner: false })
 
@@ -34,6 +35,24 @@ router.beforeEach(async (to, from, next) => {
         }
       } else {
         try {
+          // 1.获取菜单列表 && 按钮权限列表
+          await permissionStore.generateAuthMenus();
+          // await authStore.getAuthButtonList();
+
+          // 2.判断当前用户有没有菜单权限
+          if (!permissionStore.authMenuListGet().length) {
+            ElNotification({
+              title: "无权限访问",
+              message: "当前账号无任何菜单权限，请联系系统管理员！",
+              type: "warning",
+              duration: 3000
+            });
+            managerStore.resetStore();
+            router.replace(LOGIN_URL);
+            return Promise.reject("No permission");
+          }
+          
+          // 3.添加动态路由
           const { roles } = await managerStore.getInfo();
           const accessRoutes = await permissionStore.generateRoutes(roles);
           accessRoutes.forEach((route) => {

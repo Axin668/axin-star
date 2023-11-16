@@ -123,7 +123,7 @@ watch(tagMenuVisible, (value) => {
 function filterAffixTags(routes: any[], basePath = '/') {
   let tags: TagView[] = []
   routes.forEach((route) => {
-    if (route.meta && route.meta.affix) {
+    if (route.meta && route.meta.isAffix) {
       const tagPath = path.resolve(basePath, route.path)
       tags.push({
         fullPath: tagPath,
@@ -177,7 +177,7 @@ function isActive(tag: TagView) {
 }
 
 function isAffix(tag: TagView) {
-  return tag.meta && tag.meta.affix
+  return tag.meta && tag.meta.isAffix
 }
 
 function isFirstView() {

@@ -26,7 +26,7 @@ export function listMenus(queryParams: MenuQuery): AxiosPromise<MenuVO[]> {
 /**
  * 获取菜单下拉树形列表
  */
-export function listMenuOptions(): AxiosPromise<OptionType[]> {
+export function listMenuOptions(): AxiosPromise<global.OptionType[]> {
   return request({
     url: '/api/menus/options',
     method: 'get'

@@ -14,7 +14,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
   // actions
   function addVisitedView(view: TagView) {
     if (visitedViews.value.some((v) => v.path === view.path)) return;
-    if (view.meta && view.meta.affix) {
+    if (view.meta && view.meta.isAffix) {
       visitedViews.value.unshift(
         Object.assign({}, view, {
           title: view.meta?.title || "no-name",
@@ -32,7 +32,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
   function addCachedView(view: TagView) {
     const viewName = view.name as string;
     if (cachedViews.value.includes(viewName)) return;
-    if (view.meta?.keepAlive) {
+    if (view.meta?.isKeepAlive) {
       cachedViews.value.push(viewName);
     }
   }
@@ -61,7 +61,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
   function delOtherVisitedViews(view: TagView) {
     return new Promise((resolve) => {
       visitedViews.value = visitedViews.value.filter((v) => {
-        return v.meta?.affix || v.path === view.path;
+        return v.meta?.isAffix || v.path === view.path;
       });
       resolve([...visitedViews.value]);
     });
@@ -126,8 +126,8 @@ export const useTagsViewStore = defineStore("tagsView", () => {
         return;
       }
       visitedViews.value = visitedViews.value.filter((item, index) => {
-        // affix:true 固定tag，例如“首页”
-        if (index >= currIndex || (item.meta && item.meta.affix)) {
+        // isAffix:true 固定tag，例如“首页”
+        if (index >= currIndex || (item.meta && item.meta.isAffix)) {
           return true;
         }
 
@@ -151,8 +151,8 @@ export const useTagsViewStore = defineStore("tagsView", () => {
         return;
       }
       visitedViews.value = visitedViews.value.filter((item, index) => {
-        // affix:true 固定tag，例如“首页”
-        if (index <= currIndex || (item.meta && item.meta.affix)) {
+        // isAffix:true 固定tag，例如“首页”
+        if (index <= currIndex || (item.meta && item.meta.isAffix)) {
           return true;
         }
 
@@ -170,7 +170,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
 
   function delAllViews() {
     return new Promise((resolve) => {
-      const affixTags = visitedViews.value.filter((tag) => tag.meta?.affix);
+      const affixTags = visitedViews.value.filter((tag) => tag.meta?.isAffix);
       visitedViews.value = affixTags;
       cachedViews.value = [];
       resolve({
@@ -182,7 +182,7 @@ export const useTagsViewStore = defineStore("tagsView", () => {
 
   function delAllVisitedViews() {
     return new Promise((resolve) => {
-      const affixTags = visitedViews.value.filter((tag) => tag.meta?.affix);
+      const affixTags = visitedViews.value.filter((tag) => tag.meta?.isAffix);
       visitedViews.value = affixTags;
       resolve([...visitedViews.value]);
     });

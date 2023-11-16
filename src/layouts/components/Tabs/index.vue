@@ -1,0 +1,114 @@
+<template>
+  <div class="tabs-box">
+    <div class="tabs-menu">
+      <el-tabs v-model="tabsMenuValue" type="card" @tab-click="tabClick" @tab-remove="tabRemove">
+        <el-tab-pane v-for="item in tabsMenuList" :key="item.path" :label="item.title" :name="item.path" :closable="item.close">
+          <template #label>
+            <el-icon v-if="item.icon && tabsIcon" class="tabs-icon">
+              <component :is="item.icon"></component>
+            </el-icon>
+            {{ item.title }}
+          </template>
+        </el-tab-pane>
+      </el-tabs>
+      <MoreButton />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import Sortable from "sortablejs";
+import { ref, computed, watch, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useGlobalStore } from "@/stores/modules/global";
+import { useTabsStore } from "@/stores/modules/tabs";
+import { usePermissionStore } from "@/stores/modules/permission";
+import { TabsPaneContext, TabPaneName } from "element-plus";
+import MoreButton from "./components/MoreButton.vue";
+
+const route = useRoute();
+console.log(route)
+const router = useRouter();
+const tabStore = useTabsStore();
+const permissionStore = usePermissionStore();
+const globalStore = useGlobalStore();
+
+const tabsMenuValue = ref(route.fullPath);
+const tabsMenuList = computed(() => tabStore.tabsMenuList);
+const tabsIcon = computed(() => globalStore.tabsIcon);
+
+onMounted(() => {
+  tabsDrop();
+  initTabs();
+});
+
+// 监听路由的变化（防止浏览器后退/前进不变化 tabsMenuValue）
+watch(
+  () => route.fullPath,
+  () => {
+    if (route.meta.isFull) return;
+    tabsMenuValue.value = route.fullPath;
+    const tabsParams = {
+      icon: route.meta.icon as string,
+      title: route.meta.title as string,
+      path: route.fullPath,
+      name: route.name as string,
+      close: !route.meta.isAffix,
+      isKeepAlive: route.meta.isKeepAlive as boolean
+    };
+    tabStore.addTabs(tabsParams);
+  },
+  { immediate: true }
+);
+
+// 初始化需要固定的 tabs
+const initTabs = () => {
+  permissionStore.flatMenuListGet().forEach(item => {
+    // 目前只有首页固定
+    // if (item.meta.isAffix && !item.meta.isHide && !item.meta.isFull)
+    if (item.visible) {
+      const tabsParams = {
+        // 全部强制推断
+        icon: item.icon!,
+        title: item.name!,
+        path: item.path!,
+        name: item.name!,
+        close: true,
+        isKeepAlive: false
+      };
+      tabStore.addTabs(tabsParams);
+    }
+  });
+};
+
+// tabs 拖拽排序
+const tabsDrop = () => {
+  Sortable.create(document.querySelector(".el-tabs__nav") as HTMLElement, {
+    draggable: ".el-tabs__item",
+    animation: 300,
+    onEnd({ newIndex, oldIndex }) {
+      const tabsList = [...tabStore.tabsMenuList];
+      const currRow = tabsList.splice(oldIndex as number, 1)[0];
+      tabsList.splice(newIndex as number, 0, currRow);
+      tabStore.setTabs(tabsList);
+    }
+  });
+};
+
+// Tab Click
+const tabClick = (tabItem: TabsPaneContext) => {
+  let fullPath = tabItem.props.name as string;
+  fullPath = fullPath.charAt(0).toUpperCase() + fullPath.slice(1);
+  // 注意这里的 fullpath 是 name, 所以我们要将首字母大写之后用 name 跳转
+  router.push({name: fullPath});
+};
+
+// Remove Tab
+const tabRemove = (fullPath: TabPaneName) => {
+  tabStore.removeTabs(fullPath as string, fullPath == route.fullPath);
+};
+</script>
+
+<style scoped lang="scss">
+@import "./index.scss";
+</style>

@@ -7,9 +7,10 @@ declare module 'vue-router' {
     icon?: string
     hidden?: boolean
     breadcrumb?: boolean
-    affix?: boolean
-    keepAlive?: boolean
+    isAffix?: boolean
+    isKeepAlive?: boolean
     roles?: string[]
+    activeMenu?: string
   }
 }
 

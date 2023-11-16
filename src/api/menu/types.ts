@@ -38,7 +38,7 @@ export interface MenuVO {
   /**
    * 路由相对路径
    */
-  routePath?: string
+  path: string
   /**
    * 菜单排序(数字越小排名越靠前)
    */
