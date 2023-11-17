@@ -25,6 +25,7 @@ import { useTabsStore } from "@/stores/modules/tabs";
 import { usePermissionStore } from "@/stores/modules/permission";
 import { TabsPaneContext, TabPaneName } from "element-plus";
 import MoreButton from "./components/MoreButton.vue";
+import { MenuTypeEnum } from "@/enums/MenuTypeEnum";
 
 const route = useRoute();
 console.log(route)
@@ -66,7 +67,7 @@ const initTabs = () => {
   permissionStore.flatMenuListGet.forEach(item => {
     // 目前只有首页固定
     // if (item.meta.isAffix && !item.meta.isHide && !item.meta.isFull)
-    if (item.visible) {
+    if (item.isAffix && item.visible && item.type !== MenuTypeEnum.BUTTON) {
       const tabsParams = {
         // 全部强制推断
         icon: item.icon!,

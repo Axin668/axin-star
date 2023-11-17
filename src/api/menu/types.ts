@@ -63,6 +63,14 @@ export interface MenuVO {
    * 子菜单
    */
   children?: MenuVO[]
+  /**
+   * 菜单是否固定在 tab 上(目前暂未使用)
+   */
+  isAffix?: boolean
+  /**
+   * 菜单是否保持缓存(目前暂未使用)
+   */
+  isKeepAlive?: boolean
 }
 
 /**

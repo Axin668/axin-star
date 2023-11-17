@@ -40,7 +40,7 @@ const breadcrumbList = computed(() => {
   let breadcrumbData = currentRoute.matched.filter((item) => 
     item.meta && item.meta.title
   )
-  console.log(breadcrumbData)
+
   // 🙅‍♀️不需要首页面包屑可删除以下判断
   if (breadcrumbData[0].path !== HOME_URL) {
     // as any 做一下定义, 否则需要定义其他属性

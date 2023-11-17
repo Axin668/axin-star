@@ -532,6 +532,7 @@ onMounted(() => {
           <icon-select v-model="formData.icon" />
         </el-form-item>
 
+        <!-- 临时修改图标名称 -->
         <!-- <el-form-item
           v-if="formData.type !== 'BUTTON'"
           label="图标tmp"
