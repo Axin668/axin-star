@@ -10,7 +10,6 @@
         <span class="text-2x1 flex-1 text-center title">
           {{ $t("login.title") }}
         </span>
-        <lang-select class="text-white! cursor-pointer" />
       </div>
 
       <el-form-item prop="managerName">
@@ -101,7 +100,6 @@
 
 <script lang="ts" setup>
 import router from '@/router'
-import LangSelect from "@/components/LangSelect/index.vue"
 import SvgIcon from "@/components/SvgIcon/index.vue";
 
 import { useManagerStore } from '@/stores/modules/manager'

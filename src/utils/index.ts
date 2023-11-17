@@ -1,6 +1,7 @@
 import { isArray } from "@/utils/is";
 import { FieldNamesProps } from "@/components/ProTable/interface";
 import { MenuVO } from "@/api/menu/types";
+import { MenuTypeEnum } from "@/enums/MenuTypeEnum";
 
 /**
  * Check if an element has a class
@@ -197,7 +198,10 @@ export function getUrlWithParams() {
  */
 export function getFlatMenuList(menuList: MenuVO[]): MenuVO[] {
   let newMenuList: MenuVO[] = JSON.parse(JSON.stringify(menuList));
-  return newMenuList.flatMap(item => [item, ...(item.children ? getFlatMenuList(item.children) : [])]);
+  return newMenuList.flatMap(item => {
+    // if (item.children?.length) item.children.forEach(child => child.path = item.path + "/" + child.path)
+    return [item, ...(item.children ? getFlatMenuList(item.children) : [])]
+  });
 }
 
 /**
@@ -208,8 +212,9 @@ export function getFlatMenuList(menuList: MenuVO[]): MenuVO[] {
 export function getShowMenuList(menuList: MenuVO[]) {
   let newMenuList: MenuVO[] = JSON.parse(JSON.stringify(menuList));
   return newMenuList.filter(item => {
+    if (item.children?.length) item.children.forEach(child => child.path = item.path + "/" + child.path)
     item.children?.length && (item.children = getShowMenuList(item.children));
-    return item.visible;
+    return item.visible && item.type !== MenuTypeEnum.BUTTON
   });
 }
 
@@ -221,9 +226,13 @@ export function getShowMenuList(menuList: MenuVO[]) {
  * @returns {Object}
  */
 export const getAllBreadcrumbList = (menuList: MenuVO[], parent = [], result: { [key: string]: any } = {}) => {
-  for (const item of menuList) {
+  let newMenuList: MenuVO[] = JSON.parse(JSON.stringify(menuList));
+  for (const item of newMenuList) {
     result[item.path as string] = [...parent, item];
-    if (item.children) getAllBreadcrumbList(item.children, result[item.path as string], result);
+    if (item.children) {
+      // item.children.forEach(child => child.path = item.path + "/" + child.path)
+      getAllBreadcrumbList(item.children, result[item.path as string], result)
+    };
   }
   return result;
 };

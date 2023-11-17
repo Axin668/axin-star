@@ -11,7 +11,7 @@
             <el-icon v-if="item.meta.icon && globalStore.breadcrumbIcon" class="breadcrumb-icon">
               <component :is="item.meta.icon"></component>
             </el-icon>
-            <span class="breadcrumb-title">{{ translateRouteTitleI18n(item.meta.title) }}</span>
+            <span class="breadcrumb-title">{{ item.meta.title }}</span>
           </div>
         </el-breadcrumb-item>
       </transition-group>
@@ -26,7 +26,6 @@ import { useRoute, useRouter } from "vue-router";
 import { compile } from 'path-to-regexp'
 import { ArrowRight } from "@element-plus/icons-vue";
 import { useGlobalStore } from "@/stores/modules/global";
-import { translateRouteTitleI18n } from "@/utils/i18n";
 
 const currentRoute = useRoute();
 const router = useRouter();

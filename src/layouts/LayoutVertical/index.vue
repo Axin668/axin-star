@@ -47,7 +47,7 @@ const permissionStore = usePermissionStore();
 const globalStore = useGlobalStore();
 const accordion = computed(() => globalStore.accordion);
 const isCollapse = computed(() => globalStore.isCollapse);
-const menuList = computed(() => permissionStore.showMenuListGet());
+const menuList = computed(() => permissionStore.showMenuListGet);
 const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu : route.path) as string);
 </script>
 

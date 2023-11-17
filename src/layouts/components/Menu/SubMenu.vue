@@ -31,10 +31,7 @@ const router = useRouter();
 const handleClickMenu = (subItem: MenuVO | Record<string, any>) => {
   // 外链还未加
   // if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
-  let fullPath = subItem.path;
-  fullPath = fullPath.charAt(0).toUpperCase() + fullPath.slice(1);
-  // 注意这里的 fullpath 是 name, 所以我们要将首字母大写之后用 name 跳转
-  router.push({name: fullPath});
+  router.push(subItem.path);
 };
 </script>
 

@@ -8,7 +8,7 @@ import piniaPersistConfig from "@/stores/helper/persist";
 const keepAliveStore = useKeepAliveStore();
 
 export const useTabsStore = defineStore({
-  id: "geeker-tabs",
+  id: "axin-tabs",
   state: (): TabsState => ({
     tabsMenuList: []
   }),
@@ -31,10 +31,7 @@ export const useTabsStore = defineStore({
           const nextTab = this.tabsMenuList[index + 1] || this.tabsMenuList[index - 1];
           if (!nextTab) return;
           
-          let fullPath = nextTab.path;
-          fullPath = fullPath.charAt(0).toUpperCase() + fullPath.slice(1);
-          // 注意这里的 fullpath 是 name, 所以我们要将首字母大写之后用 name 跳转
-          router.push({name: fullPath});
+          router.push(nextTab.path);
         });
       }
       // remove keepalive
@@ -76,5 +73,5 @@ export const useTabsStore = defineStore({
       });
     }
   },
-  persist: piniaPersistConfig("geeker-tabs")
+  persist: piniaPersistConfig("axin-tabs")
 });

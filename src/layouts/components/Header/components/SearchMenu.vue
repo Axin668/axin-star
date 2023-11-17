@@ -75,10 +75,7 @@ const handleClickMenu = (menuItem: MenuVO | Record<string, any>) => {
   searchMenu.value = "";
   // if (menuItem.meta.isLink) window.open(menuItem.meta.isLink, "_blank");
   // else router.push(menuItem.path);
-  let fullPath = menuItem.path;
-  fullPath = fullPath.charAt(0).toUpperCase() + fullPath.slice(1);
-  // 注意这里的 fullpath 是 name, 所以我们要将首字母大写之后用 name 跳转
-  router.push({name: fullPath});
+  router.push(menuItem.path);
   closeSearch();
 };
 </script>

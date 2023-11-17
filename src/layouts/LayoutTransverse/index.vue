@@ -48,16 +48,13 @@ const title = import.meta.env.VITE_GLOB_APP_TITLE;
 const route = useRoute();
 const router = useRouter();
 const permissionStore = usePermissionStore();
-const menuList = computed(() => permissionStore.showMenuListGet());
+const menuList = computed(() => permissionStore.showMenuListGet);
 const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu : route.path) as string);
 
 const handleClickMenu = (subItem: MenuVO) => {
   // if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
   // router.push(subItem.path);
-  let fullPath = subItem.path;
-  fullPath = fullPath.charAt(0).toUpperCase() + fullPath.slice(1);
-  // 注意这里的 fullpath 是 name, 所以我们要将首字母大写之后用 name 跳转
-  router.push({name: fullPath});
+  router.push(subItem.path);
 };
 </script>
 

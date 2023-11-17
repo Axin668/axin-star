@@ -83,11 +83,11 @@ export const usePermissionStore = defineStore("permission", () => {
   // 当前页面的 router name, 用来做按钮权限筛选
   const routeName = ref<string>("");
 
-  const authButtonListGet = () => authButtonList.value;
-  const authMenuListGet = () => authMenuList.value;
-  const showMenuListGet = () => getShowMenuList(authMenuList.value)
-  const flatMenuListGet = () => getFlatMenuList(authMenuList.value);
-  const breadcrumbListGet = () => getAllBreadcrumbList(authMenuList.value)
+  const authButtonListGet = computed(() => authButtonList.value);
+  const authMenuListGet = computed(() => authMenuList.value);
+  const showMenuListGet = computed(() => getShowMenuList(authMenuList.value))
+  const flatMenuListGet = computed(() => getFlatMenuList(authMenuList.value));
+  const breadcrumbListGet = computed(() => getAllBreadcrumbList(authMenuList.value))
 
   // actions
   function setRoutes(newRoutes: RouteRecordRaw[]) {

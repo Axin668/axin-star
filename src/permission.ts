@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
           // await authStore.getAuthButtonList();
 
           // 2.判断当前用户有没有菜单权限
-          if (!permissionStore.authMenuListGet().length) {
+          if (!permissionStore.authMenuListGet.length) {
             ElNotification({
               title: "无权限访问",
               message: "当前账号无任何菜单权限，请联系系统管理员！",
@@ -52,6 +52,15 @@ router.beforeEach(async (to, from, next) => {
             return Promise.reject("No permission");
           }
           
+          console.log("origin_routes", permissionStore.routes)
+          console.log("origin_authMenuList", permissionStore.authMenuList)
+          console.log("routeName", permissionStore.routeName);
+          console.log("get1", permissionStore.authButtonListGet)
+          console.log("get2", permissionStore.authMenuListGet)
+          console.log("get3", permissionStore.showMenuListGet);
+          console.log("get4", permissionStore.flatMenuListGet);
+          console.log("get5", permissionStore.breadcrumbListGet)
+          console.log("origin_authMenuList11111", permissionStore.authMenuList)
           // 3.添加动态路由
           const { roles } = await managerStore.getInfo();
           const accessRoutes = await permissionStore.generateRoutes(roles);

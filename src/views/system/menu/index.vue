@@ -532,6 +532,14 @@ onMounted(() => {
           <icon-select v-model="formData.icon" />
         </el-form-item>
 
+        <!-- <el-form-item
+          v-if="formData.type !== 'BUTTON'"
+          label="图标tmp"
+          prop="icon"
+        >
+          <el-input v-model="formData.icon"></el-input>
+        </el-form-item> -->
+
         <el-form-item
           v-if="formData.type === 'CATALOG'"
           label="跳转路由"

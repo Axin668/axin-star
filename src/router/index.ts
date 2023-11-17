@@ -34,7 +34,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/DashBoard/PV/index.vue'),
         meta: {
           title: '首页',
-          icon: 'homepage',
+          icon: 'HomeFilled',
           isAffix: true,
           isKeepAlive: false
         }

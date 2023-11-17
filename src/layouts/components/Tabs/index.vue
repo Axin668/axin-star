@@ -63,7 +63,7 @@ watch(
 
 // 初始化需要固定的 tabs
 const initTabs = () => {
-  permissionStore.flatMenuListGet().forEach(item => {
+  permissionStore.flatMenuListGet.forEach(item => {
     // 目前只有首页固定
     // if (item.meta.isAffix && !item.meta.isHide && !item.meta.isFull)
     if (item.visible) {
@@ -98,9 +98,7 @@ const tabsDrop = () => {
 // Tab Click
 const tabClick = (tabItem: TabsPaneContext) => {
   let fullPath = tabItem.props.name as string;
-  fullPath = fullPath.charAt(0).toUpperCase() + fullPath.slice(1);
-  // 注意这里的 fullpath 是 name, 所以我们要将首字母大写之后用 name 跳转
-  router.push({name: fullPath});
+  router.push(fullPath);
 };
 
 // Remove Tab
