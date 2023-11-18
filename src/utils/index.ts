@@ -199,7 +199,8 @@ export function getUrlWithParams() {
 export function getFlatMenuList(menuList: MenuVO[]): MenuVO[] {
   let newMenuList: MenuVO[] = JSON.parse(JSON.stringify(menuList));
   return newMenuList.flatMap(item => {
-    // if (item.children?.length) item.children.forEach(child => child.path = item.path + "/" + child.path)
+    // 这里做一个完整路径的拼接, 方便 searchMenu 进行跳转
+    if (item.children?.length) item.children.forEach(child => child.path = item.path + "/" + child.path)
     return [item, ...(item.children && (item.type !== MenuTypeEnum.BUTTON) ? getFlatMenuList(item.children) : [])]
   });
 }
