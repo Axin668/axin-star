@@ -26,7 +26,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useTagsViewStore } from '@/stores/modules/tagsView';
 import { useManagerStore } from "@/stores/modules/manager";
 import { ElMessageBox, ElMessage } from "element-plus";
 import InfoDialog from "./InfoDialog.vue";
@@ -36,7 +35,6 @@ const route = useRoute()
 const router = useRouter();
 
 const managerStore = useManagerStore();
-const tagsViewStore = useTagsViewStore();
 
 // // 退出登录
 // const logout = () => {
@@ -68,9 +66,6 @@ const tagsViewStore = useTagsViewStore();
   }).then(() => {
     managerStore
       .logout()
-      .then(() => {
-        tagsViewStore.delAllViews();
-      })
       .then(() => {
         router.push(`/login?redirect=${route.fullPath}`);
         ElMessage.success("退出登录成功！")

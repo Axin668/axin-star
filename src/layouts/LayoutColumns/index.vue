@@ -24,7 +24,7 @@
     </div>
     <el-aside :class="{ 'not-aside': !subMenuList.length }" :style="{ width: isCollapse ? '65px' : '210px' }">
       <div class="logo flx-center">
-        <span v-show="subMenuList.length" class="logo-text">{{ isCollapse ? "G" : title }}</span>
+        <span v-show="subMenuList.length" class="logo-text">{{ isCollapse ? "A" : $t("login.title") }}</span>
       </div>
       <el-scrollbar>
         <el-menu
@@ -59,7 +59,7 @@ import ToolBarRight from "@/layouts/components/Header/ToolBarRight.vue";
 import SubMenu from "@/layouts/components/Menu/SubMenu.vue";
 import { MenuVO } from "@/api/menu/types";
 
-const title = import.meta.env.VITE_GLOB_APP_TITLE;
+// const title = import.meta.env.VITE_GLOB_APP_TITLE;
 
 const route = useRoute();
 const router = useRouter();

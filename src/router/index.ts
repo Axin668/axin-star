@@ -1,3 +1,4 @@
+import { usePermissionStoreHook } from '@/stores/modules/permission'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 const Layout = () => import('@/layouts/index.vue')
@@ -60,13 +61,17 @@ const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 })
 })
 
-export default router
-
 /**
  * 重置路由
  */
 export function resetRouter() {
-  router.replace({ path: '/login' })
-  location.reload()
+  const permissionStore = usePermissionStoreHook();
+  permissionStore.flatMenuListGet.forEach(route => { 
+    const { name } = route;
+    if (name && router.hasRoute(name)) router.removeRoute(name);
+  })
 }
+
+export default router
+
 

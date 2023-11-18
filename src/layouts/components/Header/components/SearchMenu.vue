@@ -35,7 +35,7 @@ import { usePermissionStore } from "@/stores/modules/permission";
 import { MenuVO } from "@/api/menu/types";
 const router = useRouter();
 const permissionStore = usePermissionStore();
-const menuList = computed(() => permissionStore.flatMenuListGet().filter(item => item.visible));
+const menuList = computed(() => permissionStore.flatMenuListGet.filter(item => item.visible));
 
 const searchMenuList = (queryString: string, cb: Function) => {
   const results = queryString ? menuList.value.filter(filterNodeMethod(queryString)) : menuList.value;

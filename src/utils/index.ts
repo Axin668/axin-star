@@ -200,7 +200,7 @@ export function getFlatMenuList(menuList: MenuVO[]): MenuVO[] {
   let newMenuList: MenuVO[] = JSON.parse(JSON.stringify(menuList));
   return newMenuList.flatMap(item => {
     // if (item.children?.length) item.children.forEach(child => child.path = item.path + "/" + child.path)
-    return [item, ...(item.children ? getFlatMenuList(item.children) : [])]
+    return [item, ...(item.children && (item.type !== MenuTypeEnum.BUTTON) ? getFlatMenuList(item.children) : [])]
   });
 }
 

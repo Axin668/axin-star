@@ -39,11 +39,4 @@ export default {
       login: "Login",
       verifyCode: "VerifyCode",
   },
-  // 导航栏国际化
-  navbar: {
-      dashboard: "Dashboard",
-      logout: "Logout",
-      document: "Document",
-      gitee: "Gitee",
-  }
 };

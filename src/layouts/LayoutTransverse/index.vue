@@ -4,7 +4,7 @@
     <el-header>
       <div class="logo flx-center">
         <img class="logo-img" src="@/assets/images/logo.svg" alt="logo" />
-        <span class="logo-text">{{ title }}</span>
+        <span class="logo-text">{{ $t("login.title") }}</span>
       </div>
       <el-menu mode="horizontal" :router="false" :default-active="activeMenu">
         <!-- 不能直接使用 SubMenu 组件，无法触发 el-menu 隐藏省略功能 -->
@@ -42,8 +42,6 @@ import Main from "@/layouts/components/Main/index.vue";
 import ToolBarRight from "@/layouts/components/Header/ToolBarRight.vue";
 import SubMenu from "@/layouts/components/Menu/SubMenu.vue";
 import { MenuVO } from "@/api/menu/types";
-
-const title = import.meta.env.VITE_GLOB_APP_TITLE;
 
 const route = useRoute();
 const router = useRouter();

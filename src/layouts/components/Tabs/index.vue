@@ -28,7 +28,6 @@ import MoreButton from "./components/MoreButton.vue";
 import { MenuTypeEnum } from "@/enums/MenuTypeEnum";
 
 const route = useRoute();
-console.log(route)
 const router = useRouter();
 const tabStore = useTabsStore();
 const permissionStore = usePermissionStore();

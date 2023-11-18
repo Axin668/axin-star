@@ -1,91 +1,68 @@
-import router from '@/router'
+import router, { resetRouter } from '@/router'
 import { useManagerStoreHook } from "@/stores/modules/manager";
 import { usePermissionStoreHook } from "@/stores/modules/permission";
-import { ElNotification } from 'element-plus';
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { LOGIN_URL } from './config';
+import { LOGIN_URL, ROUTER_WHITE_LIST } from './config';
+import { initDynamicRouter } from './router/modules/dynamicRouter';
 
 NProgress.configure({ showSpinner: false })
-
-const permissionStore = usePermissionStoreHook();
 
 //白名单路由
 const whiteList = ['/login']
 
+/**
+ * @description 路由拦截 beforeEach
+ */
 router.beforeEach(async (to, from, next) => {
-  NProgress.start()
-  const hasToken = localStorage.getItem('accessToken')
-  if (hasToken) {
-    if (to.path === '/login') {
-      //如果已登陆, 则跳转首页
-      next({ path: '/' })
-      NProgress.done()
-    } else {
-      const managerStore = useManagerStoreHook()
-      //去别的地方看是否有权限
-      const hasRoles = managerStore.manager.roles && managerStore.manager.roles.length > 0;
-      if (hasRoles) {
-        //未匹配任何路由, 跳转404
-        if (to.matched.length === 0) {
-          from.name ? next({ name: from.name }) : next('/404')
-        } else {
-          next()
-        }
-      } else {
-        try {
-          // 1.获取菜单列表 && 按钮权限列表
-          await permissionStore.generateAuthMenus();
-          // await authStore.getAuthButtonList();
+  const managerStore = useManagerStoreHook()
+  const permissionStore = usePermissionStoreHook()
 
-          // 2.判断当前用户有没有菜单权限
-          if (!permissionStore.authMenuListGet.length) {
-            ElNotification({
-              title: "无权限访问",
-              message: "当前账号无任何菜单权限，请联系系统管理员！",
-              type: "warning",
-              duration: 3000
-            });
-            managerStore.resetStore();
-            router.replace(LOGIN_URL);
-            return Promise.reject("No permission");
-          }
-          
-          console.log("origin_routes", permissionStore.routes)
-          console.log("origin_authMenuList", permissionStore.authMenuList)
-          console.log("routeName", permissionStore.routeName);
-          console.log("get1", permissionStore.authButtonListGet)
-          console.log("get2", permissionStore.authMenuListGet)
-          console.log("get3", permissionStore.showMenuListGet);
-          console.log("get4", permissionStore.flatMenuListGet);
-          console.log("get5", permissionStore.breadcrumbListGet)
-          console.log("origin_authMenuList11111", permissionStore.authMenuList)
-          // 3.添加动态路由
-          const { roles } = await managerStore.getInfo();
-          const accessRoutes = await permissionStore.generateRoutes(roles);
-          accessRoutes.forEach((route) => {
-            router.addRoute(route);
-          });
-          next({ ...to, replace: true })
-        } catch (error) {
-          await managerStore.resetStore();
-          //redirect回传, 用户登陆之后去往最初要访问的页面, 而非系统默认
-          next(`/login?redirect=${to.path}`)
-          NProgress.done()
-        }
-      }
-    }
-  } else {
-    if (whiteList.indexOf(to.path) !== -1) {
-      next()
-    } else {
-      next(`/login?redirect=${to.path}`)
-      NProgress.done()
-    }
+  NProgress.start()
+
+  // 2.动态设置标题
+  const title = import.meta.env.VITE_GLOB_APP_TITLE;
+  document.title = to.meta.title ? `${to.meta.title} - ${title}` : title;
+
+  // 3.判断是否访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页(针对注销操作)
+  const hasToken = localStorage.getItem('accessToken')
+  if (to.path.toLocaleLowerCase() === LOGIN_URL) {
+    if (hasToken) return next(from.fullPath);
+    resetRouter();
+    return next();
   }
+
+  // 4.判断访问页面是否在路由白名单地址(静态路由)中, 如果存在则直接放行
+  if (ROUTER_WHITE_LIST.includes(to.path)) return next();
+
+  // 5.判断是否有 Token, 没有就重定向到 login 页面(针对刷新操作)
+  if (!managerStore.token) return next({ path: LOGIN_URL, replace: true });
+
+  // 6.如果没有菜单列表, 就重新请求菜单列表并添加动态路由
+  if (!permissionStore.authMenuListGet.length) {
+    await initDynamicRouter();
+    return next({ ...to, replace: true });
+  }
+
+  // 7.存储 routerName 做按钮权限筛选
+  permissionStore.setRouteName(to.name as string);
+
+  // 8.正常访问页面
+  next();
 })
 
+/**
+ * @description 路由跳转错误
+ * */
+router.onError(error => {
+  NProgress.done();
+  console.warn("路由错误", error.message);
+});
+
+/**
+ * @description 路由跳转结束
+ */
 router.afterEach(() => {
   NProgress.done()
 })

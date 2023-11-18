@@ -67,7 +67,6 @@ function handleQuery() {
   listMenus(queryParams)
     .then(({ data }) => {
       menuList.value = data
-      console.log(menuList, "aaaa")
     })
     .then(() => {
       loading.value = false

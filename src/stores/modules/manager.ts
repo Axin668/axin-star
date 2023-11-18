@@ -81,6 +81,11 @@ export const useManagerStore = defineStore("manager", () => {
     token.value = "";
     Object.assign(manager, { roles: [], perms: [] });
   }
+
+  /** Set Token */
+  function setToken(newToken: string) {
+    token.value = newToken;
+  }
   return {
     token,
     manager,
@@ -88,6 +93,7 @@ export const useManagerStore = defineStore("manager", () => {
     getInfo,
     logout,
     resetStore,
+    setToken
   };
 });
 
