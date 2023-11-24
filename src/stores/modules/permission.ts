@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import { defineStore } from "pinia";
-import { constantRoutes } from "@/router";
+import { constantRoutes } from "@/router/modules/constantRouter";
 import { store } from "@/stores";
 import { listRoutes, listMenus } from "@/api/menu";
 import { MenuVO } from "@/api/menu/types";

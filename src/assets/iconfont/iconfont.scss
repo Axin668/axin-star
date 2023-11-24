@@ -1,6 +1,11 @@
 @font-face {
   font-family: iconfont; /* Project id 2667653 */
   src: url("iconfont.ttf?t=1694681005434") format("truetype");
+  /*为字体规则添加属性font-display*/
+  font-display: auto;
+  /*默认block，为字体提供一个短暂的阻塞周期和无限的交换周期。
+  font-display支持auto | block | swap | fallback | optional五种值*/
+
 }
 .iconfont {
   font-family: iconfont !important;
