@@ -1,6 +1,8 @@
 <template>
   <div v-if="columns.length" class="card table-search">
-    <el-form ref="formRef" :model="searchParam">
+    <!-- 只有单个input, 回车会导致form自动提交, 并刷新整个页面或跳转到action指定的路径 -->
+    <!-- 这里取消form的默认提交 -->
+    <el-form ref="formRef" :model="searchParam" onsubmit="return false;">
       <Grid ref="gridRef" :collapsed="collapsed" :gap="[20, 0]" :cols="searchCol">
         <GridItem v-for="(item, index) in columns" :key="item.prop" v-bind="getResponsive(item)" :index="index">
           <el-form-item>
@@ -13,7 +15,8 @@
               </el-space>
               <span>:</span>
             </template>
-            <SearchFormItem :column="item" :search-param="searchParam" />
+            <!-- 子组件回车emit调用父组件的enter-pressed方法, 进而执行搜索 -->
+            <SearchFormItem :column="item" :search-param="searchParam" @enter-pressed="search" />
           </el-form-item>
         </GridItem>
         <GridItem suffix>
