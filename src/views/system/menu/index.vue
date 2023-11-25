@@ -11,8 +11,10 @@
         children: 'children',
         hasChildren: 'hasChildren'
       }"
-      default-expand-all
       size="small"
+      default-expand-all
+      highlight-current-row
+      @row-click="onRowClick"
     >
         <!-- 表格 header 按钮 -->
         <template #tableHeader>
@@ -68,9 +70,14 @@ const getTableList = (params: any) => {
 // 表格配置项
 const columns = reactive<ColumnProps<MenuVO>[]>([
     {
+        prop: "keywords",
+        label: "关键字",
+        search: { el: "input", tooltip: "搜索提示: 目前仅支持[菜单名称]关键字哦~~~"},
+        isShow: false
+    },
+    {
         prop: "name",
         label: "菜单名称",
-        search: { el: "input", tooltip: "我是搜索提示"},
         align: "left",
         width: 400,
         render: scope => {
@@ -146,9 +153,17 @@ const columns = reactive<ColumnProps<MenuVO>[]>([
 
 // 删除菜单信息
 const handleDelete = async (params: MenuVO) => {
-  await useHandleData(deleteMenu, { id: params.id }, `确认删除菜单【${params.name}】选项?`);
+  await useHandleData(deleteMenu, { id: params.id }, `删除菜单【${params.name}】选项`);
   proTable.value?.getTableList();
 };
+
+//选择表格的行菜单ID
+const selectedRowMenuId = ref<number | undefined>()
+
+/** 行点击事件 */
+function onRowClick(row: MenuVO) {
+  selectedRowMenuId.value = row.id
+}
 
 const drawerRef = ref<InstanceType<typeof MenuDrawer> | null>(null);
 const openDrawer = (title: string, parentId?: number, menuId?: number) => {

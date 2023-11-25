@@ -11,18 +11,22 @@ import { HandleData } from './interface'
  */
 export const useHandleData = (
   api: (params: any) => Promise<any>,
+  // 一般删除传id或者ids就可以了
   params: any = {},
   message: string,
   confirmType: HandleData.MessageType = 'warning'
 ) => {
   return new Promise((resolve, reject) => {
-    ElMessageBox.confirm(`是否${message}?`, '温馨提示', {
+    ElMessageBox.confirm(`确认${message}???`, '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: confirmType,
       draggable: true
     }).then(async () => {
-      const res = await api(params)
+      // 对应删除(number)和批量(string)删除
+      const { id, ids } = params
+      const effectiveId = id || ids
+      const res = await api(effectiveId)
       if (!res) return reject(false)
       ElMessage({
         type: 'success',

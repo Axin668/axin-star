@@ -134,7 +134,7 @@ export interface ProTableProps {
   treeProps?: {
     children: string;
     hasChildren: string;
-  }
+  } // 是否支持树形数据, 非必传
 }
 
 // 接受父组件参数，配置默认值

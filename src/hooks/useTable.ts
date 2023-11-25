@@ -71,7 +71,8 @@ export const useTable = (
       state.tableData = isPageable ? data.list : data
       // 解构后台返回的分页数据 (如果有分页就更新分页信息)
       if (isPageable) {
-        const { pageNum, pageSize, total } = data
+        const { total } = data
+        const { pageNum, pageSize } = state.totalParam
         updatePageable({ pageNum, pageSize, total })
       }
     } catch (error) {
