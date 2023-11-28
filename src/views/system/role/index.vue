@@ -11,8 +11,8 @@
       >
           <!-- 表格 header 按钮 -->
           <template #tableHeader>
-              <el-button  type="success" :icon="CirclePlus" @click="openDrawer()">新增</el-button>
-              <el-button  type="danger" :icon="Delete" :disabled="ids.length === 0" @click="handleDelete()">删除</el-button>
+              <el-button  type="primary" :icon="CirclePlus" @click="openDrawer()">新增</el-button>
+              <el-button  type="danger" :icon="Delete" plain :disabled="ids.length === 0" @click="handleDelete()">删除</el-button>
           </template>
   
           <!-- 表格操作 -->
