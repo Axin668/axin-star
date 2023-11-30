@@ -21,10 +21,9 @@
         <el-form-item label="数据权限" prop="dataScope">
             <el-select v-model="formData.dataScope">
                 <el-option :key="0" label="所有数据" :value="0" />
-                <el-option :key="1" label="博客以及游戏数据" :value="1" />
-                <el-option :key="2" label="游戏数据" :value="2" />
-                <el-option :key="3" label="博客数据" :value="3" />
-                <el-option :key="4" label="本人数据" :value="4" />
+                <el-option :key="1" label="部门及子部门数据" :value="1" />
+                <el-option :key="2" label="本部门数据" :value="2" />
+                <el-option :key="3" label="本人数据" :value="3" />
             </el-select>
         </el-form-item>
 

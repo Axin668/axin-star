@@ -95,7 +95,7 @@ export interface ManagerForm {
   /**
   * 角色ID集合
   */
-  roleIds: number[];
+  roleIds?: number[];
   /**
   * 管理员状态(1:正常, 0:禁用)
   */
