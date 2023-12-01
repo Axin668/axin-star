@@ -23,7 +23,7 @@
 
         <!-- 表格操作 -->
         <template #operation="scope">
-            <el-button v-hasPerm="['sys:menu:add']" v-if="scope.row.type === 'CATALOG' || scope.row.type === 'MENU'" type="primary" link :icon="Plus" @click="openDrawer('新建', scope.row.id)">新建</el-button>
+            <el-button v-hasPerm="['sys:menu:add']" v-if="scope.row.type === 'CATALOG' || scope.row.type === 'MENU'" type="primary" link :icon="Plus" @click="openDrawer('新增', scope.row.id)">新建</el-button>
             <el-button v-hasPerm="['sys:menu:edit']" type="primary" link :icon="EditPen" @click="openDrawer('编辑', undefined, scope.row.id)">编辑</el-button>
             <el-button v-hasPerm="['sys:menu:delete']" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>

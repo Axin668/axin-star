@@ -1,7 +1,8 @@
 <template>
     <div class="main-box">
         <TreeFilter
-          label="name"
+          label="label"
+          id="value"
           title="部门列表(单选)"
           :data="treeFilterData"
           :default-value="initParam.deptId"
@@ -18,19 +19,20 @@
               :init-param="initParam"
               :search-col="{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3 }"
               @selection-change="handleSelectionChange"
+              highlight-current-row
             >
               <!-- 表格 header 按钮 -->
               <template #tableHeader>
-                <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增用户</el-button>
-                <el-button  type="danger" :icon="Delete" plain :disabled="ids.length === 0" @click="handleDelete()">删除</el-button>
+                <el-button v-hasPerm="['sys:manager:add']" type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增用户</el-button>
+                <el-button v-hasPerm="['sys:manager:delete']" type="danger" :icon="Delete" plain :disabled="ids.length === 0" @click="handleDelete()">删除</el-button>
               </template>
 
               <!-- 表格操作 -->
               <template #operation="scope">
                 <el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row.id)">查看</el-button>
-                <el-button type="primary" v-hasPerm="['sys:user:edit']" link :icon="EditPen" @click="openDrawer('编辑', scope.row.id)">编辑</el-button>
-                <el-button type="primary" v-hasPerm="['sys:user:reset_pwd']" link :icon="RefreshLeft" @click="resetPassword(scope.row)">重置密码</el-button>
-                <el-button type="primary" v-hasPerm="['sys:user:delete']" link :icon="Delete" @click="handleDelete(scope.row.id, scope.row.managerName)">删除</el-button>
+                <el-button type="primary" v-hasPerm="['sys:manager:edit']" link :icon="EditPen" @click="openDrawer('编辑', scope.row.id)">编辑</el-button>
+                <el-button type="primary" v-hasPerm="['sys:manager:reset_pwd']" link :icon="RefreshLeft" @click="resetPassword(scope.row)">重置密码</el-button>
+                <el-button type="primary" v-hasPerm="['sys:manager:delete']" link :icon="Delete" @click="handleDelete(scope.row.id, scope.row.managerName)">删除</el-button>
               </template>
             </ProTable>
             <ManagerDrawer ref="drawerRef" />
@@ -44,7 +46,7 @@ import { addManager, deleteManagers, getManagerForm, getManagerPage, updateManag
 import { ManagerPageVO } from '@/api/manager/types';
 import { ColumnProps, ProTableInstance } from '@/components/ProTable/interface';
 import { useHandleData } from '@/hooks/useHandleData';
-import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
+import { ElMessage, ElMessageBox, ElNotification, ElSwitch } from 'element-plus';
 import ManagerDrawer from './components/ManagerDrawer.vue';
 import ImportExcel from '@/components/ImportExcel/index.vue'
 import { listDeptOptions } from '@/api/dept';
@@ -67,29 +69,6 @@ const ids = ref<number[]>([]);
 const getTableList = (params: any) => {
     let newParams = JSON.parse(JSON.stringify(params))
     return getManagerPage(newParams);
-}
-
-/**
- * 修改管理员状态
- * 
- * @param row
- */
-const handleStatusChange = (row: { [key: string]: any }) => {
-    const text = row.status === 1 ? "启用" : "停用";
-    ElMessageBox.confirm("确定要" + text + "管理员[" + row.managerName + "]吗?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-    })
-      .then(() => {
-        return updateManagerStatus(row.id, row.status);
-      })
-      .then(() => {
-        ElMessage.success(text + "成功");
-      })
-      .catch(() => {
-        row.status = row.status === 1 ? 0 : 1;
-      });
 }
 
 // 表格配置项
@@ -141,20 +120,23 @@ const columns = reactive<ColumnProps<ManagerPageVO>[]>([
     {
         prop: "status",
         label: "状态",
-        width: 100,
+        width: 60,
         align: "center",
+        sortable: true,
+        tag: true,
+        search: { el: "tree-select" },
         render: scope => {
             return (
                 <>
-                    <el-switch 
-                        modelvalue={scope.row.status}
-                        inactiveValue={0}
-                        activeValue={1}
-                        onChange={() => handleStatusChange(scope.row)} 
+                    <ElSwitch 
+                      modelValue={scope.row.status === 1}
+                      inactive-value={0}
+                      active-value={1}
+                      onChange={() => handleStatusChange(scope.row)}
                     />
                 </>
             )
-        } 
+        }
     },
     {
         prop: "createTime",
@@ -169,6 +151,29 @@ const columns = reactive<ColumnProps<ManagerPageVO>[]>([
         width: 220
     },
 ]);
+
+/**
+ * 修改管理员状态
+ * 
+ * @param row
+ */
+ const handleStatusChange = (row: { [key: string]: any }) => {
+    const text = row.status === 1 ? "启用" : "停用";
+    ElMessageBox.confirm("确定要" + text + "管理员[" + row.managerName + "]吗?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+    })
+      .then(() => {
+        return updateManagerStatus(row.id, row.status);
+      })
+      .then(() => {
+        ElMessage.success(text + "成功");
+      })
+      .catch(() => {
+        row.status = row.status === 1 ? 0 : 1;
+      });
+}
 
 // 删除管理员信息
 const handleDelete = async (managerId?: number, managerName?: string) => {
@@ -223,7 +228,8 @@ const treeFilterData = ref<any>([]);
 const getTreeFilter = async () => {
     const { data } = await listDeptOptions()
     treeFilterData.value = data;
-    initParam.deptId = treeFilterData.value[1].id;
+    // 初始默认选择根节点的deptId(value就是id)
+    initParam.deptId = treeFilterData.value[0].value;
 }
 
 // dept树形列表筛选的点击事件
@@ -239,7 +245,7 @@ const openDrawer = (title: string, managerId?: number) => {
         title,
         managerId: managerId,
         isView: title === '查看',
-        api: managerId ? updateManager : addManager,
+        api: title === "新增" ? addManager : title === "编辑" ? updateManager : undefined,
         ManagerFormApi: getManagerForm,
         DeptOptionsApi: listDeptOptions,
         RoleOptionsApi: listRoleOptions,
@@ -256,16 +262,16 @@ onMounted(() => {
         title: "温馨提示",
         message: "该页面 ProTable 数据不会自动请求, 需等待 treeFilter 数据请求完成之后，才会触发表格请求.",
         type: "info",
-        duration: 10000
+        duration: 3000
     });
-    setTimeout(() => {
-        ElNotification({
-            title: "温馨提示",
-            message: "该页面 ProTable 性别搜索框为远程数据搜索, 详情可查看代码.",
-            type: "info",
-            duration: 10000
-        });
-    }, 0);
+    // setTimeout(() => {
+    //     ElNotification({
+    //         title: "温馨提示",
+    //         message: "该页面 ProTable 性别搜索框为远程数据搜索, 详情可查看代码.",
+    //         type: "info",
+    //         duration: 3000
+    //     });
+    // }, 0);
 })
 </script>
 
