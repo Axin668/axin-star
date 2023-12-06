@@ -10,7 +10,7 @@
         :hide-required-asterisk="drawerProps.isView"
       >
         <el-form-item label="管理员名称" prop="managerName">
-            <el-input v-model="formData.id" :readonly="!!formData.id" placeholder="请输入管理员名称" />
+            <el-input v-model="formData.managerName" :readonly="!!formData.id" placeholder="请输入管理员名称" />
         </el-form-item>
 
         <el-form-item label="所属部门" prop="deptId">
@@ -33,7 +33,7 @@
             <el-option 
               v-for="item in roleList"
               :key="item.value"
-              :label="item.value"
+              :label="item.label"
               :value="item.value"
             />
           </el-select>
@@ -64,12 +64,11 @@
             <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
-
-        <template #footer>
+      </el-form>
+      <template #footer>
           <el-button v-show="!drawerProps.isView" type="primary" @click="handleSubmit">确定</el-button>
           <el-button @click="closeDrawer">取消</el-button>
         </template>
-      </el-form>
     </el-drawer>
 </template>
   

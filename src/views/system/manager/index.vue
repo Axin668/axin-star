@@ -46,7 +46,7 @@ import { addManager, deleteManagers, getManagerForm, getManagerPage, updateManag
 import { ManagerPageVO } from '@/api/manager/types';
 import { ColumnProps, ProTableInstance } from '@/components/ProTable/interface';
 import { useHandleData } from '@/hooks/useHandleData';
-import { ElMessage, ElMessageBox, ElNotification, ElSwitch } from 'element-plus';
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
 import ManagerDrawer from './components/ManagerDrawer.vue';
 import ImportExcel from '@/components/ImportExcel/index.vue'
 import { listDeptOptions } from '@/api/dept';
@@ -127,13 +127,14 @@ const columns = reactive<ColumnProps<ManagerPageVO>[]>([
         search: { el: "tree-select" },
         render: scope => {
             return (
-                <>
-                    <ElSwitch 
-                      modelValue={scope.row.status === 1}
-                      inactive-value={0}
-                      active-value={1}
-                      onChange={() => handleStatusChange(scope.row)}
-                    />
+                <> 
+                  <el-switch
+                    model-value={scope.row.status}
+                    active-text={scope.row.status ? "启用" : "禁用"}
+                    active-value={1}
+                    inactive-value={0}
+                    onClick={() => handleStatusChange(scope.row)}
+                  />
                 </>
             )
         }
@@ -158,7 +159,9 @@ const columns = reactive<ColumnProps<ManagerPageVO>[]>([
  * @param row
  */
  const handleStatusChange = (row: { [key: string]: any }) => {
-    const text = row.status === 1 ? "启用" : "停用";
+    // 暂时修改(反转)状态
+    row.status = 1 - row.status
+    const text = row.status === 1 ? "启用" : "禁用";
     ElMessageBox.confirm("确定要" + text + "管理员[" + row.managerName + "]吗?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -169,8 +172,10 @@ const columns = reactive<ColumnProps<ManagerPageVO>[]>([
       })
       .then(() => {
         ElMessage.success(text + "成功");
+        proTable.value?.getTableList();
       })
       .catch(() => {
+        // 出现异常就恢复初始状态
         row.status = row.status === 1 ? 0 : 1;
       });
 }
@@ -185,6 +190,7 @@ const handleDelete = async (managerId?: number, managerName?: string) => {
 
     const message= managerName ? `删除管理员【${managerName}】选项` : "删除选定的管理员";
     await useHandleData(deleteManagers, { ids: managerIds }, message);
+    proTable.value?.clearSelection();
     proTable.value?.getTableList();
 };
 
@@ -220,7 +226,7 @@ function resetPassword(row: { [key: string]: any }) {
 }
 
 // 如果表格需要初始化请求参数, 直接定义传给 ProTable(之后每次请求都会自动带上该参数, 此参数更改之后也会一直带上, 改变此参数会自动刷新表格数据)
-const initParam = reactive({ deptId: "" });
+const initParam = reactive({ deptId: "invalid" });
 
 // 获取 treeFilter 数据(和ManagerDrawer里边的deptList一样)
 // 当 proTable 的 requestAuto 属性为 false，不会自动请求表格数据，等待 treeFilter 数据回来之后，更改 initParam.deptId 的值，才会触发请求 proTable 数据
@@ -234,6 +240,7 @@ const getTreeFilter = async () => {
 
 // dept树形列表筛选的点击事件
 const changeTreeFilter = (val: string) => {
+    // 其实这里val是number类型
     ElMessage.success("请注意查看请求参数变化 🤔~")
     proTable.value!.pageable.pageNum = 1;
     initParam.deptId = val; // 只要initParam变化就会重新请求列表

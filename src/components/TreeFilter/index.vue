@@ -66,7 +66,8 @@ const treeAllData = ref<{ [key: string]: any }[]>([]);
 const selected = ref();
 const setSelected = () => {
   if (props.multiple) selected.value = Array.isArray(props.defaultValue) ? props.defaultValue : [props.defaultValue];
-  else selected.value = typeof props.defaultValue === "string" ? props.defaultValue : "";
+  // string -> number(默认类型为number就设置为默认, 否则为"")
+  else selected.value = typeof props.defaultValue === "number" ? props.defaultValue : "";
 };
 
 onBeforeMount(async () => {
