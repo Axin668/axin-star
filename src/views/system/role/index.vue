@@ -112,8 +112,9 @@ const handleDelete = async (roleId?: number, roleName?: string) => {
         return;
     }
 
-    const message= roleName ? `删除角色【${roleName}】选项` : "删除选定的角色";
+    const message = roleName ? `删除角色【${roleName}】选项` : "删除选定的角色";
     await useHandleData(deleteRoles, { ids: roleIds }, message);
+    proTable.value?.clearSelection();
     proTable.value?.getTableList();
 };
 

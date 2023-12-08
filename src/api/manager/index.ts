@@ -141,14 +141,14 @@ export function exportManager(queryParams: ManagerQuery) {
  * @param file 
  * @returns 
  */
-export function importManager(deptId: number, file: File) {
-  const formData = new FormData();
-  formData.append("file", file);
+export function importManager(deptId: number, excelFormData: FormData) {
+  // const formData = new FormData();
+  // formData.append("file", file);
   return request({
     url: "/api/managers/_import",
     method: "post",
     params: { deptId: deptId },
-    data: formData,
+    data: excelFormData,
     headers: {
       "Content-Type": "multipart/form-data",
     }

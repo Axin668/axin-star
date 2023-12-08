@@ -4,6 +4,15 @@
       <el-form-item label="模板下载 :">
         <el-button type="primary" :icon="Download" @click="downloadTemp"> 点击下载 </el-button>
       </el-form-item>
+      <el-form-item label="部门">
+        <el-tree-select
+          v-model="importDeptId"
+          placeholder="请选择部门"
+          :data="parameter.deptList"
+          filterable
+          check-strictly
+        />
+      </el-form-item>
       <el-form-item label="文件上传 :">
         <el-upload
           action="#"
@@ -50,12 +59,15 @@ export interface ExcelParameterProps {
   fileSize?: number; // 上传文件的大小
   fileType?: File.ExcelMimeType[]; // 上传文件的类型
   tempApi?: (params: any) => Promise<any>; // 下载模板的Api
-  importApi?: (params: any) => Promise<any>; // 批量导入的Api
+  importApi?: (...params: any[]) => Promise<any>; // 批量导入的Api
   getTableList?: () => void; // 获取表格数据的Api
+  deptList?: global.OptionType[]; // 部门列表
 }
 
 // 是否覆盖数据
 const isCover = ref(false);
+// 导入选择的部门ID
+const importDeptId = ref<number>();
 // 最大文件上传数
 const excelLimit = ref(1);
 // dialog状态
@@ -64,7 +76,7 @@ const dialogVisible = ref(false);
 const parameter = ref<ExcelParameterProps>({
   title: "",
   fileSize: 5,
-  fileType: ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+  fileType: ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
 });
 
 // 接收父组件参数
@@ -84,7 +96,7 @@ const uploadExcel = async (param: UploadRequestOptions) => {
   let excelFormData = new FormData();
   excelFormData.append("file", param.file);
   excelFormData.append("isCover", isCover.value as unknown as Blob);
-  await parameter.value.importApi!(excelFormData);
+  await parameter.value.importApi!(importDeptId.value, excelFormData);
   parameter.value.getTableList && parameter.value.getTableList();
   dialogVisible.value = false;
 };

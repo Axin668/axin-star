@@ -24,6 +24,8 @@
               <!-- 表格 header 按钮 -->
               <template #tableHeader>
                 <el-button v-hasPerm="['sys:manager:add']" type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增用户</el-button>
+                <el-button type="primary" :icon="Upload" plain @click="batchAdd">批量添加用户</el-button>
+                <el-button type="primary" :icon="Download" plain @click="downloadFile">导出用户数据</el-button>
                 <el-button v-hasPerm="['sys:manager:delete']" type="danger" :icon="Delete" plain :disabled="ids.length === 0" @click="handleDelete()">删除</el-button>
               </template>
 
@@ -42,7 +44,7 @@
 </template>
 
 <script lang="tsx" setup>
-import { addManager, deleteManagers, getManagerForm, getManagerPage, updateManager, updateManagerPassword, updateManagerStatus } from '@/api/manager';
+import { addManager, deleteManagers, downloadTemplateApi, exportManager, getManagerForm, getManagerPage, importManager, updateManager, updateManagerPassword, updateManagerStatus } from '@/api/manager';
 import { ManagerPageVO } from '@/api/manager/types';
 import { ColumnProps, ProTableInstance } from '@/components/ProTable/interface';
 import { useHandleData } from '@/hooks/useHandleData';
@@ -51,7 +53,9 @@ import ManagerDrawer from './components/ManagerDrawer.vue';
 import ImportExcel from '@/components/ImportExcel/index.vue'
 import { listDeptOptions } from '@/api/dept';
 import { listRoleOptions } from '@/api/role';
-import { CirclePlus, Delete, EditPen, RefreshLeft, View } from '@element-plus/icons-vue';
+import { CirclePlus, Delete, Download, EditPen, RefreshLeft, Upload, View } from '@element-plus/icons-vue';
+import { managerStatus } from '@/utils/dict';
+import { useDownload } from '@/hooks/useDownload';
 
 defineOptions({
     name: "Manager",
@@ -124,7 +128,9 @@ const columns = reactive<ColumnProps<ManagerPageVO>[]>([
         align: "center",
         sortable: true,
         tag: true,
-        search: { el: "tree-select" },
+        enum: managerStatus,
+        search: { el: "tree-select", props: { filterable: true } },
+        fieldNames: { label: "label", value: "value" },
         render: scope => {
             return (
                 <> 
@@ -225,6 +231,15 @@ function resetPassword(row: { [key: string]: any }) {
       .catch(() => {})
 }
 
+// 导出管理员列表
+const downloadFile = async () => {
+    ElMessageBox.confirm("确认导出管理员数据?", "温馨提示", {
+        type: "warning"
+    }).then(() => {
+        useDownload(exportManager, "管理员列表", proTable.value?.searchParam)
+    })
+}
+
 // 如果表格需要初始化请求参数, 直接定义传给 ProTable(之后每次请求都会自动带上该参数, 此参数更改之后也会一直带上, 改变此参数会自动刷新表格数据)
 const initParam = reactive({ deptId: "invalid" });
 
@@ -262,6 +277,16 @@ const openDrawer = (title: string, managerId?: number) => {
 }
 
 const dialogRef = ref<InstanceType<typeof ImportExcel> | null>(null);
+const batchAdd = () => {
+    const params = {
+        title: "管理员",
+        deptList: treeFilterData.value,
+        tempApi: downloadTemplateApi,
+        importApi: importManager,
+        getTableList: proTable.value?.getTableList,
+    }
+    dialogRef.value?.acceptParams(params);
+}
 
 onMounted(() => {
     getTreeFilter();
