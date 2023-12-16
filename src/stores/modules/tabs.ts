@@ -1,4 +1,4 @@
-import router from "@/router";
+  import router from "@/router";
 import { defineStore } from "pinia";
 import { getUrlWithParams } from "@/utils";
 import { useKeepAliveStore } from "./keepAlive";
@@ -71,6 +71,15 @@ export const useTabsStore = defineStore({
       this.tabsMenuList.forEach(item => {
         if (item.path == getUrlWithParams()) item.title = title;
       });
+    },
+    // Update Tabs VIEW
+    async updateVisitedView(view: TabsMenuProps) {
+      for (let v of this.tabsMenuList) {
+        if (v.path === view.path) {
+          v = Object.assign(v, view);
+          break;
+        }
+      }
     }
   },
   persist: piniaPersistConfig("axin-tabs")

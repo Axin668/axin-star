@@ -1,3 +1,5 @@
+import { Menu } from "@/types/global";
+
 export type LayoutType = "vertical" | "classic" | "transverse" | "columns";
 
 export type AssemblySizeType = "large" | "default" | "small";

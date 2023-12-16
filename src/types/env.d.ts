@@ -11,6 +11,10 @@ interface ImportMetaEnv {
    * API基础路径(反向代理)
    */
   VITE_APP_BASE_API: string
+  /**
+   * OSS基础路径
+   */
+  VITE_APP_DRAWIO_PATH: string
 }
 
 interface ImportMeta {

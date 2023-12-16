@@ -17,6 +17,8 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import "@/styles/element-dark.scss";
 // custom element css
 import "@/styles/element.scss";
+// mixin scss
+import "@/styles/mixin.scss"
 // uno css
 import 'uno.css'
 // svg icons

@@ -29,7 +29,7 @@ service.interceptors.response.use(
   (response: AxiosResponse) => {
     const { code, msg } = response.data
     // 登录成功
-    if (code === '00000') {
+    if (code === '00000' || code === 200) {
       return response.data
     }
     // 响应数据为二进制流处理(Excel导出)

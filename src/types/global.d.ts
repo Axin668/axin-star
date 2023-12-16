@@ -1,3 +1,6 @@
+import Vditor from "vditor"
+import { ComponentPublicInstance } from "vue"
+
 declare namespace global {
   /**
    * 分页查询参数

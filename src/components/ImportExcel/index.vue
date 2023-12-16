@@ -53,6 +53,7 @@ import { ref } from "vue";
 import { useDownload } from "@/hooks/useDownload";
 import { Download } from "@element-plus/icons-vue";
 import { ElNotification, UploadRequestOptions, UploadRawFile } from "element-plus";
+import { File, global } from "@/types/global";
 
 export interface ExcelParameterProps {
   title: string; // 标题
