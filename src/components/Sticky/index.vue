@@ -88,7 +88,6 @@ const handleResize = () => {
 
 onMounted(() => {
     height.value = stickyRef.value!.getBoundingClientRect().height;
-    console.log(height.value)
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
 })

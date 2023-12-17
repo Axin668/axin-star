@@ -102,6 +102,7 @@ declare module 'vue' {
     Main: typeof import('./../layouts/components/Main/index.vue')['default']
     ManagerDrawer: typeof import('./../views/system/manager/components/ManagerDrawer.vue')['default']
     Maximize: typeof import('./../layouts/components/Main/components/Maximize.vue')['default']
+    MDinput: typeof import('./../views/blog/paper/components/MDinput/index.vue')['default']
     MenuDrawer: typeof import('./../views/system/menu/components/MenuDrawer.vue')['default']
     Message: typeof import('./../layouts/components/Header/components/Message.vue')['default']
     MoreButton: typeof import('./../layouts/components/Tabs/components/MoreButton.vue')['default']

@@ -53,16 +53,18 @@
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
-            <!-- <el-form-item style="margin-bottom: 40px" prop="title" >
-                <MDinput
-                  v-model="postForm.title"
-                  :maxlength="100"
-                  name="name"
-                  required
-                >
-                  Title
-                </MDinput>
-              </el-form-item> -->
+            <el-form-item style="margin-bottom: 40px" prop="title" >
+              <MDinput
+                v-model="postForm.title"
+                :maxlength="100"
+                name="name"
+                required
+                @title-change="handleTitleChange"
+                @title-blur="handleTitleBlur"
+              >
+                Title
+              </MDinput>
+            </el-form-item>
 
             <div class="postInfo-container">
               <el-row>
@@ -132,9 +134,9 @@
 import { addUpdateAndPublish, cancelPublish, fetchArticleAsync, fetchInfo, updateArticle } from '@/api/blog/article';
 import Sticky from '@/components/Sticky/index.vue' // 粘性header组件
 import { TabsMenuProps } from '@/stores/interface';
-import { useManagerStore } from '@/stores/modules/manager';
 import { useTabsStore } from '@/stores/modules/tabs';
 import { formatTime } from '@/utils';
+import { uploadImgObject } from '@/utils/oss';
 import { ElForm, ElMessage, ElNotification } from 'element-plus'
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
@@ -146,6 +148,8 @@ defineOptions({
   name: 'Post',
   inheritAttrs: false
 })
+
+const emit = defineEmits(['el.form.change', 'el.form.blur']);
 
 const currentInstance = getCurrentInstance();
 
@@ -203,9 +207,9 @@ var timer = {
   siv: [] as number[]
 }
 
-let toolbar: any
+let toolbar = ref<any>()
 if (window.innerWidth < 768) {
-  toolbar = [
+  toolbar.value = [
     'emoji',
     'headings',
     'bold',
@@ -234,7 +238,6 @@ if (window.innerWidth < 768) {
     'redo',
     '|',
     'edit-mode',
-    'special-function',
     'content-theme',
     'code-theme',
     'export',
@@ -246,7 +249,7 @@ if (window.innerWidth < 768) {
 }
 
 // store
-const managerStore = useManagerStore()
+// const managerStore = useManagerStore()
 const tagsStore = useTabsStore()
 
 // data
@@ -270,12 +273,14 @@ const displayTime = computed({
 })
 
 // methods
+// 草稿自动保存
 const autoSaveArticle = () => {
   timer.siv.push(window.setInterval(() => {
     handleUpdateArticle()
   }, 30000))
 }
 
+// 异步请求某id文章的信息
 const fetchData = (id : any) => {
   var response = fetchArticleAsync(id)
   const respData = JSON.parse(response.response).data
@@ -285,6 +290,7 @@ const fetchData = (id : any) => {
   setPageTitle();
 }
 
+// 获取所有文章概览信息
 const fetchInfos = () => {
   fetchInfo()
     .then((response) => {
@@ -296,6 +302,7 @@ const fetchInfos = () => {
     })
 }
 
+// 设置tags标题
 const setTagsViewTitle = () => {
   const title = '编辑文章'
   const route = Object.assign({}, tmpRoute.value, {
@@ -312,13 +319,14 @@ const setTagsViewTitle = () => {
   tagsStore.updateVisitedView(view)
 }
 
+// 设置网站标题
 const setPageTitle = () => {
   const title = 'Edit Article'
   document.title = `${title} - ${postForm.id}`
 }
 
+// 处理文章更新与发布
 const handleAddUpdateAndPublish = () => {
-  console.log(postForm)
   postFormRef.value!.validate(async (valid: boolean) => {
     if (!valid) {
       ElMessage({
@@ -339,7 +347,6 @@ const handleAddUpdateAndPublish = () => {
           })
           postForm.id = response.data.id
           postForm.content = response.data.content
-          console.log(postForm.id);
           var syncTimeElm = document.getElementById('syncTimeDiv')
           console.log(syncTimeElm)
           syncTimeElm!.innerHTML = 
@@ -364,6 +371,7 @@ const handleAddUpdateAndPublish = () => {
   })
 }
 
+// 处理文章更新(草稿保存 or 文章更新)
 const handleUpdateArticle = (auto?: any) => {
   // 更新同步标签
   // debugger
@@ -408,6 +416,7 @@ const handleUpdateArticle = (auto?: any) => {
     })
 }
 
+// 处理文章取消发布
 const handleCancelPublish = () => {
   cancelPublish(postForm.id!)
     .then(() => {
@@ -419,26 +428,45 @@ const handleCancelPublish = () => {
     })
 }
 
+// 处理文件上传
+const handleImageUpload = async (file: any, callback: any): Promise<string> => {
+  let res = await uploadImgObject(file,(url: string)=>{
+    callback(url)
+  }, postForm.title)
+  console.log("callback host: ", res);
+  return res;
+}
+
+// 输入框title输入同步
+const handleTitleChange = (value: any) => {
+  postForm.title = value.join('')
+}
+
+// 输入框失去焦点, title同步
+const handleTitleBlur = (value: any) => {
+  postForm.title = value.join('')
+}
+
 // 生命周期
 onMounted(() => {
   window.vue = currentInstance
-  console.log(window.vue, "hahahaah");
   contentEditor.value = new Vditor('vditor', {
     // cdn: 'http://localhost:9000',
-    toolbar,
+    toolbar: toolbar.value,
     lang: 'zh_CN',
-    mode: 'wysiwyg',
+    mode: 'ir', // wysiwyg
     height: window.innerHeight + 100,
     outline: {
       enable: true,
-      position: 'right'
+      position: 'left'
     },
-    debugger: true,
+    debugger: false,  // 是否显示日志
     typewriterMode: true,
     placeholder: '开始记录你的生活吧!',
     preview: {
-      "hljs": {
-        "lineNumber": true,
+      hljs: {
+        "enable": true,  // 开启高亮
+        "lineNumber": true,  // 代码行号
       },
       markdown: {
         toc: true,
@@ -504,20 +532,32 @@ onMounted(() => {
 
     upload: {
       accept: 'image/*,.mp3, .wav, .rar',
-      // edit: '.svg', // 可以编辑的图片类型
-      // editUrl:
-      //   process.env.VUE_APP_DRAWIO_PATH + '?embed=1&ui=atlas&spin=1&proto=json&configure=1&lang=zh',
-      token: managerStore.token,
-      url: '/blog-api/upload/editor',
-      linkToImgUrl: '/blog-api/upload/fetch',
-      // TODO
-      // urlToGetOssCredentials: process.env.VUE_APP_BASE_API + '/upload/policy',
+      multiple: false,
       filename(name) {
         return name
           .replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '')
           .replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '')
           .replace('/\\s/g', '')
-      }
+      },
+      token: 'test',
+      url: '/blog-api/upload/editor',
+      linkToImgUrl: '/blog-api/upload/fetch',
+      handler(files) {
+          // 回调将图片url嵌入编辑器
+          function callback(path: any) {
+            let name = files[0] && files[0].name;
+            let succFileText = "";
+            succFileText += `\n <img alt=${name} src="${path}">`;
+            document.execCommand('insertHTML', false, succFileText);
+          }
+          // 返回文章名称(随便定义的)
+          let ossStaticHost = ''
+          handleImageUpload(files, callback).then(res => {
+            ossStaticHost = res
+          })
+          this.url = ossStaticHost
+          return ossStaticHost
+      },
     },
     after: () => {
       if (props.isEdit) {
