@@ -97,10 +97,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     server: {
       host: '0.0.0.0',
       port: Number(env.VITE_APP_PORT),
-      open: true,
+      open: false,
       proxy: {
         [env.VITE_APP_BASE_API]: {
-          target: 'http://10.254.7.62:9000',
+          target: 'http://172.17.0.1:8989',
           changeOrigin: true,
           rewrite: (path) =>
             path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
