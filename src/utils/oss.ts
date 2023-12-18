@@ -10,7 +10,7 @@ export const uploadImgObject = async (file: any, callback: any, title: string) =
     var filename = uuidv4().replace(/-/g, '') + '.' + file[0].type.split('/').pop();
     console.log(filename)
     // 上传相对于整个bucket (图床)路径名
-    var ext = title + '/' + filename
+    var ext = 'markdown/' + title + '/' + filename
 
     let res = await policy(title)
     if (!res.data) return ElMessage("credentials invalid")
@@ -27,7 +27,7 @@ export const uploadImgObject = async (file: any, callback: any, title: string) =
             region: stsConfig.region
         })
 
-        var filePath = ossStaticHost + title + '/' + filename
+        var filePath = ossStaticHost + '/markdown/' + title + '/' + filename
         if (file.size >= 10 * 1024 * 1024) { // 分片上传
             await client.multipartUpload(ext, file, {
                 // 获取分片上传进度、断点和返回值

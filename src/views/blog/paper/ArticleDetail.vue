@@ -40,11 +40,10 @@
         <div class="lark-editor-header-crumb-status">
           <div class="lark-editor-save-tip">
             <svg-icon icon-class="published" class-name="card-panel-icon" />
+            &nbsp
           </div>
           <div id="syncTimeDiv" class="lark-editor-save-tip"></div>
-        </div>
-        <div class="lark-editor-header-crumb-status">
-          <div style="line-height: 50px; margin: 10px auto;">
+          <div style="line-height: 50px; margin-left: 30px;">
             <el-button type="primary"> 浏览作者 </el-button>
           </div>
         </div>
@@ -53,7 +52,7 @@
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px" prop="title" >
+            <el-form-item class="postInfo-title" prop="title" >
               <MDinput
                 v-model="postForm.title"
                 :maxlength="100"
@@ -62,7 +61,7 @@
                 @title-change="handleTitleChange"
                 @title-blur="handleTitleBlur"
               >
-                Title
+                标题
               </MDinput>
             </el-form-item>
 
@@ -612,9 +611,15 @@ tmpRoute.value = Object.assign({}, useRoute())
   .createPost-main-container {
     padding: 40px auto;
 
+    .postInfo-title {
+      position: relative;
+      margin-bottom: 0px; // 覆盖一下默认属性
+      padding: 0px 20px 0px 10px;
+    }
+
     .postInfo-container {
       position: relative;
-      padding: 10px 20px 10px 20px;
+      padding: 10px 20px 0px 10px;
       @include clearfix;
 
       .postInfo-container-item {
@@ -737,8 +742,8 @@ tmpRoute.value = Object.assign({}, useRoute())
 
 // 更新时间同步
 .lark-editor-save-tip {
-  font-size: 12px;
-  color: #afafaf;
+  font-size: 18px;
+  color: #555e87;
   -webkit-box-align: center;
   height: 40px;
   line-height: 50px;

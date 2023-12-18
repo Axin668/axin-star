@@ -212,9 +212,9 @@ const handleMdBlur = (event: any) => {
   $font-weight-bold: bold;
   $apixel: 1px;
   // Utils
-  $spacer: 12px;
+  $spacer: 10px;  // 间隔
   $transition: 0.2s ease all;
-  $index: 0px;
+  $index: 5px;  // 缩进
   $index-has-icon: 30px;
   // Theme:
   $color-white: white;
@@ -235,7 +235,7 @@ const handleMdBlur = (event: any) => {
 
   // Mixins:
   @mixin slided-top() {
-    top: - ($font-size-base + $spacer);
+    top: - ($font-size-base + $spacer + $apixel * 2);
     left: 0;
     font-size: $font-size-base;
     font-weight: $font-weight-bold;
@@ -243,8 +243,12 @@ const handleMdBlur = (event: any) => {
 
   // Component:
   .material-input__component {
-    margin-top: 36px;
+    margin-top: 30px;  // 给raise留出距离
+    width: 90%;  // 输入框宽度
     position: relative;
+    border-radius: 3px;
+    border: 1px #ced8e4 solid;
+    box-shadow: 0 0 10px 2px #bdcee0;
     * {
       box-sizing: border-box;
     }
@@ -270,7 +274,7 @@ const handleMdBlur = (event: any) => {
     }
     .material-input {
       font-size: $font-size-base;
-      padding: $spacer $spacer $spacer - $apixel * 10 math.div($spacer, 2);
+      padding: $spacer $spacer ($spacer - $apixel * 10) math.div($spacer, 2);
       display: block;
       width: 100%;
       border: none;
