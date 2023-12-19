@@ -3,6 +3,6 @@
 
 <template>
     <div class="container">
-        hello, comment
+        你好, 评论
     </div>
 </template>

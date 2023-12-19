@@ -27,7 +27,8 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    const { code, message } = response.data
+    const { code, msg } = response.data
+    const message = msg || response.data.message
     // 登录成功
     if (code === '00000' || code === 200) {
       return response.data
@@ -42,7 +43,8 @@ service.interceptors.response.use(
   },
   (error: any) => {
     if (error.response.data) {
-      const { code, message } = error.response.data
+      const { code, msg } = error.response.data
+      const message = msg || error.response.data.message
       // token 过期，跳转登录页
       if (code === 'A0230') {
         ElMessageBox.confirm('当前页面已失效，请重新登录', '提示', {
